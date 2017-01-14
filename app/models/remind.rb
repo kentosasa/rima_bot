@@ -16,7 +16,26 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-
 class Remind < ApplicationRecord
   belongs_to :group
+
+  def default_actions
+    [
+      {
+        "type": "postback",
+        "label": "8:00に追加",
+        "data": "edit,#{self.id}"
+      },
+      {
+        "type": "uri",
+        "label": "編集して作成",
+        "uri": "http://example.com/page/123"
+      }
+    ]
+  end
+
+  def activate!
+    self.activated = true
+    self.save
+  end
 end
