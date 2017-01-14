@@ -45,6 +45,8 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
+    bulma-rails (0.3.0)
+      sass (~> 3.2)
     byebug (9.0.6)
     coderay (1.1.1)
     coffee-rails (4.2.1)
@@ -210,6 +212,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  bulma-rails (~> 0.3.0)
   byebug
   coffee-rails (~> 4.2)
   datte
