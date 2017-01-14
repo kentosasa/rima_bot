@@ -24,7 +24,7 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bulma-rails', "~> 0.3.0"
 
-gem 'metatags'
+gem 'meta-tags'
 
 ## lib
 gem 'line-bot-api'

@@ -7,6 +7,7 @@ body class="#{controller_name} #{action_name}"
   main
     = flash_message(flash)
     section.main
-      == yield
+      .container
+        == yield
   footer
     == render 'templates/footer'
