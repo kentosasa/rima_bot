@@ -20,9 +20,10 @@ gem 'jbuilder', '~> 2.5'
 
 ## lib
 gem 'line-bot-api'
+gem 'datte'
 
 # DB
-gem 'pg'
+gem 'sqlite3'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -41,6 +42,7 @@ group :development do
 end
 
 group :production do
+  gem 'pg'
   gem 'rails_12factor'
 end
 
