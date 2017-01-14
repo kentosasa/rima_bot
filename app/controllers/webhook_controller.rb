@@ -4,10 +4,8 @@ require 'line/bot'
 class WebhookController < ApplicationController
   protect_from_forgery with: :null_session
 
-  CHANNEL_ID = ENV['LINE_CHANNEL_ID']
   CHANNEL_SECRET = ENV['LINE_CHANNEL_SECRET']
-  CHANNEL_MID = ENV['LINE_CHANNEL_MID']
-  OUTBOUND_PROXY = ENV['LINE_OUTBOUND_PROXY']
+  CHANNEL_TOKEN = ENV['LINE_CHANNEL_TOKEN']
 
   def callback
     signature = request.env["HTTP_X_LINE_SIGNATURE"]
@@ -28,8 +26,8 @@ class WebhookController < ApplicationController
 
   def client
     @client ||= Line::Bot::Client.new do |config|
-      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-      config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+      config.channel_secret = CHANNEL_SECRET
+      config.channel_token = CHANNEL_TOKEN
     end
   end
 end
