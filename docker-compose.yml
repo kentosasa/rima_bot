@@ -6,8 +6,8 @@ services:
       - "5432"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-      - ./sql/postgres/initdb.d:/docker-entrypoint-initdb.d 
- web:
+      - ./sql/postgres/initdb.d:/docker-entrypoint-initdb.d
+  web:
     build: .
     command: bundle exec rails s -p 3000 -b 0.0.0.0
     volumes:
