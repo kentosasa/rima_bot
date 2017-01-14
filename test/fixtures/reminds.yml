@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  group_id: 1
+  at: 2017-01-14 13:03:29
+  activated: false
+  reminded: false
+  type: 
+
+two:
+  group_id: 1
+  at: 2017-01-14 13:03:29
+  activated: false
+  reminded: false
+  type: 

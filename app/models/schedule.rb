@@ -1,0 +1,2 @@
+class Schedule < Remind
+end
