@@ -76,9 +76,11 @@ class LineClient
   end
 
   def echo_text(event)
+    text = Messaging.new(event, @client).reply_text
     @client.reply_message(evet['replyToken'], {
       type: 'text',
-      text: event['message']['text']
+      text: text
+      #text: event['message']['text']
     })
   end
 
