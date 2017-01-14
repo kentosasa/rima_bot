@@ -78,7 +78,7 @@ class LineClient
     when 'edit'
       remind = Remind.find(q[1])
       remind.activate!
-      send_text("#{remind.name}のイベントを作成しました")
+      send_text("「#{remind.name}」のイベントを作成しました")
     end
   end
 
@@ -86,9 +86,12 @@ class LineClient
   end
 
   def receive_text(event)
-    if include_date?
+    datetime = contain_date(event['message']['text'])
+    if datetime.present?
       group = Group.find_by_event(event)
-      remind = Remind.create(group_id: group.id, name: '1/15', body: '1/15 schedule')
+      date_ja = datetime.strftime("%Y年%m月%d日")
+      remind_at = datetime - Rational(1, 24)
+      remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}の予定", datetime: datetime, at: remind_at)
       send_templete_button(remind.name, remind.body, remind.default_actions)
     end
   end
@@ -133,8 +136,9 @@ class LineClient
   end
 
   # messaging methods
-  def include_date?
-    return true
+  def contain_date(text)
+    datte = Datte::Parser.new()
+    datte.parse_date(text)
   end
 
   def send_text(text)

@@ -23,7 +23,7 @@ class Remind < ApplicationRecord
     [
       {
         "type": "postback",
-        "label": "8:00に追加",
+        "label": "#{self.datetime.strftime("%Y年%m月%d日")}を作成",
         "data": "edit,#{self.id}"
       },
       {
