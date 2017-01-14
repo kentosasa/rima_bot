@@ -12,5 +12,3 @@ ADD Gemfile.lock ${APP_ROOT}/Gemfile.lock
 RUN bundle install
 
 ADD . $APP_ROOT
-
-~
