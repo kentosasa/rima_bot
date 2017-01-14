@@ -1,0 +1,10 @@
+LOG:  database system was shut down at 2017-01-14 15:06:18 JST
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  unrecognized configuration parameter "databases"
+STATEMENT:  show databases;
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
