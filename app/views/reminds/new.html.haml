@@ -1,2 +1,21 @@
-%h1 Reminds#new
-%p Find me in app/views/reminds/new.html.haml
+= form_for @remind do |f|
+  %div.field
+    %label.label
+      = f.label :name, "タイトル
+    %p.control
+      = f.text_field :name, placeholder: '映画を見に行く'
+
+  %div.field
+    %label.label
+      = f.label :text, "メモ"
+    %p.control
+      = f.text_area :body, placeholder: '学生証を忘れないように'
+
+  %div.field
+    %label.label
+      = f.label :place, "場所"
+    %p.control
+      = f.text_field :place, placeholder: 'xxxx'
+
+  %p.control
+    = f.submit "登録する", class: 'button'
