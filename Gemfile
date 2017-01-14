@@ -15,8 +15,7 @@ gem 'rails', '~> 5.0.1'
 gem 'puma', '~> 3.0'
 
 ## Frontend
-gem 'haml-rails'
-gem 'erb2haml'
+gem 'slim-rails'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
