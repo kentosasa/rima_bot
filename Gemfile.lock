@@ -229,7 +229,6 @@ DEPENDENCIES
   rails (~> 5.0.1)
   rails_12factor
   rb-readline
-  rails_12factor
   sass-rails (~> 5.0)
   spring
   spring-watcher-listen (~> 2.0.0)
