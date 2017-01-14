@@ -1,12 +1,12 @@
 version: '2'
 services:
   db:
+    restart: always
     image: postgres
-    ports:
+    expose:
       - "5432"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-      - ./sql/postgres/initdb.d:/docker-entrypoint-initdb.d
   web:
     build: .
     command: bundle exec rails s -p 3000 -b 0.0.0.0
