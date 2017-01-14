@@ -7,7 +7,7 @@ class LineClient
     'location' => :echo_location,
     'sticker' => :echo_sticker
   }.freeze
-  HOST = 'link'.freeze
+  HOST = 'https://5498377a.ngrok.io'.freeze
 
   def initialize(client, event)
     @client = client
@@ -18,12 +18,7 @@ class LineClient
   def reply
     case @event
     when Line::Bot::Event::Message
-      send(MESSAGE_TYPE_TO_METHOD_MAP[event.type.to_s], event)
-      # message = Message.new(message_target)
-      #
-      #
-      #   message = Message.new(message_target_id: message_target.id, message_target_type: event["source"]["type"
-      #   send(MESSAGE_TYPE_TO_METHOD_MAP[event.type.to_s], message, event)
+      send(MESSAGE_TYPE_TO_METHOD_MAP[@event.type.to_s], @event)
     when Line::Bot::Event::Follow
       receive_follow
     when Line::Bot::Event::Unfollow
@@ -40,7 +35,7 @@ class LineClient
   def find_or_create_message_target(event)
     case event['type']
     when 'user'
-      @user = User.find_or_create_by(mid: @to_mid)
+      #@user = User.find_or_create_by(mid: @to_mid)
       event['userId']
     when 'group'
       event['groupId']
@@ -76,11 +71,10 @@ class LineClient
   end
 
   def echo_text(event)
-    text = Messaging.new(event, @client).reply_text
-    @client.reply_message(evet['replyToken'], {
+    #text = Messaging.new(event, @client).reply_text
+    @client.reply_message(event['replyToken'], {
       type: 'text',
-      text: text
-      #text: event['message']['text']
+      text: event['message']['text']
     })
   end
 
