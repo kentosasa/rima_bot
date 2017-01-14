@@ -10,16 +10,18 @@ class WebhookController < ApplicationController
   OUTBOUND_PROXY = ENV['LINE_OUTBOUND_PROXY']
 
   def callback
-    signature = request.env['HTTP_X_LINE_CHANNELSIGNATURE']
-    unless client.validate_signature(request.body.read, signature)
-      error 400 do 'Bad Request' end
+    signature = request.env["HTTP_X_LINE_SIGNATURE"]
+    body = request.body.read
+    unless client.validate_signature(body, signature)
+      head :bad_request
+      return
     end
-    receive_request = Line::Bot::Receive::Request.new(request.env)
-    receive_request.data.each do |message|
-      c = LineClient.new(client, message)
+    events = client.parse_events_from(body)
+    events.each do |event|
+      c = LineClient.new(client, event)
       c.reply
     end
-    render nothing: true, status: :ok
+    head :ok
   end
 
   private
