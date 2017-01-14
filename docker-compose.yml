@@ -1,0 +1,24 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./sql/postgres/initdb.d:/docker-entrypoint-initdb.d 
+ web:
+    build: .
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    volumes:
+      - .:/rima
+    ports:
+      - "3000:3000"
+    links:
+      - db
+    env_file: .env
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD:
+      DATABASE_PORT: 5432
+      DATABASE_HOST: db
