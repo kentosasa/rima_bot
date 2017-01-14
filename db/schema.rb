@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170114040329) do
+ActiveRecord::Schema.define(version: 20170114051725) do
+
+  create_table "candidate_user_relations", force: :cascade do |t|
+    t.integer  "candidate_id"
+    t.integer  "user_id"
+    t.boolean  "attend"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "candidates", force: :cascade do |t|
+    t.datetime "date"
+    t.integer  "schedule_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.integer  "user_type"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "reminds", force: :cascade do |t|
     t.integer  "group_id"
@@ -23,6 +45,12 @@ ActiveRecord::Schema.define(version: 20170114040329) do
     t.datetime "datetime"
     t.integer  "scale"
     t.string   "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
