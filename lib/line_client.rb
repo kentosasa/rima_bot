@@ -1,11 +1,11 @@
 class LineClient
   MESSAGE_TYPE_TO_METHOD_MAP = {
-    "text" => :echo_text,
-    "image" => :echo_image,
-    "video" => :echo_video,
-    "audio" => :echo_audio,
-    "location" => :echo_location,
-    "sticker" => :echo_sticker,
+    'text' => :echo_text,
+    'image' => :echo_image,
+    'video' => :echo_video,
+    'audio' => :echo_audio,
+    'location' => :echo_location,
+    'sticker' => :echo_sticker
   }.freeze
   HOST = 'link'.freeze
 
@@ -19,12 +19,11 @@ class LineClient
     case @event
     when Line::Bot::Event::Message
       send(MESSAGE_TYPE_TO_METHOD_MAP[event.type.to_s], event)
-      message = Message.new(message_target)
-
-
-        message = Message.new(message_target_id: message_target.id, message_target_type: event["source"]["type"
-        send(MESSAGE_TYPE_TO_METHOD_MAP[event.type.to_s], message, event)
-
+      # message = Message.new(message_target)
+      #
+      #
+      #   message = Message.new(message_target_id: message_target.id, message_target_type: event["source"]["type"
+      #   send(MESSAGE_TYPE_TO_METHOD_MAP[event.type.to_s], message, event)
     when Line::Bot::Event::Follow
       receive_follow
     when Line::Bot::Event::Unfollow
@@ -65,7 +64,7 @@ class LineClient
 
   def receive_join
     @client.push_message(
-      @message_target
+      @message_target,
       {
         type: 'text',
         text: '招待ありがとうございます！'
@@ -78,7 +77,7 @@ class LineClient
 
   def echo_text(event)
     @client.reply_message(evet['replyToken'], {
-      type: 'text'
+      type: 'text',
       text: event['message']['text']
     })
   end
