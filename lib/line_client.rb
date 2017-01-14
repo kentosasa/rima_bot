@@ -7,7 +7,7 @@ class LineClient
     'location' => :echo_location,
     'sticker' => :echo_sticker
   }.freeze
-  HOST = 'https://5498377a.ngrok.io'.freeze
+  HOST = ENV['WEBHOOK_URL'].freeze
 
   def initialize(client, event)
     @client = client
