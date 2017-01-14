@@ -1,6 +1,6 @@
 class LineClient
   MESSAGE_TYPE_TO_METHOD_MAP = {
-    'text' => :echo_text,
+    'text' => :receive_text,
     'image' => :echo_image,
     'video' => :echo_video,
     'audio' => :echo_audio,
@@ -27,6 +27,8 @@ class LineClient
       receive_join
     when Line::Bot::Event::Leave
       receive_leave
+    when Line::Bot::Event::Postback
+      receive_postback(@event)
     end
   end
 
@@ -70,13 +72,25 @@ class LineClient
   def receive_leave
   end
 
-  def echo_text(event)
-    replay_message
-    #text = Messaging.new(event, @client).reply_text
-    # @client.reply_message(event['replyToken'], {
-    #   type: 'text',
-    #   text: event['message']['text']
-    # })
+  def receive_postback(event)
+    q = event["postback"]["data"].split(",")
+    case q[0]
+    when 'edit'
+      remind = Remind.find(q[1])
+      remind.activate!
+      send_text("#{remind.name}のイベントを作成しました")
+    end
+  end
+
+  def remind_activate
+  end
+
+  def receive_text(event)
+    if include_date?
+      group = Group.find_by_event(event)
+      remind = Remind.create(group_id: group.id, name: '1/15', body: '1/15 schedule')
+      send_templete_button(remind.name, remind.body, remind.default_actions)
+    end
   end
 
   def echo_image(event)
@@ -119,20 +133,12 @@ class LineClient
   end
 
   # messaging methods
-  private
-  def replay_message
-    if include_date?
-      remind = Remind.create(name: '1/15', body: '1/15 schedule')
-      send_templete_button(remind.name, remind.body, remind.default_actions)
-    end
-  end
-
   def include_date?
     return true
   end
 
   def send_text(text)
-    @client.reply_message(event['replyToken'], {
+    @client.reply_message(@event['replyToken'], {
       type: 'text',
       text: text
     })
