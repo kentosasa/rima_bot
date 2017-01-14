@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: candidates
+#
+#  id          :integer          not null, primary key
+#  date        :datetime
+#  schedule_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2017-01-14 14:07:50
+  schedule_id: 1
+
+two:
+  date: 2017-01-14 14:07:50
+  schedule_id: 1

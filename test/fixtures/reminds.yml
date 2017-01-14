@@ -1,0 +1,34 @@
+# == Schema Information
+#
+# Table name: reminds
+#
+#  id         :integer          not null, primary key
+#  group_id   :integer
+#  at         :datetime
+#  activated  :boolean
+#  reminded   :boolean
+#  name       :string
+#  body       :text
+#  place      :string
+#  datetime   :datetime
+#  scale      :integer
+#  type       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  group_id: 1
+  at: 2017-01-14 13:03:29
+  activated: false
+  reminded: false
+  type: 
+
+two:
+  group_id: 1
+  at: 2017-01-14 13:03:29
+  activated: false
+  reminded: false
+  type: 
