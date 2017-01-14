@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Install
+```
+git clone https://github.com/kentosasa/rima_san.git
+cd rima_san
+docker-compose build  # コンテナ作成
+docker-compose up     # コンテナ起動
+```
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+```
+docker-compose run web rails db:create  # DB作成
+docker-compose run web rails db:migrate # DB構築
+```
 
-* System dependencies
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

@@ -20,5 +20,11 @@
 # Ignore Byebug command history file.
 .byebug_history
 /vendor/bundle/*
+<<<<<<< HEAD
 .gitignore
 .env
+=======
+
+.env
+
+>>>>>>> master
