@@ -19,4 +19,19 @@
 
 class Remind < ApplicationRecord
   belongs_to :group
+
+  def default_actions
+    [
+      {
+        "type": "uri",
+        "label": "8:00に追加",
+        "uri": "http://example.com/page/123"
+      },
+      {
+        "type": "uri",
+        "label": "編集して作成",
+        "uri": "http://example.com/page/123"
+      }
+    ]
+  end
 end
