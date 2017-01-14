@@ -1,0 +1,19 @@
+## Rails
+public/assets/*
+.ruby-version
+.env
+
+## Environment normalisation:
+.bundle
+vendor/bundle
+.git*
+
+## log
+log/*
+tmp/*
+
+## OSX
+.DS_Store
+
+## docker
+.dockerignore
