@@ -1,5 +1,5 @@
 class RemindsController < ApplicationController
-  before_action :set_remind, only: [:edit, :update, :destroy]
+  before_action :set_remind, only: [:show, :edit, :update, :destroy]
 
   def index
   end
@@ -7,6 +7,9 @@ class RemindsController < ApplicationController
   def new
     @remind = Remind.new
 
+  end
+
+  def show
   end
 
   def create
