@@ -1,3 +1,5 @@
+h3.title.is-3.has-text-centered リマインド編集
+
 = form_for @remind do |f|
   - if @remind.errors.any?
     article.message.is-danger
@@ -16,9 +18,25 @@
   p.control
     = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
 
-  label.label.required = f.label :place, '場所'
+  label.label.required= f.label :place, '場所'
   p.control
-    = f.text_field :place, class: 'input', placeholder: 'xxxx'
+    = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
+    /= f.hidden_field :latitude
+    /= f.hidden_field :longitude
+
+  .map-container
+    #map
+
+  label.label.required = f.label :date, 'イベント日時'
+  .control.is-horizontal
+    p.control.is-expanded
+      = f.text_field :date, class: 'input date-input', placeholder: '日付', pattern: '\d{4}/\d{2}/\d{2}', value: @date, required: true
+    p.control.is-expanded
+      = f.text_field :time, class: 'input time-input', placeholder: '時間', pattern: '\d{2}:\d{2}', value: @time, require: true
+
+  label.label.required = f.label :scale, '人数'
+  p.control
+    = f.text_field :scale, class: 'input', placeholder: '11人'
 
   p.has-text-right
     = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
