@@ -21,11 +21,14 @@ h3.title.is-3.has-text-centered リマインド編集
   label.label.required= f.label :place, '場所'
   p.control
     = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
-    /= f.hidden_field :latitude
-    /= f.hidden_field :longitude
 
   .map-container
     #map
+    = f.hidden_field :address
+    = f.hidden_field :latitude
+    = f.hidden_field :longitude
+  p.address
+    span#formatted_address = @remind.address
 
   label.label.required = f.label :date, 'イベント日時'
   .control.is-horizontal
