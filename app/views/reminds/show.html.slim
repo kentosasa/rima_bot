@@ -1,0 +1,26 @@
+h3.title.is-3.has-text-centered = @remind.name
+
+table.table
+  tbody
+    tr
+      th ID
+      td = @remind.id
+    tr
+      th タイトル
+      td = @remind.name
+    tr
+      th メモ
+      td = @remind.body
+    tr
+      th 場所
+      td = @remind.place || '未指定'
+    tr
+      th リマインド日時
+      td = @remind.at.strftime("%Y年%m月%d日 %H時%M分")
+    tr
+      th リマインド有効
+      td = @remind.activated ?  "有効" : "無効"
+    - unless @remind.scale.nil?
+      tr
+        th 人数
+        td = @remind.scale
