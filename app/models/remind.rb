@@ -102,6 +102,13 @@ class Remind < ApplicationRecord
     end
   end
 
+  def event?
+    self.type == 'Event'
+  end
+
+  def schedule?
+    self.type == 'Schedule'
+  end
 
   def activate!
     self.activated = true
@@ -115,6 +122,7 @@ class Remind < ApplicationRecord
   end
 
   def weather_img
+    # APIで取得できる天気予報が15日後までなため
     if (self.datetime.to_date-DateTime.now.to_date).to_i < 16
       weather = Weather.find_or_create_by(place: self.place, date: self.datetime.to_date)
       return weather.find_or_create_image

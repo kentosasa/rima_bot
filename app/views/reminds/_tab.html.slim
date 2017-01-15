@@ -1,0 +1,6 @@
+.tabs.is-medium
+  ul
+    li class=(remind.event? ? 'is-active' : 'event' )
+      = link_to 'イベント作成', '#'
+    li class=(remind.schedule? ? 'is-active' : 'schedule' )
+      = link_to '日程調整', '#'
