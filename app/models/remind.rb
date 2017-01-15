@@ -28,7 +28,7 @@ class Remind < ApplicationRecord
       "altText": "ご使用の端末は対応していません",
       "template": {
         "type": "buttons",
-        "thumbnailImageUrl": "#{ENV['ROOT_URL']}/crown.png",
+        "thumbnailImageUrl": "#{self.weather_img}",
         "title": self.name,
         "text": self.body,
         "actions": [
@@ -55,7 +55,7 @@ class Remind < ApplicationRecord
         "type": "carousel",
         "columns": [
           {
-            "thumbnailImageUrl": "#{ENV['ROOT_URL']}/crown.png",
+            "thumbnailImageUrl": "#{self.weather_img}",
             "title": "リマインド「#{self.name}」",
             "text": self.body,
             "actions": [
@@ -112,5 +112,13 @@ class Remind < ApplicationRecord
     self.at = self.at.since(30.minute)
     self.reminded = false
     self.save
+  end
+
+  def weather_img
+    if (self.datetime.to_date-DateTime.now.to_date).to_i < 16
+      weather = Weather.find_or_create_by(place: self.place, date: self.datetime.to_date)
+      return weather.find_or_create_image
+    end
+    return "#{ENV['ROOT_URL']}/crown.png"
   end
 end
