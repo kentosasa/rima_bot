@@ -1,0 +1,16 @@
+article.message.is-success
+  .message-header
+    p = "#{@remind.name}のリマインドを有効化"
+  .message-body
+    p
+      | "リマインドを"
+      b = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")
+      | の
+      b = "#{@remind.before}分前"
+      | で設定しました。
+
+p
+  = link_to remind_path(@remind), class: 'button' do
+    span.icon.is-small(style='margin-right:5px')
+      i.fa.fa-bell-o
+    | 詳細に戻る
