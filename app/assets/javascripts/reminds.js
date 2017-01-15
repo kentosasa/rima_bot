@@ -15,7 +15,6 @@ $(document).on('turbolinks:load', function() {
   var gmap = new GMap('map', { lat: gon.lat, lng: gon.lng });
   gmap.init();
   gmap.setMarker({ lat: gon.lat, lng: gon.lng });
-  gmap.setInfoWindow('<h3>' + gon.rName + '</h3>', gmap.pin);
   gmap.setAutoComplete({
     address: 'remind_place',
     place: 'remind_address',
@@ -25,7 +24,6 @@ $(document).on('turbolinks:load', function() {
   });
 
 
-  // タブ切り替え
   // タブ切り替え
   $('.md-view-tab li').on('click', function (e) {
     e.preventDefault();

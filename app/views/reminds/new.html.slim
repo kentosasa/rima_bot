@@ -20,14 +20,17 @@ h3.title.is-3.has-text-centered リマインド作成
   p.control
     = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
 
-  label.label.required= f.label :place, '場所'
-  p.control
-    = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
-    /= f.hidden_field :latitude
-    /= f.hidden_field :longitude
+    label.label.required= f.label :place, '場所'
+    p.control
+      = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
 
-  .map-container
-    #map
+    .map-container
+      #map
+      = f.hidden_field :address
+      = f.hidden_field :latitude
+      = f.hidden_field :longitude
+    p.address
+      span#formatted_address = @remind.address
 
   label.label.required = f.label :date, 'イベント日時'
   .control.is-horizontal

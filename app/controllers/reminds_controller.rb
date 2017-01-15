@@ -39,7 +39,6 @@ class RemindsController < ApplicationController
   def set_gmap
     gon.lat = @remind.latitude || 35.6586488
     gon.lng = @remind.longitude || 139.6966408
-    gon.rName = @remind.name
   end
 
   def remind_at(datetime)
