@@ -24,7 +24,7 @@ class Remind < ApplicationRecord
       {
         "type": "postback",
         "label": "イベント作成",
-        "data": "edit,#{self.id}"
+        "data": "activate,#{self.id}"
       },
       {
         "type": "uri",

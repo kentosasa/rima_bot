@@ -75,14 +75,11 @@ class LineClient
   def receive_postback(event)
     q = event["postback"]["data"].split(",")
     case q[0]
-    when 'edit'
+    when 'activate'
       remind = Remind.find(q[1])
       remind.activate!
       send_text("「#{remind.name}」のイベントを作成しました")
     end
-  end
-
-  def remind_activate
   end
 
   def receive_text(event)
@@ -91,7 +88,7 @@ class LineClient
       group = Group.find_by_event(event)
       date_ja = datetime.strftime("%m月%d日%H時%M分")
       remind_at = datetime - Rational(1, 24)
-      remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}の予定", datetime: datetime, at: remind_at)
+      remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}のイベント", datetime: datetime, at: remind_at)
       send_templete_button(remind.name, remind.body, remind.new_actions)
     end
   end
