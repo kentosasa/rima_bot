@@ -1,5 +1,7 @@
 h3.title.is-3.has-text-centered リマインド作成
 
+== render 'tab', { remind: @remind}
+
 = form_for @remind do |f|
   - if @remind.errors.any?
     article.message.is-danger
