@@ -8,6 +8,7 @@ class RemindsController < ApplicationController
 
   def new
     @remind = Remind.new
+    gon.autoComplete = true
   end
 
   def show
@@ -18,15 +19,18 @@ class RemindsController < ApplicationController
   end
 
   def create
+    gon.autoComplete = true
   end
 
   def edit
     @date, @time = @remind.parse_datetime
+    gon.autoComplete = true
   end
 
   def update
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
+    gon.autoComplete = true
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
       redirect_to remind_path(@remind)

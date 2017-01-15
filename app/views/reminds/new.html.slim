@@ -14,9 +14,9 @@ h3.title.is-3.has-text-centered リマインド作成
 
   label.label.required = f.label :name, 'タイトル'
   p.control
-    = f.text_field :name, class: 'input', placeholder: '映画を見に行く'
+    = f.text_field :name, class: 'input', placeholder: '映画を見に行く', required: true
 
-  label.label.required = f.label :text, 'メモ'
+  label.label = f.label :text, 'メモ'
   p.control
     = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
 
@@ -45,7 +45,7 @@ h3.title.is-3.has-text-centered リマインド作成
     span.select.is-fullwidth
       = f.select :before, {'10分前': 10, '20分前': 20, '30分前': 30, '1時間前': 60, '2時間前': 120}, {}
 
-  label.label.required = f.label :scale, '人数'
+  label.label = f.label :scale, '人数'
   p.control
     = f.text_field :scale, class: 'input', placeholder: '11人'
 
