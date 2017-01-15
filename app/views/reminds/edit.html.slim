@@ -1,0 +1,27 @@
+= form_for @remind do |f|
+  - if @remind.errors.any?
+    article.message.is-danger
+      .message-header
+        p = "#{@remind.errors.count}件のエラーがあります。"
+      .message-body
+        ul
+          - @remind.errors.full_messages.each do |msg|
+            li = msg
+
+  label.label.required = f.label :name, 'タイトル'
+  p.control
+    = f.text_field :name, class: 'input', placeholder: '映画を見に行く'
+
+  label.label.required = f.label :text, 'メモ'
+  p.control
+    = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
+
+  label.label.required = f.label :place, '場所'
+  p.control
+    = f.text_field :place, class: 'input', placeholder: 'xxxx'
+
+  p.has-text-right
+    = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
+      span.icon.is-small style='margin-right:5px'
+        i.fa.fa-check
+      | 更新する

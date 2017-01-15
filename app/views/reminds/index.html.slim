@@ -1,2 +1,7 @@
-%h1 Reminds#index
-%p Find me in app/views/reminds/index.html.haml
+table.table
+  tbody
+    - @reminds.each do |remind|
+      tr
+        th
+          b = remind.id
+        td = remind.title
