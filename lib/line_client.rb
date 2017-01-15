@@ -90,6 +90,8 @@ class LineClient
       remind_at = datetime - Rational(1, 24)
       remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}のイベント", datetime: datetime, at: remind_at)
       reply_templete(remind.line_new_buttons_template)
+    else
+      reply_templete(Remind.last.line_new_carousel_template)
     end
   end
 

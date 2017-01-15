@@ -24,22 +24,68 @@ class Remind < ApplicationRecord
       "type": "template",
       "altText": "ご使用の端末は対応していません",
       "template": {
-          "type": "buttons",
-          "thumbnailImageUrl": "https://www.google.co.jp/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-          "title": self.name,
-          "text": self.body,
-          "actions": [
-            {
-              "type": "postback",
-              "label": "イベント作成",
-              "data": "activate,#{self.id}"
-            },
-            {
-              "type": "uri",
-              "label": "編集して作成",
-              "uri": "http://example.com/page/123"
-            }
-          ]
+        "type": "buttons",
+        "thumbnailImageUrl": "#{ENV['ROOT_URL']}/crown.png",
+        "title": self.name,
+        "text": self.body,
+        "actions": [
+          {
+            "type": "postback",
+            "label": "イベント作成",
+            "data": "activate,#{self.id}"
+          },
+          {
+            "type": "uri",
+            "label": "編集して作成",
+            "uri": "http://example.com/page/123"
+          }
+        ]
+      }
+    }
+  end
+
+  def line_new_carousel_template
+    {
+      "type": "template",
+      "altText": "ご使用の端末は対応しておりません",
+      "template": {
+        "type": "carousel",
+        "columns": [
+          {
+            "thumbnailImageUrl": "#{ENV['ROOT_URL']}/crown.png",
+            "title": "リマインド「#{self.name}」",
+            "text": self.body,
+            "actions": [
+              {
+                  "type": "uri",
+                  "label": "詳細を見る",
+                  "uri": "http://example.com/page/111"
+              },
+              {
+                  "type": "postback",
+                  "label": "1時間後に再通知",
+                  "data": "action=buy&itemid=111"
+              }
+            ]
+          },
+          {
+            "thumbnailImageUrl": "https://tabelog.ssl.k-img.com/restaurant/images/Rvw/57427/640x640_rect_57427239.jpg",
+            "title": "小料理店「松川」",
+            "text": "食べログでトップ10に入る六本木で話題のお店です。日本が誇る和食はいかがですか？",
+            "actions": [
+              {
+                  "type": "uri",
+                  "label": "詳細を見る",
+                  "uri": "http://example.com/page/222"
+              },
+              {
+                  "type": "uri",
+                  "label": "電話する",
+                  "uri": "http://example.com/page/222"
+              }
+            ]
+          }
+        ]
       }
     }
   end
