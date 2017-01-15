@@ -15,8 +15,11 @@ table.table
       th 場所
       td = @remind.place || '未指定'
     tr
-      th リマインド日時
-      td = @remind.at.strftime("%Y年%m月%d日 %H時%M分")
+      th イベント日時
+      td = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")
+    tr
+      th リマインド時間
+      td = "#{@remind.before}分前"
     tr
       th リマインド有効
       td = @remind.activated ?  "有効" : "無効"

@@ -11,6 +11,7 @@ class RemindsController < ApplicationController
   def show
     #gon.lat = @remind.latitude
     #gon.lng = @remind.longitude
+    @remind.before = (@remind.datetime - @remind.at).to_i / 60
   end
 
   def create
@@ -18,11 +19,12 @@ class RemindsController < ApplicationController
 
   def edit
     @date, @time = @remind.parse_datetime
+    @remind.before = (@remind.datetime - @remind.at).to_i / 60
   end
 
   def update
     @remind.datetime = combine_datetime
-    @remind.ad = remind_at(@remind.datetime)
+    @remind.at = remind_at(@remind.datetime)
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
       redirect_to remind_path(@remind)
@@ -36,8 +38,8 @@ class RemindsController < ApplicationController
   private
 
   def remind_at(datetime)
-    before = params[:before].to_i
-    datetime - Rational(before, 24)
+    before = params.require(:remind).permit(:before)[:before].to_i
+    datetime - before * 60
   end
 
   def set_remind
@@ -45,7 +47,8 @@ class RemindsController < ApplicationController
   end
 
   def combine_datetime
-    "#{params[:date]} #{params[:time]}"
+    dt = params.require(:remind).permit(:date, :time)
+    "#{dt[:date]} #{dt[:time]}"
   end
 
   def remind_params
