@@ -14,6 +14,18 @@ table.table
     tr
       th 場所
       td = @remind.place || '未指定'
+    - if @remind.address.present?
+      th.map-container(colspan='2')
+        #map
+
+    = hidden_field_tag 'address', '', id: 'remind_address'
+    = hidden_field_tag 'latitude', '', id: 'remind_latitude'
+    = hidden_field_tag 'longitude', '', id: 'remind_longitude'
+    = hidden_field_tag 'place', '', id: 'remind_place'
+
+    tr
+      td(colspan='2')
+        span#formatted_address = @remind.address
     tr
       th イベント日時
       td = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")
@@ -23,7 +35,7 @@ table.table
     tr
       th リマインド有効
       td = @remind.activated ?  "有効" : "無効"
-    - unless @remind.scale.nil?
+    - if @remind.scale.present?
       tr
         th 人数
         td = @remind.scale

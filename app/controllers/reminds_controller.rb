@@ -1,5 +1,7 @@
 class RemindsController < ApplicationController
-  before_action :set_remind, only: [:show, :edit, :update, :destroy]
+  before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate]
+  before_action :set_gmap, only: [:show, :edit, :update]
+  before_action :set_before, only: [:show, :edit, :activate]
 
   def index
   end
@@ -9,9 +11,10 @@ class RemindsController < ApplicationController
   end
 
   def show
-    #gon.lat = @remind.latitude
-    #gon.lng = @remind.longitude
-    @remind.before = (@remind.datetime - @remind.at).to_i / 60
+  end
+
+  def activate
+    @remind.activate!
   end
 
   def create
@@ -19,7 +22,6 @@ class RemindsController < ApplicationController
 
   def edit
     @date, @time = @remind.parse_datetime
-    @remind.before = (@remind.datetime - @remind.at).to_i / 60
   end
 
   def update
@@ -37,9 +39,18 @@ class RemindsController < ApplicationController
 
   private
 
+  def set_gmap
+    gon.lat = @remind.latitude || 35.6586488
+    gon.lng = @remind.longitude || 139.6966408
+  end
+
   def remind_at(datetime)
     before = params.require(:remind).permit(:before)[:before].to_i
     datetime - before * 60
+  end
+
+  def set_before
+    @remind.before = (@remind.datetime - @remind.at).to_i / 60
   end
 
   def set_remind
@@ -52,6 +63,6 @@ class RemindsController < ApplicationController
   end
 
   def remind_params
-    params.require(:remind).permit(:name, :body, :scale, :place)
+    params.require(:remind).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
   end
 end
