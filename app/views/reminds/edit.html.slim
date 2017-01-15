@@ -1,6 +1,4 @@
-h3.title.is-3.has-text-centered リマインド作成
-
-== render 'tab', { remind: @remind}
+h3.title.is-3.has-text-centered リマインド編集
 
 = form_for @remind do |f|
   - if @remind.errors.any?
@@ -50,4 +48,4 @@ h3.title.is-3.has-text-centered リマインド作成
     = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
       span.icon.is-small style='margin-right:5px'
         i.fa.fa-check
-      | 作成する
+      | 更新する

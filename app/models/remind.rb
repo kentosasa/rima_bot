@@ -22,6 +22,12 @@ class Remind < ApplicationRecord
   scope :active, -> { where(activated: true) }
   scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
 
+  attr_accessor :date, :time, :before
+
+  def parse_datetime
+    [self.datetime.to_s(:date), self.datetime.to_s(:time)]
+  end
+
   def line_new_buttons_template
     {
       "type": "template",

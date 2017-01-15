@@ -1,0 +1,38 @@
+h3.title.is-3.has-text-centered = @remind.name
+
+table.table
+  tbody
+    tr
+      th ID
+      td = @remind.id
+    tr
+      th タイトル
+      td = @remind.name
+    tr
+      th メモ
+      td = @remind.body
+    tr
+      th 場所
+      td = @remind.place || '未指定'
+    tr
+      th イベント日時
+      td = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")
+    tr
+      th リマインド時間
+      td = "#{@remind.before}分前"
+    tr
+      th リマインド有効
+      td = @remind.activated ?  "有効" : "無効"
+    - unless @remind.scale.nil?
+      tr
+        th 人数
+        td = @remind.scale
+p
+  = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do
+    span.icon.is-small(style='margin-right:5px')
+      i.fa.fa-check
+    | 編集する
+  = link_to remind_path(@remind), method: :delete, class: 'button is-danger is-pulled-right', data: {confirm: '本当に削除しますか?'} do
+    | 削除する
+    span.icon.is-small
+      i.fa.fa-times
