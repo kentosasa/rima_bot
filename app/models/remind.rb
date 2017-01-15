@@ -19,19 +19,29 @@
 class Remind < ApplicationRecord
   belongs_to :group
 
-  def new_actions
-    [
-      {
-        "type": "postback",
-        "label": "イベント作成",
-        "data": "activate,#{self.id}"
-      },
-      {
-        "type": "uri",
-        "label": "編集して作成",
-        "uri": "http://example.com/page/123"
+  def line_new_buttons_template
+    {
+      "type": "template",
+      "altText": "ご使用の端末は対応していません",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.google.co.jp/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+          "title": self.name,
+          "text": self.body,
+          "actions": [
+            {
+              "type": "postback",
+              "label": "イベント作成",
+              "data": "activate,#{self.id}"
+            },
+            {
+              "type": "uri",
+              "label": "編集して作成",
+              "uri": "http://example.com/page/123"
+            }
+          ]
       }
-    ]
+    }
   end
 
   def activate!
