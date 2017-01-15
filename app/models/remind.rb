@@ -5,8 +5,8 @@
 #  id         :integer          not null, primary key
 #  group_id   :integer
 #  at         :datetime
-#  activated  :boolean
-#  reminded   :boolean
+#  activated  :boolean          default(FALSE)
+#  reminded   :boolean          default(FALSE)
 #  name       :string
 #  body       :text
 #  place      :string
@@ -16,8 +16,11 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+
 class Remind < ApplicationRecord
   belongs_to :group
+  scope :active, -> { where(activated: true) }
+  scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
 
   def line_new_buttons_template
     {
@@ -89,6 +92,16 @@ class Remind < ApplicationRecord
       }
     }
   end
+
+  def line_notify(client)
+    if client.push_message(self.group.source_id, self.line_new_carousel_template)
+      self.reminded = true
+      self.save
+    else
+      return nil
+    end
+  end
+
 
   def activate!
     self.activated = true

@@ -5,8 +5,8 @@
 #  id         :integer          not null, primary key
 #  group_id   :integer
 #  at         :datetime
-#  activated  :boolean
-#  reminded   :boolean
+#  activated  :boolean          default(FALSE)
+#  reminded   :boolean          default(FALSE)
 #  name       :string
 #  body       :text
 #  place      :string

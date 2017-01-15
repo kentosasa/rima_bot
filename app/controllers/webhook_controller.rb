@@ -23,7 +23,6 @@ class WebhookController < ApplicationController
   end
 
   private
-
   def client
     @client ||= Line::Bot::Client.new do |config|
       config.channel_secret = CHANNEL_SECRET
