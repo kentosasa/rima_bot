@@ -89,10 +89,10 @@ class LineClient
     datetime = contain_date(event['message']['text'])
     if datetime.present?
       group = Group.find_by_event(event)
-      date_ja = datetime.strftime("%Y年%m月%d日")
+      date_ja = datetime.strftime("%m月%d日%H時%M分")
       remind_at = datetime - Rational(1, 24)
       remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}の予定", datetime: datetime, at: remind_at)
-      send_templete_button(remind.name, remind.body, remind.default_actions)
+      send_templete_button(remind.name, remind.body, remind.new_actions)
     end
   end
 

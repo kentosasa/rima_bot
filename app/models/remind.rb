@@ -19,11 +19,11 @@
 class Remind < ApplicationRecord
   belongs_to :group
 
-  def default_actions
+  def new_actions
     [
       {
         "type": "postback",
-        "label": "#{self.datetime.strftime("%Y年%m月%d日")}を作成",
+        "label": "イベント作成",
         "data": "edit,#{self.id}"
       },
       {
