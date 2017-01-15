@@ -67,9 +67,21 @@ class LineClient
       name = datetime.strftime("%m/%dのイベント")
       remind_at = datetime.ago(1.hour)
 
-      remind = Remind.create(group_id, @group.id, name: name, datetime: datetime, at: remind_at)
+      remind = Remind.create(group_id: @group.id, name: name, datetime: datetime, at: remind_at)
 
       reply_templete(remind.line_new_buttons_template)
+
+      # actions = [{
+      #   type: 'postback',
+      #   label: "#{datetime.to_s(:without_year)}で設定",
+      #   data: "activate,#{remind.id}"
+      # }, {
+      #   type: 'uri',
+      #   label: '編集して作成',
+      #   url: "#{HOST}/reminds/#{remind.id}/edit"
+      # }]
+      # reply_buttons('https://s.w-x.co/240x180_twc_default.png', name,
+      # event['message']['text'], actions)
     else
       reply_text('hoge')
       #reply_templete(Remind.last.line_new_carousel_template)
@@ -123,6 +135,20 @@ class LineClient
     @client.reply_message(@event['replyToken'], {
       type: 'text',
       text: text
+    })
+  end
+
+  def reply_buttons(image, title, text, actions)
+    @client.reply_message(@event['replyToken'], {
+      type: 'template',
+      altText: 'ご使用の端末は対応していません',
+      template: {
+        type: 'buttons',
+        thumbnailImageUrl: image,
+        title: title,
+        text: text,
+        actions: actions
+      }
     })
   end
 
