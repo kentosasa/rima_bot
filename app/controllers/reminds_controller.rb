@@ -22,6 +22,7 @@ class RemindsController < ApplicationController
 
   def update
     @remind.datetime = combine_datetime
+    @remind.ad = remind_at(@remind.datetime)
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
       redirect_to remind_path(@remind)
@@ -33,6 +34,11 @@ class RemindsController < ApplicationController
   def destroy; end
 
   private
+
+  def remind_at(datetime)
+    before = params[:before].to_i
+    datetime - Rational(before, 24)
+  end
 
   def set_remind
     @remind = Remind.find(params[:id])

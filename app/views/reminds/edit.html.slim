@@ -29,10 +29,16 @@ h3.title.is-3.has-text-centered リマインド編集
 
   label.label.required = f.label :date, 'イベント日時'
   .control.is-horizontal
-    p.control.is-expanded
-      = f.text_field :date, class: 'input date-input', placeholder: '日付', pattern: '\d{4}/\d{2}/\d{2}', value: @date, required: true
-    p.control.is-expanded
-      = f.text_field :time, class: 'input time-input', placeholder: '時間', pattern: '\d{2}:\d{2}', value: @time, require: true
+    .control.is-grouped
+      p.control.is-expanded
+        = f.text_field :date, class: 'input date-input', placeholder: '日付', pattern: '\d{4}/\d{2}/\d{2}', value: @date, required: true
+      p.control.is-expanded
+        = f.text_field :time, class: 'input time-input', placeholder: '時間', pattern: '\d{2}:\d{2}', value: @time, require: true
+
+  label.label.required = f.label :before, '通知時間'
+  p.control
+    span.select.is-fullwidth
+      = f.select :before, {'10分前': 10, '20分前': 20, '30分前': 30, '1時間前': 60, '2時間前': 120}, {}
 
   label.label.required = f.label :scale, '人数'
   p.control
