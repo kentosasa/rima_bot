@@ -79,6 +79,10 @@ class LineClient
       remind = Remind.find(q[1])
       remind.activate!
       reply_text("「#{remind.name}」のイベントを作成しました")
+    when 'snooze'
+      remind = Remind.find(q[1])
+      remind.snooze!
+      reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
     end
   end
 
@@ -87,11 +91,11 @@ class LineClient
     if datetime.present?
       group = Group.find_by_event(event)
       date_ja = datetime.strftime("%m月%d日%H時%M分")
-      remind_at = datetime - Rational(1, 24)
+      remind_at = datetime.ago(1.hour)
       remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}のイベント", datetime: datetime, at: remind_at)
       reply_templete(remind.line_new_buttons_template)
     else
-      # reply_templete(Remind.last.line_new_carousel_template)
+      reply_templete(Remind.last.line_new_carousel_template)
     end
   end
 

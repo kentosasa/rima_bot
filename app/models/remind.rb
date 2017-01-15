@@ -63,8 +63,8 @@ class Remind < ApplicationRecord
               },
               {
                   "type": "postback",
-                  "label": "1時間後に再通知",
-                  "data": "action=buy&itemid=111"
+                  "label": "30分後に再通知",
+                  "data": "snooze,#{self.id}"
               }
             ]
           },
@@ -92,6 +92,12 @@ class Remind < ApplicationRecord
 
   def activate!
     self.activated = true
+    self.save
+  end
+
+  def snooze!
+    self.at = self.at.since(30.minute)
+    self.reminded = false
     self.save
   end
 end
