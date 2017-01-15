@@ -75,14 +75,11 @@ class LineClient
   def receive_postback(event)
     q = event["postback"]["data"].split(",")
     case q[0]
-    when 'edit'
+    when 'activate'
       remind = Remind.find(q[1])
       remind.activate!
-      send_text("「#{remind.name}」のイベントを作成しました")
+      reply_text("「#{remind.name}」のイベントを作成しました")
     end
-  end
-
-  def remind_activate
   end
 
   def receive_text(event)
@@ -91,8 +88,10 @@ class LineClient
       group = Group.find_by_event(event)
       date_ja = datetime.strftime("%m月%d日%H時%M分")
       remind_at = datetime - Rational(1, 24)
-      remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}の予定", datetime: datetime, at: remind_at)
-      send_templete_button(remind.name, remind.body, remind.new_actions)
+      remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}のイベント", datetime: datetime, at: remind_at)
+      reply_templete(remind.line_new_buttons_template)
+    else
+      # reply_templete(Remind.last.line_new_carousel_template)
     end
   end
 
@@ -141,24 +140,14 @@ class LineClient
     datte.parse_date(text)
   end
 
-  def send_text(text)
+  def reply_text(text)
     @client.reply_message(@event['replyToken'], {
       type: 'text',
       text: text
     })
   end
 
-  def send_templete_button(title, body, actions)
-    @client.reply_message(@event['replyToken'], {
-      "type": "template",
-      "altText": "ご使用の端末は対応していません",
-      "template": {
-          "type": "buttons",
-          "thumbnailImageUrl": "https://www.google.co.jp/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-          "title": title,
-          "text": body,
-          "actions": actions
-      }
-    })
+  def reply_templete(template)
+    @client.reply_message(@event['replyToken'], template)
   end
 end
