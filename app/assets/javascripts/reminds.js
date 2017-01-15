@@ -12,17 +12,20 @@ $(document).on('turbolinks:load', function() {
   })
 
   // GMap 生成
-  var gmap = new GMap('map', { lat: gon.lat, lng: gon.lng });
-  gmap.init();
-  gmap.setMarker({ lat: gon.lat, lng: gon.lng });
-  gmap.setAutoComplete({
-    address: 'remind_place',
-    place: 'remind_address',
-    formatted_address: 'formatted_address',
-    lat: 'remind_latitude',
-    lng: 'remind_longitude'
-  });
-
+  if(gon.lat && gon.lng) {
+    var gmap = new GMap('map', { lat: gon.lat, lng: gon.lng });
+    gmap.init();
+    gmap.setMarker({ lat: gon.lat, lng: gon.lng });
+  }
+  if(gon.autoComplete) {
+    gmap.setAutoComplete({
+      address: 'remind_place',
+      place: 'remind_address',
+      formatted_address: 'formatted_address',
+      lat: 'remind_latitude',
+      lng: 'remind_longitude'
+    });
+  }
 
   // タブ切り替え
   $('.md-view-tab li').on('click', function (e) {
