@@ -12,7 +12,7 @@ class LineClient
   def initialize(client, event)
     @client = client
     @event = event
-    @message_target = find_or_create_message_target(@event)
+    @group = Group.find_or_create(event)
   end
 
   def reply
@@ -28,55 +28,26 @@ class LineClient
     when Line::Bot::Event::Leave
       receive_leave
     when Line::Bot::Event::Postback
-      receive_postback(@event)
+      receive_postback
     end
   end
 
   private
 
-  def find_or_create_message_target(event)
-    case event['type']
-    when 'user'
-      #@user = User.find_or_create_by(mid: @to_mid)
-      event['userId']
-    when 'group'
-      event['groupId']
-    when 'room'
-      event['roomId']
-    end
-  end
-
   def receive_follow
-    @client.push_message(
-      @message_target,
-      {
-        type: 'text',
-        text: "友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをする
-        BOTです。是非、グループに参加してみてください！よろしくお願いします:)"
-      }
-    )
+    push_message("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。是非、グループに参加してみてください！よろしくお願いします:)")
   end
 
-  def receive_unfollow
-  end
+  def receive_unfollow; end
 
   def receive_join
-    @client.push_message(
-      @message_target,
-      {
-        type: 'text',
-        text: "友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをする
-        BOTです。よろしくお願いします:)"
-        }
-      }
-    )
+    push_message("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。よろしくお願いします:)")
   end
 
-  def receive_leave
-  end
+  def receive_leave; end
 
-  def receive_postback(event)
-    q = event["postback"]["data"].split(",")
+  def receive_postback
+    q = @event["postback"]["data"].split(",")
     case q[0]
     when 'activate'
       remind = Remind.find(q[1])
@@ -92,35 +63,29 @@ class LineClient
   def receive_text(event)
     datetime = contain_date(event['message']['text'])
     if datetime.present?
-      group = Group.find_by_event(event)
       date_ja = datetime.strftime("%m月%d日%H時%M分")
+      name = datetime.strftime("%m/%dのイベント")
       remind_at = datetime.ago(1.hour)
-      remind = Remind.create(group_id: group.id, name: date_ja, body: "#{date_ja}のイベント", datetime: datetime, at: remind_at)
+
+      remind = Remind.create(group_id, @group.id, name: name, datetime: datetime, at: remind_at)
+
       reply_templete(remind.line_new_buttons_template)
     else
-      reply_templete(Remind.last.line_new_carousel_template)
+      reply_text('hoge')
+      #reply_templete(Remind.last.line_new_carousel_template)
     end
   end
 
   def echo_image(event)
-    @client.reply_message(event['replyToken'], {
-      type: 'text',
-      text: 'イメージだよ'
-    })
+    reply_text('イメージだよ')
   end
 
   def echo_video(event)
-    @client.reply_message(event['replyToken'], {
-      type: 'text',
-      text: '動画だよ'
-    })
+    reply_text('動画だよ')
   end
 
-  def echo_audio(message, event)
-    @client.reply_message(event['replyToken'], {
-      type: 'text',
-      text: '音声だよ'
-    })
+  def echo_audio(event)
+    reply_text('音声だよ')
   end
 
   def echo_location(event)
@@ -138,6 +103,13 @@ class LineClient
       type: 'sticker',
       package_id: event['message']['packageId'],
       sticker_id: event['message']['stickerId']
+    })
+  end
+
+  def push_message(text)
+    @client.push_message(@group.source_id, {
+      type: 'text',
+      text: text
     })
   end
 

@@ -15,7 +15,7 @@ class Group < ApplicationRecord
   has_many :events
   has_many :schedules
 
-  def self.find_by_event(event)
+  def self.find_or_create(event)
     case event['source']['type']
     when 'user'
       return Group.find_or_create_by(source_id: event['source']['userId'], user_type: 0)

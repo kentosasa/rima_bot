@@ -18,7 +18,9 @@ class Weather < ApplicationRecord
   def find_or_create_image
     return self.image if self.image.present?
     place = self.place || 'Tokyo'
-    res=JSON.parse(open(OPEN_WEATHER_BASE_URL + "q=#{place},jp&cnt=16").read)
+    url = URI.encode(OPEN_WEATHER_BASE_URL + "q=#{place},jp&cnt=16")
+    res = JSON.parse(open(url).read)
+
     res["list"].each do |item|
       next unless Date.parse(item["dt_txt"]) == self.date
       self.temp = (item["main"]["temp"]-273).to_i
