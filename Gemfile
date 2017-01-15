@@ -25,6 +25,7 @@ gem 'jquery-turbolinks'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bulma-rails', "~> 0.3.0"
+gem "font-awesome-rails"
 gem 'gon'
 
 gem 'meta-tags'
