@@ -25,7 +25,7 @@ class Remind < ApplicationRecord
   attr_accessor :date, :time
 
   def parse_datetime
-    [datetime.to_s(:date), datetime.to_s(:time)]
+    [self.datetime.to_s(:date), self.datetime.to_s(:time)]
   end
 
   def line_new_buttons_template

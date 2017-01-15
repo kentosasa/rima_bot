@@ -9,6 +9,8 @@ class RemindsController < ApplicationController
   end
 
   def show
+    #gon.lat = @remind.latitude
+    #gon.lng = @remind.longitude
   end
 
   def create
@@ -31,6 +33,7 @@ class RemindsController < ApplicationController
   def destroy; end
 
   private
+
   def set_remind
     @remind = Remind.find(params[:id])
   end
