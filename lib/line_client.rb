@@ -82,7 +82,6 @@ class LineClient
         'uri': "#{HOST}/reminds/#{remind.id}/edit"
       }]
       reply_buttons(name, event['message']['text'], actions)
-      #reply_buttons('https://s.w-x.co/240x180_twc_default.png', name, event['message']['text'], actions)
     else
       reply_text('hoge')
       #reply_templete(Remind.last.line_new_carousel_template)
@@ -140,34 +139,6 @@ class LineClient
   end
 
   def reply_buttons(title, text, actions)
-
-    {
-
-      "template": {
-          "type": "buttons",
-          "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
-          "title": "Menu",
-          "text": "Please select",
-          "actions": [
-              {
-                "type": "postback",
-                "label": "Buy",
-                "data": "action=buy&itemid=123"
-              },
-              {
-                "type": "postback",
-                "label": "Add to cart",
-                "data": "action=add&itemid=123"
-              },
-              {
-                "type": "uri",
-                "label": "View detail",
-                "uri": "http://example.com/page/123"
-              }
-          ]
-      }
-    }
-
     @client.reply_message(@event['replyToken'], {
       'type': 'template',
       'altText': 'ご使用の端末は対応していません',

@@ -14,3 +14,17 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+$(document).on('turbolinks:load', function () {
+  /* notificationの閉じるをクリックしたら閉じる */
+  $('.notification .delete').on('click', function () {
+    $(this).parent().fadeOut();
+  });
+
+  /* notificationは何もしなくても5秒後に消滅する */
+  setTimeout(function () {
+    $('.notification').each(function () {
+      if (!$(this).attr('data-flash')) $(this).fadeOut('normal');
+    });
+  }, 5000);
+})
