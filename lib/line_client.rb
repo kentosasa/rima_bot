@@ -47,14 +47,15 @@ class LineClient
   def receive_leave; end
 
   def receive_postback
-    q = @event["postback"]["data"].split(",")
-    case q[0]
+    query = Rack::Utils.parse_nested_query(@event["postback"]["data"])
+    remind_id = query['remind_id']
+    case query['action']
     when 'activate'
-      remind = Remind.find(q[1])
+      remind = Remind.find(remind_id)
       remind.activate!
       reply_text("「#{remind.name}」のイベントを作成しました")
     when 'snooze'
-      remind = Remind.find(q[1])
+      remind = Remind.find(remind_id)
       remind.snooze!
       reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
     end
@@ -69,19 +70,19 @@ class LineClient
 
       remind = Remind.create(group_id: @group.id, name: name, datetime: datetime, at: remind_at)
 
-      reply_templete(remind.line_new_buttons_template)
+      #reply_templete(remind.line_new_buttons_template)
 
-      # actions = [{
-      #   type: 'postback',
-      #   label: "#{datetime.to_s(:without_year)}で設定",
-      #   data: "activate,#{remind.id}"
-      # }, {
-      #   type: 'uri',
-      #   label: '編集して作成',
-      #   url: "#{HOST}/reminds/#{remind.id}/edit"
-      # }]
-      # reply_buttons('https://s.w-x.co/240x180_twc_default.png', name,
-      # event['message']['text'], actions)
+      actions = [{
+        'type': 'postback',
+        'label': "#{datetime.to_s(:without_year)}で設定",
+        'data': "action=activate&remind_id=#{remind.id}"
+      }, {
+        'type': 'uri',
+        'label': '編集して作成',
+        'uri': "#{HOST}/reminds/#{remind.id}/edit"
+      }]
+      reply_buttons(name, event['message']['text'], actions)
+      #reply_buttons('https://s.w-x.co/240x180_twc_default.png', name, event['message']['text'], actions)
     else
       reply_text('hoge')
       #reply_templete(Remind.last.line_new_carousel_template)
@@ -138,16 +139,44 @@ class LineClient
     })
   end
 
-  def reply_buttons(image, title, text, actions)
+  def reply_buttons(title, text, actions)
+
+    {
+
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
+          "title": "Menu",
+          "text": "Please select",
+          "actions": [
+              {
+                "type": "postback",
+                "label": "Buy",
+                "data": "action=buy&itemid=123"
+              },
+              {
+                "type": "postback",
+                "label": "Add to cart",
+                "data": "action=add&itemid=123"
+              },
+              {
+                "type": "uri",
+                "label": "View detail",
+                "uri": "http://example.com/page/123"
+              }
+          ]
+      }
+    }
+
     @client.reply_message(@event['replyToken'], {
-      type: 'template',
-      altText: 'ご使用の端末は対応していません',
-      template: {
-        type: 'buttons',
-        thumbnailImageUrl: image,
-        title: title,
-        text: text,
-        actions: actions
+      'type': 'template',
+      'altText': 'ご使用の端末は対応していません',
+      'template': {
+        'type': 'buttons',
+        #thumbnailImageUrl: image,
+        'title': title,
+        'text': text,
+        'actions': actions
       }
     })
   end
