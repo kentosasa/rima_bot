@@ -28,30 +28,18 @@ class Remind < ApplicationRecord
     [self.datetime.to_s(:date), self.datetime.to_s(:time)]
   end
 
-  def line_new_buttons_template
-    {
-      "type": "template",
-      "altText": "ご使用の端末は対応していません",
-      "template": {
-        "type": "buttons",
-        "thumbnailImageUrl": "#{self.weather_img}",
-        "title": self.name,
-        "text": self.body,
-        "actions": [
-          {
-            "type": "postback",
-            "label": "イベント作成",
-            "data": "activate,#{self.id}"
-          },
-          {
-            "type": "uri",
-            "label": "編集して作成",
-            "uri": "http://example.com/page/123"
-          }
-        ]
-      }
-    }
+  def create_actions
+    [{
+      type: 'postback',
+      label: datetime.to_s(:without_year) + 'で設定',
+      data: "action=activate&remind_id=#{id}"
+    }, {
+      type: 'uri',
+      label: '編集して作成',
+      uri: "#{HOST}/reminds/#{id}/edit"
+    }]
   end
+
 
   def line_new_carousel_template
     {

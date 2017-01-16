@@ -62,30 +62,26 @@ class LineClient
   end
 
   def receive_text(event)
-    datetime = contain_date(event['message']['text'])
-    if datetime.present?
-      date_ja = datetime.strftime("%m月%d日%H時%M分")
-      name = datetime.strftime("%m/%dのイベント")
+    body = event['message']['text']
+    datte = Datte::Parser.new
+    datte.parse_date(body) do |datetime|
       remind_at = datetime.ago(1.hour)
+      name = datetime.strftime("%m/%dのイベント")
 
-      remind = Remind.create(group_id: @group.id, name: name, datetime: datetime, at: remind_at)
+      remind = @group.reminds.new(
+        name: name,
+        datetime: datetime,
+        at: remind_at
+      )
 
-      #reply_templete(remind.line_new_buttons_template)
-
-      actions = [{
-        'type': 'postback',
-        'label': "#{datetime.to_s(:without_year)}で設定",
-        'data': "action=activate&remind_id=#{remind.id}"
-      }, {
-        'type': 'uri',
-        'label': '編集して作成',
-        'uri': "#{HOST}/reminds/#{remind.id}/edit"
-      }]
-      reply_buttons(name, event['message']['text'], actions)
-    else
-      reply_text('hoge')
-      #reply_templete(Remind.last.line_new_carousel_template)
+      if remind.save
+        reply_buttons(name, body, remind.create_actions)
+      else
+        reply_text('保存失敗')
+      end
+      return
     end
+    reply_text('日付を含みませんでした。')
   end
 
   def echo_image(event)
