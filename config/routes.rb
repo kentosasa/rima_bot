@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   post '/callback', to: 'webhook#callback'
 
-  resources :reminds, except: [:index] do
+  resources :reminds, except: [:index, :new] do
     member do
       post :activate
       post :inactivate
@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   resources :groups, only: [:show, :edit, :update] do
     member do
-      get 'reminds/new', to: 'reminds#new'
+      get '/reminds/new', to: 'reminds#new'
     end
   end
 end

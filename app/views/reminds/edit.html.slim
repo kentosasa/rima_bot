@@ -1,5 +1,18 @@
 h3.title.is-3.has-text-centered リマインド編集
 
+.tabs.is-boxed
+  ul
+    li.event-remind.is-active(data-type='event')
+      a
+        span.icon.is-small
+          i.fa.fa-bell-o
+        | イベント
+    li.schedule-remind(data-type='schedule')
+      a
+        span.icon.is-small
+          i.fa.fa-calendar-check-o
+        | 日程調整
+
 = form_for @remind do |f|
   - if @remind.errors.any?
     article.message.is-danger

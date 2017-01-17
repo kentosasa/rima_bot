@@ -39,6 +39,7 @@ class Remind < ApplicationRecord
   end
 
   def before
+    return 60 if datetime.nil?
     min = (datetime - at).to_i / 60
     if min < 60
       "#{min}分"
