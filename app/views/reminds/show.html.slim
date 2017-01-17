@@ -63,11 +63,12 @@ table.table
           - @candidates.each do |candidate|
             th = candidate.title
       tbody
-        - 3.times do |i|
+        - @users.each do |user|
+          - candidates = user.candidate_user_relations.order(:candidate_id)
           tr
-            th = 'ひで'
-            - @candidates.count.times do |j|
-              td = ['○', '△', 'x'][j % 3]
+            th = user.name || '名無し'
+            - candidates.each do |cd|
+              td.attendance class="#{cd.attendance}"
   p.has-text-centered(style='margin: 10px auto')
     = link_to answer_schedule_path(@remind), class: 'button is-large' do
       span.icon

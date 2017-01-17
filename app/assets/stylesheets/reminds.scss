@@ -61,6 +61,22 @@
 
   .table {
     width: 100%;
+
+    .attendance {
+      background-color: #fff;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      &.bad {
+        background-image: image-url('answers/bad-checked.png');
+      }
+      &.soso {
+        background-image: image-url('answers/soso-checked.png');
+      }
+      &.good {
+        background-image: image-url('answers/good-checked.png');
+      }
+    }
   }
 }
 
