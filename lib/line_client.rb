@@ -52,10 +52,7 @@ class LineClient
     case query['action']
     when 'activate' then activation(id)
     when 'inactivate' then inactivation(id)
-    when 'snooze'
-      remind = Remind.find(id)
-      remind.snooze!
-      reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
+    when 'snooze' then snooze(id)
     end
   end
 
@@ -63,13 +60,14 @@ class LineClient
   def activation(id)
     remind = Remind.find(id)
     if remind.activate!
-      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}にリマインドを設定しました。"
+      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}前にリマインドを設定しました。"
       reply_confirm(text, remind.active_actions)
     else
       reply_text('通知設定に失敗')
     end
   end
 
+  # リマインド(id)を無効化
   def inactivation(id)
     remind = Remind.find(id)
     if remind.inactivate!
@@ -77,6 +75,16 @@ class LineClient
       reply_confirm(text, remind.inactiva_actions)
     else
       reply_text('通知取り消しに失敗')
+    end
+  end
+
+  # リマインドを10分後に再通知
+  def snooze(id)
+    remind = Remind.find(1)
+    if remind.snooze!(10)
+      reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
+    else
+      reply_text('再通知の設定に失敗')
     end
   end
 
@@ -148,7 +156,7 @@ class LineClient
   end
 
   def reply_confirm(text, actions)
-    @client.reply_message(@event['replyToken'], {
+    @client.reply_message(@event['re plyToken'], {
       type: 'template',
       altText: text,
       template: {

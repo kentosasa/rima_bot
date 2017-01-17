@@ -21,8 +21,16 @@ class Remind < ApplicationRecord
   HOST = ENV['WEBHOOK_URL'].freeze
 
   belongs_to :group
-  scope :active, -> { where(activated: true) }
-  scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
+  scope :active, -> { where(activated: true) }  # 通知有効化されているリマインド
+  scope :pending, -> { where(reminded: false) } # 未通知のリマインド
+  scope :before_and_after, -> (min) {           # 現在時刻から前後min分のリマインド
+    return if min.blank?
+    now = DateTime.now
+    before = now - Rational(min, 24 * 60)
+    after = now + Rational(min, 24 * 60)
+    where(at: before..after).order(at: :asc)
+  }
+  #scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
 
   attr_accessor :date, :time, :before
 
@@ -33,14 +41,14 @@ class Remind < ApplicationRecord
   def before
     min = (datetime - at).to_i / 60
     if min < 60
-      "#{min}分前"
+      "#{min}分"
     elsif min < 60 * 24
       hour = min / 60
-      "#{hour}時間前"
+      "#{hour}時間"
     else
       day = min / (60 * 24)
       hour = min - (60 * 24 * day)
-      "#{day}日前"
+      "#{day}日"
     end
   end
 
@@ -74,7 +82,7 @@ class Remind < ApplicationRecord
   def inactiva_actions
     [{
       type: 'uri',
-      label: '詳細',
+      label: '詳細を見る',
       uri: "#{HOST}/reminds/#{id}"
     }, {
       type: 'uri',
@@ -130,12 +138,28 @@ class Remind < ApplicationRecord
   end
 
   def line_notify(client)
-    if client.push_message(self.group.source_id, self.line_new_carousel_template)
-      self.reminded = true
-      self.save
-    else
-      return nil
+    response = client.push_message(self.group.source_id, {
+      type: 'template',
+      altText: "#{self.before}後に[#{self.name}]があります。",
+      template: {
+        type: 'buttons',
+        title: "#{self.before}後に[#{self.name}]",
+        text: self.body || '',
+        actions: [{
+          type: 'uri',
+          label: '詳細を見る',
+          uri: "#{HOST}/reminds/#{id}"
+        }, {
+          type: 'postback',
+          label: '10分後に再通知',
+          data: "action=snooze&remind_id=#{id}"
+        }]
+      }
+    })
+    if response.is_a? Net::HTTPSuccess
+      return self.reminded!
     end
+    false
   end
 
   def event?
@@ -156,8 +180,13 @@ class Remind < ApplicationRecord
     self.save
   end
 
-  def snooze!
-    self.at = self.at.since(30.minute)
+  def reminded!
+    self.reminded = true
+    self.save
+  end
+
+  def snooze!(min = 30)
+    self.at = self.at.since(min.minute)
     self.reminded = false
     self.save
   end
