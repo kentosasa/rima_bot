@@ -144,18 +144,18 @@ class Remind < ApplicationRecord
       template: {
         type: 'buttons',
         title: "#{self.before}後に[#{self.name}]",
-        text: self.body,
+        text: self.body || '',
         actions: [{
           type: 'uri',
           label: '詳細を見る',
           uri: "#{HOST}/reminds/#{id}"
         }, {
           type: 'postback',
-          label: '5分後に再通知',
+          label: '10分後に再通知',
           data: "action=snooze&remind_id=#{id}"
         }]
-      }})
-    #response = client.push_message(self.group.source_id, line_new_carousel_template)
+      }
+    })
     if response.is_a? Net::HTTPSuccess
       return self.reminded!
     end
@@ -181,9 +181,8 @@ class Remind < ApplicationRecord
   end
 
   def reminded!
-    #self.reminded = true
-    #self.save
-    true
+    self.reminded = true
+    self.save
   end
 
   def snooze!(min = 30)
