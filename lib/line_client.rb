@@ -48,16 +48,35 @@ class LineClient
 
   def receive_postback
     query = Rack::Utils.parse_nested_query(@event["postback"]["data"])
-    remind_id = query['remind_id']
+    id = query['remind_id']
     case query['action']
-    when 'activate'
-      remind = Remind.find(remind_id)
-      remind.activate!
-      reply_text("「#{remind.name}」のイベントを作成しました")
+    when 'activate' then activation(id)
+    when 'inactivate' then inactivation(id)
     when 'snooze'
-      remind = Remind.find(remind_id)
+      remind = Remind.find(id)
       remind.snooze!
       reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
+    end
+  end
+
+  # リマインド(id)を有効化
+  def activation(id)
+    remind = Remind.find(id)
+    if remind.activate!
+      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}にリマインドを設定しました。"
+      reply_confirm(text, remind.active_actions)
+    else
+      reply_text('通知設定に失敗')
+    end
+  end
+
+  def inactivation(id)
+    remind = Remind.find(id)
+    if remind.inactivate!
+      text = "[#{remind.name}]\nリマインド設定を取り消しました。"
+      reply_confirm(text, remind.inactiva_actions)
+    else
+      reply_text('通知取り消しに失敗')
     end
   end
 
@@ -121,16 +140,22 @@ class LineClient
     })
   end
 
-  # messaging methods
-  def contain_date(text)
-    datte = Datte::Parser.new()
-    datte.parse_date(text)
-  end
-
   def reply_text(text)
     @client.reply_message(@event['replyToken'], {
       type: 'text',
       text: text
+    })
+  end
+
+  def reply_confirm(text, actions)
+    @client.reply_message(@event['replyToken'], {
+      type: 'template',
+      altText: text,
+      template: {
+        type: 'confirm',
+        text: text,
+        actions: actions
+      }
     })
   end
 
