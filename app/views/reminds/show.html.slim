@@ -23,9 +23,10 @@ table.table
     = hidden_field_tag 'longitude', '', id: 'remind_longitude'
     = hidden_field_tag 'place', '', id: 'remind_place'
 
-    tr
-      td(colspan='2')
-        span#formatted_address = @remind.address
+    - if @remind.address.present?
+      tr
+        td(colspan='2')
+          span#formatted_address = @remind.address
     tr
       th イベント日時
       td = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")

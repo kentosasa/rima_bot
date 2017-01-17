@@ -21,8 +21,16 @@ class Remind < ApplicationRecord
   HOST = ENV['WEBHOOK_URL'].freeze
 
   belongs_to :group
-  scope :active, -> { where(activated: true) }
-  scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
+  scope :active, -> { where(activated: true) }  # 通知有効化されているリマインド
+  scope :pending, -> { where(reminded: false) } # 未通知のリマインド
+  scope :before_and_after, -> (min) {           # 現在時刻から前後min分のリマインド
+    return if min.blank?
+    now = DateTime.now
+    before = now - Rational(min, 24 * 60)
+    after = now + Rational(min, 24 * 60)
+    where(at: before..after).order(at: :asc)
+  }
+  #scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
 
   attr_accessor :date, :time, :before
 
@@ -130,12 +138,11 @@ class Remind < ApplicationRecord
   end
 
   def line_notify(client)
-    if client.push_message(self.group.source_id, self.line_new_carousel_template)
-      self.reminded = true
-      self.save
-    else
-      return nil
+    response = client.push_message(self.group.source_id, line_new_carousel_template)
+    if response.is_a? Net::HTTPSuccess
+      return self.reminded!
     end
+    false
   end
 
   def event?
@@ -154,6 +161,12 @@ class Remind < ApplicationRecord
   def inactivate!
     self.activated = false
     self.save
+  end
+
+  def reminded!
+    #self.reminded = true
+    #self.save
+    true
   end
 
   def snooze!
