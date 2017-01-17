@@ -1,5 +1,5 @@
 class RemindsController < ApplicationController
-  before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate]
+  before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate, :inactivate]
   before_action :set_gmap, only: [:show, :edit, :update]
   before_action :set_before, only: [:show, :edit, :activate]
 
@@ -12,7 +12,11 @@ class RemindsController < ApplicationController
   end
 
   def activate
-    @remind.activate!
+    @result = @remind.activate!
+  end
+
+  def inactivate
+    @result = @remind.inactivate!
   end
 
   def create

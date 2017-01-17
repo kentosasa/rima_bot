@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   resources :reminds, except: [:index] do
     member do
-      get :activate
+      post :activate
+      post :inactivate
     end
   end
 
