@@ -52,6 +52,23 @@ table.table
           span.icon.is-small
             i.fa.fa-link
           | 登録
+
+- if @remind.schedule?
+  h4.subtitle.is-4 候補
+  .candidates-field
+    table.table.is-striped
+      thead
+        tr
+          th 参加者
+          - @candidates.each do |candidate|
+            th = candidate.title
+      tbody
+        - 3.times do |i|
+          tr
+            th = 'ひで'
+            - @candidates.count.times do |j|
+              td = ['○', '△', 'x'][j % 3]
+
 p
   = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do
     span.icon.is-small(style='margin-right:5px')

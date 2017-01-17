@@ -41,6 +41,28 @@
   }
 }
 
+.candidates-field {
+  overflow: auto;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #bcbcbc;
+  }
+
+  .table {
+    width: 100%;
+  }
+}
 
 .xdsoft_inline {
   width: 100%;
