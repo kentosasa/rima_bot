@@ -6,6 +6,8 @@ class RemindsController < ApplicationController
   def new
     @remind = Remind.new
     gon.autoComplete = true
+    gon.lat = @remind.latitude || 35.6586488
+    gon.lng = @remind.longitude || 139.6966408
   end
 
   def show

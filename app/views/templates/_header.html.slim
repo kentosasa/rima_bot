@@ -13,6 +13,10 @@ nav.nav
         span.icon
           i.fa.fa-calendar-check-o
         |  リマインド一覧
+      = link_to reminds_new_group_path(group), class: 'nav-item' do
+        span.icon
+          i.fa.fa-plus
+        | リマインドを作成
       = link_to edit_group_path(group), class: 'nav-item' do
         span.icon
           i.fa.fa-cog
