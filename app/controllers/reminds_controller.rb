@@ -4,10 +4,24 @@ class RemindsController < ApplicationController
   before_action :set_before, only: [:show, :edit, :activate]
 
   def new
-    @remind = Remind.new
+    @remind = @group.reminds.new
     gon.autoComplete = true
     gon.lat = @remind.latitude || 35.6586488
     gon.lng = @remind.longitude || 139.6966408
+    gon.remindType = @remind.type || 'Event'
+  end
+
+  def create
+    @remind = @group.reminds.new(remind_params)
+    @remind.type = params.require(:remind).permit(:remind_type)[:remind_type]
+    @remind.datetime = combine_datetime
+    @remind.at = remind_at(@remind.datetime)
+    if @remind.save
+      flash[:success] = 'リマインドを作成しました。'
+      redirect_to group_path(@group)
+    else
+      render 'new'
+    end
   end
 
   def show
@@ -19,10 +33,6 @@ class RemindsController < ApplicationController
 
   def inactivate
     @remind.inactivate!
-  end
-
-  def create
-    gon.autoComplete = true
   end
 
   def edit

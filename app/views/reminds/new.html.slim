@@ -1,6 +1,7 @@
 h3.title.is-3.has-text-centered リマインド作成
 
-= form_for @remind do |f|
+= form_for @remind, url: reminds_group_path(@group), method: :post do |f|
+
   - if @remind.errors.any?
     article.message.is-danger
       .message-header
@@ -36,13 +37,13 @@ h3.title.is-3.has-text-centered リマインド作成
 
     label.label = f.label :place, '場所'
     p.control
-      = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
+      = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加', id: 'remind_place'
 
     .map-container
       #map
-      = f.hidden_field :address
-      = f.hidden_field :latitude
-      = f.hidden_field :longitude
+      = f.hidden_field :address, id: 'remind_address'
+      = f.hidden_field :latitude, id: 'remind_latitude'
+      = f.hidden_field :longitude, id: 'remind_longitude'
     p.address
       span#formatted_address = @remind.address
 

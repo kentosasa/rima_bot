@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :groups, only: [:show, :edit, :update] do
     member do
       get '/reminds/new', to: 'reminds#new'
+      post '/reminds/', to: 'reminds#create'
     end
   end
 end
