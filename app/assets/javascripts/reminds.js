@@ -12,8 +12,23 @@ $(document).on('turbolinks:load', function() {
   })
 
   $('#candidate-datepicker').datetimepicker({
-    inline: true
-
+    timepicker: false,
+    inline: true,
+    lang: 'ja',
+    minDate: 0,
+    startDate: new Date(),
+    onSelectDate: function(current, _) {
+      var date = new Date(current)
+      var month = date.getMonth() + 1
+      var day = date.getDate()
+      var dates = ["日","月","火","水","木","金","土"];
+      var week = dates[date.getDay()]
+      var elem = '#' + gon.remindType.toLowerCase() + '_candidate_body';
+      var text  = $(elem).val();
+      if(text.length !== 0) text += '\n'
+      text += month + '/' + day + '(' + week + ') 19:00 ~'
+      $(elem).val(text)
+    }
   })
 
   // GMap 生成

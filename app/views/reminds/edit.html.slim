@@ -68,8 +68,7 @@ h3.title.is-3.has-text-centered リマインド編集
       #candidate-datepicker
       label.label.required = f.label :candidate_body, '日付候補'
       p.control
-        = f.text_field :candidate_body, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
-
+        = f.text_area :candidate_body, rows: 4, class: 'textarea', placeholder: 'カレンダーをクリックすると日時が入力されます。また、内容は直接編集できます。'
 
     p.has-text-right(style='margin-top: 10px;')
       = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
