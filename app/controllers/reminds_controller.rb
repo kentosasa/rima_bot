@@ -98,7 +98,7 @@ class RemindsController < ApplicationController
 
   # 中身を改行でパースして保存
   def parse_candidates(schedule)
-    body = params.require(:schedule).permit(:candidate_body)
+    body = params.require(type.downcase.to_sym).permit(:candidate_body)
     body[:candidate_body].lines.each do |line|
       title = line.chomp
       next if title.size.zero?
