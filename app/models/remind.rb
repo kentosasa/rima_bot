@@ -41,14 +41,14 @@ class Remind < ApplicationRecord
   def before
     min = (datetime - at).to_i / 60
     if min < 60
-      "#{min}分前"
+      "#{min}分"
     elsif min < 60 * 24
       hour = min / 60
-      "#{hour}時間前"
+      "#{hour}時間"
     else
       day = min / (60 * 24)
       hour = min - (60 * 24 * day)
-      "#{day}日前"
+      "#{day}日"
     end
   end
 
@@ -82,7 +82,7 @@ class Remind < ApplicationRecord
   def inactiva_actions
     [{
       type: 'uri',
-      label: '詳細',
+      label: '詳細を見る',
       uri: "#{HOST}/reminds/#{id}"
     }, {
       type: 'uri',
@@ -138,7 +138,24 @@ class Remind < ApplicationRecord
   end
 
   def line_notify(client)
-    response = client.push_message(self.group.source_id, line_new_carousel_template)
+    response = client.push_message(self.group.source_id, {
+      type: 'template',
+      altText: "#{self.before}後に[#{self.name}]があります。",
+      template: {
+        type: 'buttons',
+        title: "#{self.before}後に[#{self.name}]",
+        text: self.body,
+        actions: [{
+          type: 'uri',
+          label: '詳細を見る',
+          uri: "#{HOST}/reminds/#{id}"
+        }, {
+          type: 'postback',
+          label: '5分後に再通知',
+          data: "action=snooze&remind_id=#{id}"
+        }]
+      }})
+    #response = client.push_message(self.group.source_id, line_new_carousel_template)
     if response.is_a? Net::HTTPSuccess
       return self.reminded!
     end
@@ -169,8 +186,8 @@ class Remind < ApplicationRecord
     true
   end
 
-  def snooze!
-    self.at = self.at.since(30.minute)
+  def snooze!(min = 30)
+    self.at = self.at.since(min.minute)
     self.reminded = false
     self.save
   end
