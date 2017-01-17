@@ -62,7 +62,7 @@ class RemindsController < ApplicationController
   end
 
   def set_remind
-    @remind = Remind.find(params[:id])
+    @remind = remind_class.find(params[:id])
   end
 
   def combine_datetime
@@ -72,5 +72,19 @@ class RemindsController < ApplicationController
 
   def remind_params
     params.require(:remind).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
+  end
+
+  # Event or Schedule
+  def type
+    params[:type]
+  end
+
+  def remind_params
+    #params.require(type.underscoe.to_sym).permit(:name, :body)
+  end
+
+  def remind_class
+    return Remind if type.blank?
+    type.constantize
   end
 end
