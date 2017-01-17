@@ -45,6 +45,13 @@ table.table
       tr
         th 人数
         td = @remind.scale
+    tr
+      th Googleカレンダー
+      td
+        = link_to google_cal_link(@remind), target: '_blank' do
+          span.icon
+            i.fa.fa-link
+          | 登録
 p
   = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do
     span.icon.is-small(style='margin-right:5px')
