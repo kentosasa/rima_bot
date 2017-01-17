@@ -6,14 +6,14 @@ class RemindsController < ApplicationController
   def new
     @remind = @group.reminds.new
     gon.autoComplete = true
-    gon.lat = @remind.latitude || 35.6586488
-    gon.lng = @remind.longitude || 139.6966408
-    gon.remindType = @remind.type || 'Event'
+    gon.lat = 35.6586488
+    gon.lng = 139.6966408
+    gon.remindType = 'Event'
   end
 
   def create
     @remind = @group.reminds.new(remind_params)
-    @remind.type = params.require(:remind).permit(:remind_type)[:remind_type]
+    @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
     if @remind.save
@@ -24,16 +24,9 @@ class RemindsController < ApplicationController
     end
   end
 
-  def show
-  end
-
-  def activate
-    @remind.activate!
-  end
-
-  def inactivate
-    @remind.inactivate!
-  end
+  def show; end
+  def activate; @remind.activate! end
+  def inactivate; @remind.inactivate! end
 
   def edit
     @date, @time = @remind.parse_datetime
@@ -42,7 +35,7 @@ class RemindsController < ApplicationController
   end
 
   def update
-    @remind.type = params.require(:remind).permit(:remind_type)[:remind_type]
+    @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
     gon.autoComplete = true
@@ -65,7 +58,7 @@ class RemindsController < ApplicationController
   end
 
   def remind_at(datetime)
-    before = params.require(:remind).permit(:before)[:before].to_i
+    before = params.require(type.downcase.to_sym).permit(:before)[:before].to_i
     datetime - before * 60
   end
 
@@ -78,12 +71,8 @@ class RemindsController < ApplicationController
   end
 
   def combine_datetime
-    dt = params.require(:remind).permit(:date, :time)
+    dt = params.require(type.downcase.to_sym).permit(:date, :time)
     "#{dt[:date]} #{dt[:time]}"
-  end
-
-  def remind_params
-    params.require(:remind).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
   end
 
   # Event or Schedule
@@ -92,7 +81,7 @@ class RemindsController < ApplicationController
   end
 
   def remind_params
-    #params.require(type.underscoe.to_sym).permit(:name, :body)
+    params.require(type.downcase.to_sym).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
   end
 
   def remind_class

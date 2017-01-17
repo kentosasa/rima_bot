@@ -24,7 +24,7 @@ h3.title.is-3.has-text-centered リマインド編集
             | 日程調整
 
   .form-body
-    = f.hidden_field :remind_type
+    = f.hidden_field :remind_type, value: @remind.type || 'Event'
 
     label.label.required = f.label :name, 'タイトル'
     p.control

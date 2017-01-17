@@ -17,13 +17,14 @@ $(document).on('turbolinks:load', function() {
     gmap.init();
     gmap.setMarker({ lat: gon.lat, lng: gon.lng });
   }
-  if(gon.autoComplete === true) {
+  if(gon.autoComplete === true && gmap !== undefined && gon.remindType !== undefined) {
+    var type = gon.remindType.toLowerCase();
     gmap.setAutoComplete({
-      address: 'remind_place',
-      place: 'remind_address',
+      address: type + '_place',
+      place: type + '_address',
       formatted_address: 'formatted_address',
-      lat: 'remind_latitude',
-      lng: 'remind_longitude'
+      lat: type + '_latitude',
+      lng: type + '_longitude'
     });
   }
 
