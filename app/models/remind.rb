@@ -32,13 +32,14 @@ class Remind < ApplicationRecord
   }
   #scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
 
-  attr_accessor :date, :time, :before
+  attr_accessor :date, :time, :before, :remind_type
 
   def parse_datetime
     [self.datetime.to_s(:date), self.datetime.to_s(:time)]
   end
 
   def before
+    return 60 if datetime.nil?
     min = (datetime - at).to_i / 60
     if min < 60
       "#{min}分"

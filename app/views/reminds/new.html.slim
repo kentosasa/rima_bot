@@ -1,8 +1,7 @@
 h3.title.is-3.has-text-centered リマインド作成
 
-== render 'tab', { remind: @remind}
+= form_for @remind, url: reminds_group_path(@group), method: :post do |f|
 
-= form_for @remind do |f|
   - if @remind.errors.any?
     article.message.is-danger
       .message-header
@@ -11,46 +10,63 @@ h3.title.is-3.has-text-centered リマインド作成
         ul
           - @remind.errors.full_messages.each do |msg|
             li = msg
+  .form-header
+    .tabs.is-boxed
+      ul
+        li.event-remind.is-active(data-type='Event')
+          a
+            span.icon.is-small
+              i.fa.fa-bell-o
+            | イベント
+        li.schedule-remind(data-type='Schedule')
+          a
+            span.icon.is-small
+              i.fa.fa-calendar-check-o
+            | 日程調整
 
-  label.label.required = f.label :name, 'タイトル'
-  p.control
-    = f.text_field :name, class: 'input', placeholder: '映画を見に行く', required: true
+  .form-body
+    = f.hidden_field :remind_type
 
-  label.label = f.label :text, 'メモ'
-  p.control
-    = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
-
-    label.label.required= f.label :place, '場所'
+    label.label.required = f.label :name, 'タイトル'
     p.control
-      = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
+      = f.text_field :name, class: 'input', placeholder: '映画を見に行く', require: true
+
+    label.label = f.label :text, 'メモ'
+    p.control
+      = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
+
+    label.label = f.label :place, '場所'
+    p.control
+      = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加', id: 'remind_place'
 
     .map-container
       #map
-      = f.hidden_field :address
-      = f.hidden_field :latitude
-      = f.hidden_field :longitude
+      = f.hidden_field :address, id: 'remind_address'
+      = f.hidden_field :latitude, id: 'remind_latitude'
+      = f.hidden_field :longitude, id: 'remind_longitude'
     p.address
       span#formatted_address = @remind.address
 
-  label.label.required = f.label :date, 'イベント日時'
-  .control.is-horizontal
-    .control.is-grouped
-      p.control.is-expanded
-        = f.text_field :date, class: 'input date-input', placeholder: '日付', pattern: '\d{4}/\d{2}/\d{2}', value: @date, required: true
-      p.control.is-expanded
-        = f.text_field :time, class: 'input time-input', placeholder: '時間', pattern: '\d{2}:\d{2}', value: @time, require: true
+    label.label.required = f.label :date, 'イベント日時'
+    .control.is-horizontal
+      .control.is-grouped
+        p.control.is-expanded
+          = f.text_field :date, class: 'input date-input', placeholder: '日付', pattern: '\d{4}/\d{2}/\d{2}', value: @date, required: true
+        p.control.is-expanded
+          = f.text_field :time, class: 'input time-input', placeholder: '時間', pattern: '\d{2}:\d{2}', value: @time, require: true
 
-  label.label.required = f.label :before, '通知時間'
-  p.control
-    span.select.is-fullwidth
-      = f.select :before, {'10分前': 10, '20分前': 20, '30分前': 30, '1時間前': 60, '2時間前': 120}, {}
+    label.label.required = f.label :before, '通知時間'
+    p.control
+      span.select.is-fullwidth
+        = f.select :before, {'10分前': 10, '20分前': 20, '30分前': 30, '1時間前': 60, '2時間前': 120}, {}
 
-  label.label = f.label :scale, '人数'
-  p.control
-    = f.text_field :scale, class: 'input', placeholder: '11人'
+    .field(data-type='Schedule-remind')
+      label.label = f.label :scale, '人数'
+      p.control
+        = f.text_field :scale, class: 'input', placeholder: '11人'
 
-  p.has-text-right
-    = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
-      span.icon.is-small style='margin-right:5px'
-        i.fa.fa-check
-      | 作成する
+    p.has-text-right(style='margin-top: 10px;')
+      = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
+        span.icon.is-small style='margin-right:5px'
+          i.fa.fa-check
+        | 作成する

@@ -12,12 +12,12 @@ $(document).on('turbolinks:load', function() {
   })
 
   // GMap 生成
-  if(gon.lat && gon.lng) {
+  if(gon.lat !== undefined && gon.lng != undefined) {
     var gmap = new GMap('map', { lat: gon.lat, lng: gon.lng });
     gmap.init();
     gmap.setMarker({ lat: gon.lat, lng: gon.lng });
   }
-  if(gon.autoComplete) {
+  if(gon.autoComplete === true) {
     gmap.setAutoComplete({
       address: 'remind_place',
       place: 'remind_address',
@@ -27,36 +27,48 @@ $(document).on('turbolinks:load', function() {
     });
   }
 
-  // タブ切り替え
-  $('.md-view-tab li').on('click', function (e) {
+  var displayForm = function(type) {
+    var hideName, showName;
+    if(type === 'Event') {
+      hideName = '[data-type="Schedule-remind"]';
+      showName = '[data-type="Event-remind"]';
+    } else if(type ==='Schedule') {
+      showName = '[data-type="Schedule-remind"]';
+      hideName = '[data-type="Event-remind"]';
+    }
+    $(hideName).each(function(i, elem) {
+      $(elem).hide();
+    })
+    $(showName).each(function(i, elem) {
+      $(elem).show();
+    })
+    $('#remind_remind_type').val(type);
+  }
+
+  if(gon.remindType !== undefined) {
+    displayForm(gon.remindType);
+  }
+
+
+
+  // タブの切替
+  $('.tabs li').on('click', function(e) {
     e.preventDefault();
-    var $div = $('.body_container');
     var type = $(this).attr('data-type');
-    if (type === undefined) return;
-    $div.find('.md-view-tab .is-active').removeClass('is-active');
-    $('.md-view-tab .is-active').removeClass('is-active');
+    if(type === undefined) return;
+
+    //schedule
+    $('.tabs li.is-active').removeClass('is-active');
     $(this).addClass('is-active');
 
-    if (type == 'text') {
-      $div.find('textarea').show();
-      $div.find('.md-view').hide();
-    } else if (type == 'view') {
-      $div.find('textarea').hide();
-      $div.find('.md-view').show();
-      var text = $div.find('textarea').val();
-      $.ajax({
-        url: '/api/md_view',
-        type: 'post',
-        dataType: 'json',
-        data: 'text=' + text
-      }).done(function (data) {
-        console.log(data);
-      }).error(function (error) {
-        console.log(error.responseText);
-        var view = error.responseText;
-        $div.find('.md-view').html(view);
-      });
+    displayForm(type);
+
+    if(type === 'Event') {
+      console.log('event');
+    } else if(type === 'Schedule') {
+      console.log('schedule');
     }
   });
+
 
 })

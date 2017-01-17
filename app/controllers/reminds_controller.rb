@@ -1,11 +1,27 @@
 class RemindsController < ApplicationController
-  before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate]
+  before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate, :inactivate]
   before_action :set_gmap, only: [:show, :edit, :update]
   before_action :set_before, only: [:show, :edit, :activate]
 
   def new
-    @remind = Remind.new
+    @remind = @group.reminds.new
     gon.autoComplete = true
+    gon.lat = @remind.latitude || 35.6586488
+    gon.lng = @remind.longitude || 139.6966408
+    gon.remindType = @remind.type || 'Event'
+  end
+
+  def create
+    @remind = @group.reminds.new(remind_params)
+    @remind.type = params.require(:remind).permit(:remind_type)[:remind_type]
+    @remind.datetime = combine_datetime
+    @remind.at = remind_at(@remind.datetime)
+    if @remind.save
+      flash[:success] = 'リマインドを作成しました。'
+      redirect_to group_path(@group)
+    else
+      render 'new'
+    end
   end
 
   def show
@@ -15,19 +31,22 @@ class RemindsController < ApplicationController
     @remind.activate!
   end
 
-  def create
-    gon.autoComplete = true
+  def inactivate
+    @remind.inactivate!
   end
 
   def edit
     @date, @time = @remind.parse_datetime
     gon.autoComplete = true
+    gon.remindType = @remind.type || 'Event'
   end
 
   def update
+    @remind.type = params.require(:remind).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
     gon.autoComplete = true
+    gon.remindType = @remind.type || 'Event'
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
       redirect_to remind_path(@remind)
@@ -55,7 +74,7 @@ class RemindsController < ApplicationController
   end
 
   def set_remind
-    @remind = Remind.find(params[:id])
+    @remind = remind_class.find(params[:id])
   end
 
   def combine_datetime
@@ -65,5 +84,19 @@ class RemindsController < ApplicationController
 
   def remind_params
     params.require(:remind).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
+  end
+
+  # Event or Schedule
+  def type
+    params[:type]
+  end
+
+  def remind_params
+    #params.require(type.underscoe.to_sym).permit(:name, :body)
+  end
+
+  def remind_class
+    return Remind if type.blank?
+    type.constantize
   end
 end

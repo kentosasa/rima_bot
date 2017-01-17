@@ -33,13 +33,25 @@ table.table
     tr
       th リマインド時間
       td = "#{@remind.before}分前"
-    tr
+    tr(style='height: 2.5em')
       th リマインド有効
-      td = @remind.activated ?  "有効" : "無効"
+      td.activate-field
+        - if @remind.activated
+          = render partial: 'reminds/inactivate', locals: {remind: @remind}
+        - else
+          = render partial: 'reminds/activate', locals: {remind: @remind}
+
     - if @remind.scale.present?
       tr
         th 人数
         td = @remind.scale
+    tr
+      th Googleカレンダー
+      td
+        = link_to google_cal_link(@remind), target: '_blank' do
+          span.icon.is-small
+            i.fa.fa-link
+          | 登録
 p
   = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do
     span.icon.is-small(style='margin-right:5px')
