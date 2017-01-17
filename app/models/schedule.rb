@@ -18,6 +18,6 @@
 #
 
 class Schedule < Remind
-  belongs_to :group  
+  belongs_to :group
   has_many :candidates
 end

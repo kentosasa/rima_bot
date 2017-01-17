@@ -32,14 +32,21 @@ class RemindsController < ApplicationController
     @date, @time = @remind.parse_datetime
     gon.autoComplete = true
     gon.remindType = @remind.type || 'Event'
+
+    if @remind.schedule?
+      @remind.candidate_body = @remind.candidates.inject('') do |body, c|
+        body + c.title + "\n"
+      end
+    end
   end
 
   def update
     @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
-    gon.autoComplete = true
-    gon.remindType = @remind.type || 'Event'
+
+    parse_candidates(@remind) if @remind.schedule?
+
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
       redirect_to remind_path(@remind)
@@ -82,6 +89,18 @@ class RemindsController < ApplicationController
 
   def remind_params
     params.require(type.downcase.to_sym).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
+  end
+
+  # 中身を改行でパースして保存
+  def parse_candidates(schedule)
+    body = params.require(:schedule).permit(:candidate_body)
+    body[:candidate_body].lines.each do |line|
+      title = line.chomp
+      next if title.size.zero?
+      candidate = schedule.candidates.find_or_initialize_by(title: title)
+      candidate.title = title
+      candidate.save
+    end
   end
 
   def remind_class
