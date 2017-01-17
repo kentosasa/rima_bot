@@ -11,6 +11,11 @@ $(document).on('turbolinks:load', function() {
     format: 'H:i'
   })
 
+  $('#candidate-datepicker').datetimepicker({
+    inline: true
+
+  })
+
   // GMap 生成
   if(gon.lat !== undefined && gon.lng != undefined) {
     var gmap = new GMap('map', { lat: gon.lat, lng: gon.lng });
@@ -43,7 +48,8 @@ $(document).on('turbolinks:load', function() {
     $(showName).each(function(i, elem) {
       $(elem).show();
     })
-    $('#remind_remind_type').val(type);
+    var elem = '#' + gon.remindType.toLowerCase() + '_remind_type';
+    $(elem).val(type);
   }
 
   if(gon.remindType !== undefined) {

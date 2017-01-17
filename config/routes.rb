@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :events, controller: :reminds, type: 'Event', except: [:new, :edit]
-  resources :schedules, controller: :schedules, type: 'Schedule', except: [:new, :edit]
+  resources :schedules, controller: :reminds, type: 'Schedule', except: [:new, :edit]
 
   resources :groups, only: [:show, :edit, :update] do
     member do

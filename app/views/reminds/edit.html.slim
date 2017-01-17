@@ -12,12 +12,12 @@ h3.title.is-3.has-text-centered リマインド編集
   .form-header
     .tabs.is-boxed
       ul
-        li.event-remind.is-active(data-type='Event')
+        li.event-remind(data-type='Event' class="#{@remind.event? ? 'is-active' : ''}")
           a
             span.icon.is-small
               i.fa.fa-bell-o
             | イベント
-        li.schedule-remind(data-type='Schedule')
+        li.schedule-remind(data-type='Schedule' class="#{@remind.schedule? ? 'is-active' : ''}")
           a
             span.icon.is-small
               i.fa.fa-calendar-check-o
@@ -63,6 +63,13 @@ h3.title.is-3.has-text-centered リマインド編集
       label.label = f.label :scale, '人数'
       p.control
         = f.text_field :scale, class: 'input', placeholder: '11人'
+
+    .field(data-type='Schedule-remind')
+      #candidate-datepicker
+      label.label.required = f.label :candidate_body, '日付候補'
+      p.control
+        = f.text_field :candidate_body, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
+
 
     p.has-text-right(style='margin-top: 10px;')
       = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
