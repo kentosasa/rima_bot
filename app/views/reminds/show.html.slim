@@ -52,6 +52,29 @@ table.table
           span.icon.is-small
             i.fa.fa-link
           | 登録
+
+- if @remind.schedule?
+  h4.subtitle.is-4 候補
+  .candidates-field
+    table.table.is-striped
+      thead
+        tr
+          th 参加者
+          - @candidates.each do |candidate|
+            th = candidate.title
+      tbody
+        - @users.each do |user|
+          - candidates = user.candidate_user_relations.order(:candidate_id)
+          tr
+            th = user.name || '名無し'
+            - candidates.each do |cd|
+              td.attendance class="#{cd.attendance}"
+  p.has-text-centered(style='margin: 10px auto')
+    = link_to answer_schedule_path(@remind), class: 'button is-large' do
+      span.icon
+        i.fa.fa-user-o
+      | 出欠を入力する
+
 p
   = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do
     span.icon.is-small(style='margin-right:5px')

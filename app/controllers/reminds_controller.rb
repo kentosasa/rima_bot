@@ -24,7 +24,12 @@ class RemindsController < ApplicationController
     end
   end
 
-  def show; end
+  def show
+    if @remind.schedule?
+      @candidates = @remind.candidates.order(:id)
+      @users = @candidates.first.users
+    end
+  end
   def activate; @remind.activate! end
   def inactivate; @remind.inactivate! end
 

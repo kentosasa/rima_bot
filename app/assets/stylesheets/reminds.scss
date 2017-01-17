@@ -41,6 +41,44 @@
   }
 }
 
+.candidates-field {
+  overflow: auto;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #bcbcbc;
+  }
+
+  .table {
+    width: 100%;
+
+    .attendance {
+      background-color: #fff;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      &.bad {
+        background-image: image-url('answers/bad-checked.png');
+      }
+      &.soso {
+        background-image: image-url('answers/soso-checked.png');
+      }
+      &.good {
+        background-image: image-url('answers/good-checked.png');
+      }
+    }
+  }
+}
 
 .xdsoft_inline {
   width: 100%;
