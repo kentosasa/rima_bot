@@ -48,44 +48,59 @@ class LineClient
 
   def receive_postback
     query = Rack::Utils.parse_nested_query(@event["postback"]["data"])
-    remind_id = query['remind_id']
+    id = query['remind_id']
     case query['action']
-    when 'activate'
-      remind = Remind.find(remind_id)
-      remind.activate!
-      reply_text("「#{remind.name}」のイベントを作成しました")
+    when 'activate' then activation(id)
+    when 'inactivate' then inactivation(id)
     when 'snooze'
-      remind = Remind.find(remind_id)
+      remind = Remind.find(id)
       remind.snooze!
       reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
     end
   end
 
-  def receive_text(event)
-    datetime = contain_date(event['message']['text'])
-    if datetime.present?
-      date_ja = datetime.strftime("%m月%d日%H時%M分")
-      name = datetime.strftime("%m/%dのイベント")
-      remind_at = datetime.ago(1.hour)
-
-      remind = Remind.create(group_id: @group.id, name: name, datetime: datetime, at: remind_at)
-
-      #reply_templete(remind.line_new_buttons_template)
-
-      actions = [{
-        'type': 'postback',
-        'label': "#{datetime.to_s(:without_year)}で設定",
-        'data': "action=activate&remind_id=#{remind.id}"
-      }, {
-        'type': 'uri',
-        'label': '編集して作成',
-        'uri': "#{HOST}/reminds/#{remind.id}/edit"
-      }]
-      reply_buttons(name, event['message']['text'], actions)
+  # リマインド(id)を有効化
+  def activation(id)
+    remind = Remind.find(id)
+    if remind.activate!
+      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}にリマインドを設定しました。"
+      reply_confirm(text, remind.active_actions)
     else
-      reply_text('hoge')
-      #reply_templete(Remind.last.line_new_carousel_template)
+      reply_text('通知設定に失敗')
     end
+  end
+
+  def inactivation(id)
+    remind = Remind.find(id)
+    if remind.inactivate!
+      text = "[#{remind.name}]\nリマインド設定を取り消しました。"
+      reply_confirm(text, remind.inactiva_actions)
+    else
+      reply_text('通知取り消しに失敗')
+    end
+  end
+
+  def receive_text(event)
+    body = event['message']['text']
+    datte = Datte::Parser.new
+    datte.parse_date(body) do |datetime|
+      remind_at = datetime.ago(1.hour)
+      name = datetime.strftime("%m/%dのイベント")
+
+      remind = @group.reminds.new(
+        name: name,
+        datetime: datetime,
+        at: remind_at
+      )
+
+      if remind.save
+        reply_buttons(name, body, remind.create_actions)
+      else
+        reply_text('保存失敗')
+      end
+      return
+    end
+    reply_text('日付を含みませんでした。')
   end
 
   def echo_image(event)
@@ -125,16 +140,22 @@ class LineClient
     })
   end
 
-  # messaging methods
-  def contain_date(text)
-    datte = Datte::Parser.new()
-    datte.parse_date(text)
-  end
-
   def reply_text(text)
     @client.reply_message(@event['replyToken'], {
       type: 'text',
       text: text
+    })
+  end
+
+  def reply_confirm(text, actions)
+    @client.reply_message(@event['replyToken'], {
+      type: 'template',
+      altText: text,
+      template: {
+        type: 'confirm',
+        text: text,
+        actions: actions
+      }
     })
   end
 

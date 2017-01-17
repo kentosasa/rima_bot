@@ -18,6 +18,8 @@
 #
 
 class Remind < ApplicationRecord
+  HOST = ENV['WEBHOOK_URL'].freeze
+
   belongs_to :group
   scope :active, -> { where(activated: true) }
   scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
@@ -28,29 +30,57 @@ class Remind < ApplicationRecord
     [self.datetime.to_s(:date), self.datetime.to_s(:time)]
   end
 
-  def line_new_buttons_template
-    {
-      "type": "template",
-      "altText": "ご使用の端末は対応していません",
-      "template": {
-        "type": "buttons",
-        "thumbnailImageUrl": "#{self.weather_img}",
-        "title": self.name,
-        "text": self.body,
-        "actions": [
-          {
-            "type": "postback",
-            "label": "イベント作成",
-            "data": "activate,#{self.id}"
-          },
-          {
-            "type": "uri",
-            "label": "編集して作成",
-            "uri": "http://example.com/page/123"
-          }
-        ]
-      }
-    }
+  def before
+    min = (datetime - at).to_i / 60
+    if min < 60
+      "#{min}分前"
+    elsif min < 60 * 24
+      hour = min / 60
+      "#{hour}時間前"
+    else
+      day = min / (60 * 24)
+      hour = min - (60 * 24 * day)
+      "#{day}日前"
+    end
+  end
+
+  # 日付を含んだ時に返すactions
+  def create_actions
+    [{
+      type: 'postback',
+      label: datetime.to_s(:without_year) + 'で設定',
+      data: "action=activate&remind_id=#{id}"
+    }, {
+      type: 'uri',
+      label: '編集して作成',
+      uri: "#{HOST}/reminds/#{id}/edit"
+    }]
+  end
+
+  # 通知を有効化した時に返すactions
+  def active_actions
+    [{
+      type: 'uri',
+      label: '詳細',
+      uri: "#{HOST}/reminds/#{id}"
+    }, {
+      type: 'postback',
+      label: '取り消す',
+      data: "action=inactivate&remind_id=#{id}"
+    }]
+  end
+
+  # 通知を無効化した時に返すactions
+  def inactiva_actions
+    [{
+      type: 'uri',
+      label: '詳細',
+      uri: "#{HOST}/reminds/#{id}"
+    }, {
+      type: 'uri',
+      label: '編集する',
+      uri: "#{HOST}/reminds/#{id}/edit"
+    }]
   end
 
   def line_new_carousel_template
@@ -118,6 +148,11 @@ class Remind < ApplicationRecord
 
   def activate!
     self.activated = true
+    self.save
+  end
+
+  def inactivate!
+    self.activated = false
     self.save
   end
 
