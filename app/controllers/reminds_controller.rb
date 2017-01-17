@@ -26,12 +26,15 @@ class RemindsController < ApplicationController
   def edit
     @date, @time = @remind.parse_datetime
     gon.autoComplete = true
+    gon.remindType = @remind.type || 'Event'
   end
 
   def update
+    @remind.type = params.require(:remind).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
     gon.autoComplete = true
+    gon.remindType = @remind.type || 'Event'
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
       redirect_to remind_path(@remind)

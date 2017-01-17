@@ -12,12 +12,12 @@ $(document).on('turbolinks:load', function() {
   })
 
   // GMap 生成
-  if(gon.lat && gon.lng) {
+  if(gon.lat !== undefined && gon.lng != undefined) {
     var gmap = new GMap('map', { lat: gon.lat, lng: gon.lng });
     gmap.init();
     gmap.setMarker({ lat: gon.lat, lng: gon.lng });
   }
-  if(gon.autoComplete) {
+  if(gon.autoComplete === true) {
     gmap.setAutoComplete({
       address: 'remind_place',
       place: 'remind_address',
@@ -26,6 +26,30 @@ $(document).on('turbolinks:load', function() {
       lng: 'remind_longitude'
     });
   }
+
+  var displayForm = function(type) {
+    var hideName, showName;
+    if(type === 'Event') {
+      hideName = '[data-type="Schedule-remind"]';
+      showName = '[data-type="Event-remind"]';
+    } else if(type ==='Schedule') {
+      showName = '[data-type="Schedule-remind"]';
+      hideName = '[data-type="Event-remind"]';
+    }
+    $(hideName).each(function(i, elem) {
+      $(elem).hide();
+    })
+    $(showName).each(function(i, elem) {
+      $(elem).show();
+    })
+    $('#remind_remind_type').val(type);
+  }
+
+  if(gon.remindType !== undefined) {
+    displayForm(gon.remindType);
+  }
+
+
 
   // タブの切替
   $('.tabs li').on('click', function(e) {
@@ -37,9 +61,11 @@ $(document).on('turbolinks:load', function() {
     $('.tabs li.is-active').removeClass('is-active');
     $(this).addClass('is-active');
 
-    if(type === 'event') {
+    displayForm(type);
+
+    if(type === 'Event') {
       console.log('event');
-    } else if(type === 'schedule') {
+    } else if(type === 'Schedule') {
       console.log('schedule');
     }
   });
