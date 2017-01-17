@@ -3,9 +3,6 @@ class RemindsController < ApplicationController
   before_action :set_gmap, only: [:show, :edit, :update]
   before_action :set_before, only: [:show, :edit, :activate]
 
-  def index
-  end
-
   def new
     @remind = Remind.new
     gon.autoComplete = true

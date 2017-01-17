@@ -9,7 +9,6 @@ Rails.application.routes.draw do
 
   resources :groups, only: [:show, :edit, :update] do
     member do
-      get :reminds
       get 'reminds/new', to: 'reminds#new'
     end
   end
