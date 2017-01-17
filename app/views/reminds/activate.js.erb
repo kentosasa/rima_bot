@@ -1,1 +1,11 @@
-console.log('activate');
+var text = '<%= @remind.at.strftime("%m月%d日 %H時%m分") + "に通知します！" %>';
+
+swal({
+  title: '通知を有効にしました。',
+  text: text,
+  type: 'success',
+  timer: 2000
+});
+
+var html = '<%= j(render partial: "reminds/inactivate", locals: {remind: @remind}) %>';
+$('.activate-field').html(html);

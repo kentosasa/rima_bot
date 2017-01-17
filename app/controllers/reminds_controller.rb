@@ -12,11 +12,11 @@ class RemindsController < ApplicationController
   end
 
   def activate
-    @result = @remind.activate!
+    @remind.activate!
   end
 
   def inactivate
-    @result = @remind.inactivate!
+    @remind.inactivate!
   end
 
   def create
