@@ -1,8 +1,19 @@
 nav.nav
-  div.nav-left
-    h4.is-hidden-touch リマさん
+  .nav-left
+    .nav-item
+      = image_tag 'http://bulma.io/images/bulma-logo.png'
 
     .nav-toggle
       span
       span
       span
+
+    .nav-right.nav-menu
+      = link_to group_path(group), class: 'nav-item' do
+        span.icon
+          i.fa.fa-calendar-check-o
+        |  リマインド一覧
+      = link_to edit_group_path(group), class: 'nav-item' do
+        span.icon
+          i.fa.fa-cog
+        |  設定
