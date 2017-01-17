@@ -68,6 +68,11 @@ table.table
             th = 'ひで'
             - @candidates.count.times do |j|
               td = ['○', '△', 'x'][j % 3]
+  p.has-text-centered(style='margin: 10px auto')
+    = link_to answer_schedule_path(@remind), class: 'button is-large' do
+      span.icon
+        i.fa.fa-user-o
+      | 出欠を入力する
 
 p
   = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do

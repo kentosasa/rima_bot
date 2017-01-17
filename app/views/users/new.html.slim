@@ -1,0 +1,103 @@
+h3.title.is-3.has-text-centered 回答する
+
+= form_for user_path(@user) do
+  
+
+
+= form_tag update_enable_list_hoges_path, method: :put do
+  table
+    thead
+      tr
+        th = model_class.human_attribute_name(:id)
+        th = model_class.human_attribute_name(:name)
+        th 有効フラグ
+    tbody
+      - @hoges.each do |hoge|
+        = fields_for('hoges[]', hoge, index: nil) do |fh|
+          tr
+            td = hoge.id
+            td = hoge.name
+            td
+              = fh.check_box :enable
+              = fh.hidden_field :id
+  .form-actions
+    = submit_tag '更新'
+
+h3.title.is-3.has-text-centered リマインド作成
+
+= form_for @remind, url: reminds_group_path(@group), method: :post do |f|
+
+  - if @remind.errors.any?
+    article.message.is-danger
+      .message-header
+        p = "#{@remind.errors.count}件のエラーがあります。"
+      .message-body
+        ul
+          - @remind.errors.full_messages.each do |msg|
+            li = msg
+  .form-header
+    .tabs.is-boxed
+      ul
+        li.event-remind.is-active(data-type='Event')
+          a
+            span.icon.is-small
+              i.fa.fa-bell-o
+            | イベント
+        li.schedule-remind(data-type='Schedule')
+          a
+            span.icon.is-small
+              i.fa.fa-calendar-check-o
+            | 日程調整
+
+  .form-body
+    = f.hidden_field :remind_type, value: @remind.type || 'Event'
+
+    label.label.required = f.label :name, 'タイトル'
+    p.control
+      = f.text_field :name, class: 'input', placeholder: '映画を見に行く', require: true
+
+    label.label = f.label :text, 'メモ'
+    p.control
+      = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
+
+    label.label = f.label :place, '場所'
+    p.control
+      = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
+
+    .map-container
+      #map
+      = f.hidden_field :address
+      = f.hidden_field :latitude
+      = f.hidden_field :longitude
+    p.address
+      span#formatted_address = @remind.address
+
+    label.label.required = f.label :date, 'イベント日時'
+    .control.is-horizontal
+      .control.is-grouped
+        p.control.is-expanded
+          = f.text_field :date, class: 'input date-input', placeholder: '日付', pattern: '\d{4}/\d{2}/\d{2}', value: @date, required: true
+        p.control.is-expanded
+          = f.text_field :time, class: 'input time-input', placeholder: '時間', pattern: '\d{2}:\d{2}', value: @time, require: true
+
+    label.label.required = f.label :before, '通知時間'
+    p.control
+      span.select.is-fullwidth
+        = f.select :before, {'10分前': 10, '20分前': 20, '30分前': 30, '1時間前': 60, '2時間前': 120}, {}
+
+    .field(data-type='Schedule-remind')
+      label.label = f.label :scale, '人数'
+      p.control
+        = f.text_field :scale, class: 'input', placeholder: '11人'
+
+    .field(data-type='Schedule-remind')
+      #candidate-datepicker
+      label.label.required = f.label :candidate_body, '日付候補'
+      p.control
+        = f.text_area :candidate_body, rows: 4, class: 'textarea', placeholder: 'カレンダーをクリックすると日時が入力されます。また、内容は直接編集できます。'
+
+    p.has-text-right(style='margin-top: 10px;')
+      = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
+        span.icon.is-small style='margin-right:5px'
+          i.fa.fa-check
+        | 作成する
