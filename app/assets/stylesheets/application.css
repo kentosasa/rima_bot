@@ -25,6 +25,13 @@ body {
   padding-bottom: 50px;
 }
 
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
 .ad {
   position: fixed;
   left: 0;

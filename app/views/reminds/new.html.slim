@@ -1,3 +1,9 @@
+- content_for :footer do
+  = button_tag type: 'submit', class: 'button is-large is-success is-fullwidth', form: 'new_remind' do
+    span.icon(style='margin-right: 10px;')
+      i.fa.fa-check
+    | 作成する
+
 h3.title.is-3.has-text-centered リマインド作成
 
 = form_for @remind, url: reminds_group_path(@group), method: :post do |f|
@@ -70,9 +76,3 @@ h3.title.is-3.has-text-centered リマインド作成
       label.label.required = f.label :candidate_body, '日付候補'
       p.control
         = f.text_area :candidate_body, rows: 4, class: 'textarea', placeholder: 'カレンダーをクリックすると日時が入力されます。また、内容は直接編集できます。'
-
-    p.has-text-right(style='margin-top: 10px;')
-      = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
-        span.icon.is-small style='margin-right:5px'
-          i.fa.fa-check
-        | 作成する

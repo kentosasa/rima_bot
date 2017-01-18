@@ -39,6 +39,9 @@ $(document).on('turbolinks:load', function() {
   }
   if(gon.autoComplete === true && gmap !== undefined && gon.remindType !== undefined) {
     var type = gon.remindType.toLowerCase();
+    if(gon.create === true) {
+      type = 'remind';
+    }
     gmap.setAutoComplete({
       address: type + '_place',
       place: type + '_address',
