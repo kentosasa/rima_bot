@@ -19,6 +19,9 @@
 body {
   padding-bottom: 127px;
 }
+.button {
+  border-radius: 0 !important;
+}
 
 .container {
   padding: 10px;

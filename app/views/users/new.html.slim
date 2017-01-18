@@ -1,3 +1,16 @@
+- content_for :footer do
+  .columns.is-mobile.is-gapless
+    .column.is-half-mobile
+      = button_tag type: 'submit', class: 'button is-success is-large is-fullwidth', form: 'new_answer' do
+        span.icon(style='margin-right: 10px;')
+          i.fa.fa-check
+        | 入力する
+    .column.is-half-mobile
+      = link_to :back, class: 'button is-warning is-large is-fullwidth' do
+        span.icon(style='margin-right: 10px;')
+          i.fa.fa-angle-left
+        | 戻る
+
 h3.title.is-3.has-text-centered 回答する
 
 = form_for @user, url: answer_schedule_path(@schedule), method: :post do |f|
@@ -23,9 +36,3 @@ h3.title.is-3.has-text-centered 回答する
               li
                 = radio_button "candidate_#{candidate.id}", 'attendance', 'bad', {checked: true}
                 = label_tag("candidate_#{candidate.id}_attendance_bad", '', class: 'bad')
-
-  p.has-text-right(style='margin-top: 10px;')
-    = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
-      span.icon.is-small style='margin-right:5px'
-        i.fa.fa-check
-      | 作成する
