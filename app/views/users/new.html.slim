@@ -11,6 +11,10 @@
           i.fa.fa-angle-left
         | 戻る
 
+- content_for :ad do
+  = render 'templates/ad'
+
+
 h3.title.is-3.has-text-centered 回答する
 
 = form_for @user, url: answer_schedule_path(@schedule), method: :post do |f|

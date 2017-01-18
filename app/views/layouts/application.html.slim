@@ -10,6 +10,7 @@ body class="#{controller_name} #{action_name}"
       .container
         == yield
   footer
+    == yield :ad
     == render 'templates/footer'
   .fixed-footer
     == yield :footer
