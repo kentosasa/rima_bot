@@ -1,3 +1,9 @@
+- content_for :footer do
+  = button_tag type: 'submit', class: 'button is-large is-success is-fullwidth', form: "edit_#{@remind.type.downcase}_#{@remind.id}" do
+    span.icon(style='margin-right: 10px;')
+      i.fa.fa-check
+    | 更新する
+
 h3.title.is-3.has-text-centered リマインド編集
 
 = form_for @remind do |f|
@@ -30,9 +36,9 @@ h3.title.is-3.has-text-centered リマインド編集
     p.control
       = f.text_field :name, class: 'input', placeholder: '映画を見に行く', require: true
 
-    label.label = f.label :text, 'メモ'
+    label.label = f.label :body, 'メモ'
     p.control
-      = f.text_area :name, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
+      = f.text_area :body, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
 
     label.label = f.label :place, '場所'
     p.control
@@ -69,9 +75,3 @@ h3.title.is-3.has-text-centered リマインド編集
       label.label.required = f.label :candidate_body, '日付候補'
       p.control
         = f.text_area :candidate_body, rows: 4, class: 'textarea', placeholder: 'カレンダーをクリックすると日時が入力されます。また、内容は直接編集できます。'
-
-    p.has-text-right(style='margin-top: 10px;')
-      = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
-        span.icon.is-small style='margin-right:5px'
-          i.fa.fa-check
-        | 更新する

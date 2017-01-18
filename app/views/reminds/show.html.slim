@@ -1,8 +1,14 @@
 - content_for :footer do
-  = link_to answer_schedule_path(@remind), class: 'button is-large is-success is-fullwidth' do
-    span.icon(style='margin-right: 10px;')
-      i.fa.fa-user-o
-    | 出欠を入力する
+  - if @remind.schedule?
+    = link_to answer_schedule_path(@remind), class: 'button is-large is-success is-fullwidth' do
+      span.icon(style='margin-right: 10px;')
+        i.fa.fa-user-o
+      | 出欠を入力する
+  - else
+    = link_to edit_remind_path(@remind), class: 'button is-large is-success is-fullwidth' do
+      span.icon(style='margin-right: 10px')
+        i.fa.fa-check
+      | 編集する
 
 h3.title.is-3.has-text-centered = @remind.name
 

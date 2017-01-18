@@ -98,7 +98,8 @@ class LineClient
       remind = @group.reminds.new(
         name: name,
         datetime: datetime,
-        at: remind_at
+        at: remind_at,
+        type: 'Event'
       )
 
       if remind.save

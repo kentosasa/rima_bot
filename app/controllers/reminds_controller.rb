@@ -66,6 +66,7 @@ class RemindsController < ApplicationController
   private
 
   def set_gmap
+    return if @remind.address.nil?
     gon.lat = @remind.latitude || 35.6586488
     gon.lng = @remind.longitude || 139.6966408
   end
