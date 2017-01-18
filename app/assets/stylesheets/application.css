@@ -17,20 +17,30 @@
 
 @import "bulma";
 body {
-  padding-bottom: 127px;
+  padding-bottom: 50px;
+}
+.button {
+  border-radius: 0 !important;
+}
+.footer {
+  padding: 1em;
 }
 
 .container {
   padding: 10px;
-  padding-bottom: 50px;
+  padding-bottom: 30px;
+}
+
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  z-index: 10000;
 }
 
 .ad {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
+  margin: 10px;
   a {
     position: relative;
     width: 100%;

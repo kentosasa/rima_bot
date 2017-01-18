@@ -1,3 +1,20 @@
+- content_for :footer do
+  .columns.is-mobile.is-gapless
+    .column.is-half-mobile
+      = button_tag type: 'submit', class: 'button is-large is-success is-fullwidth', form: "edit_group_#{@group.id}" do
+        span.icon(style='margin-right: 10px;')
+          i.fa.fa-check
+        | 更新する
+    .column.is-half-mobile
+      = link_to :back, class: 'button is-warning is-large is-fullwidth' do
+        span.icon(style='margin-right: 10px;')
+          i.fa.fa-angle-left
+        | 戻る
+
+- content_for :ad do
+  = render 'templates/ad'
+
+
 h3.title.is-3.has-text-centered リマインド編集
 
 table.table.is-bordered
@@ -22,9 +39,3 @@ table.table.is-bordered
   label.label =  f.label :name, '名前'
   p.control
     = f.text_field :name, class: 'input', placeholder: 'ぽこひで'
-
-  p.has-text-right
-    = button_tag type: 'submit', class: 'button is-success is-outlined is-medium', data: {load: true} do
-      span.icon.is-small style='margin-right:5px'
-        i.fa.fa-check
-      | 更新する

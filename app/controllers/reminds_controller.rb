@@ -8,6 +8,7 @@ class RemindsController < ApplicationController
     gon.autoComplete = true
     gon.lat = 35.6586488
     gon.lng = 139.6966408
+    gon.create = true
     gon.remindType = 'Event'
   end
 
@@ -65,6 +66,7 @@ class RemindsController < ApplicationController
   private
 
   def set_gmap
+    return if @remind.address.nil?
     gon.lat = @remind.latitude || 35.6586488
     gon.lng = @remind.longitude || 139.6966408
   end
@@ -89,7 +91,7 @@ class RemindsController < ApplicationController
 
   # Event or Schedule
   def type
-    params[:type]
+    params[:type] || 'Remind'
   end
 
   def remind_params

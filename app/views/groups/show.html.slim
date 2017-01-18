@@ -1,3 +1,9 @@
+- content_for :footer do
+  = link_to reminds_new_group_path(@group), class: 'button is-large is-success is-fullwidth' do
+    span.icon(style='margin-right: 10px;')
+      i.fa.fa-plus
+    | リマインドを作成する
+
 h4.subtitle.is-4 リマインド一覧
 
 - @reminds.each do |remind|

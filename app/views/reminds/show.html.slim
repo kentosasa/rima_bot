@@ -1,3 +1,15 @@
+- content_for :footer do
+  - if @remind.schedule?
+    = link_to answer_schedule_path(@remind), class: 'button is-large is-success is-fullwidth' do
+      span.icon(style='margin-right: 10px;')
+        i.fa.fa-user-o
+      | 出欠を入力する
+  - else
+    = link_to edit_remind_path(@remind), class: 'button is-large is-success is-fullwidth' do
+      span.icon(style='margin-right: 10px')
+        i.fa.fa-check
+      | 編集する
+
 h3.title.is-3.has-text-centered = @remind.name
 
 table.table
@@ -69,12 +81,7 @@ table.table
             th = user.name || '名無し'
             - candidates.each do |cd|
               td.attendance class="#{cd.attendance}"
-  p.has-text-centered(style='margin: 10px auto')
-    = link_to answer_schedule_path(@remind), class: 'button is-large' do
-      span.icon
-        i.fa.fa-user-o
-      | 出欠を入力する
-
+br
 p
   = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do
     span.icon.is-small(style='margin-right:5px')
