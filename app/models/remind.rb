@@ -79,8 +79,8 @@ class Remind < ApplicationRecord
     }]
   end
 
-  # 通知を無効化した時に返すactions
-  def inactiva_actions
+  # 詳細情報返すactions
+  def show_actions
     [{
       type: 'uri',
       label: '詳細を見る',
@@ -92,49 +92,12 @@ class Remind < ApplicationRecord
     }]
   end
 
-  def line_new_carousel_template
+  def show_column
     {
-      "type": "template",
-      "altText": "ご使用の端末は対応しておりません",
-      "template": {
-        "type": "carousel",
-        "columns": [
-          {
-            "thumbnailImageUrl": "#{self.weather_img}",
-            "title": "リマインド「#{self.name}」",
-            "text": self.body,
-            "actions": [
-              {
-                  "type": "uri",
-                  "label": "詳細を見る",
-                  "uri": "http://example.com/page/111"
-              },
-              {
-                  "type": "postback",
-                  "label": "30分後に再通知",
-                  "data": "snooze,#{self.id}"
-              }
-            ]
-          },
-          {
-            "thumbnailImageUrl": "https://tabelog.ssl.k-img.com/restaurant/images/Rvw/57427/640x640_rect_57427239.jpg",
-            "title": "小料理店「松川」",
-            "text": "食べログでトップ10に入る六本木で話題のお店です。日本が誇る和食はいかがですか？",
-            "actions": [
-              {
-                  "type": "uri",
-                  "label": "詳細を見る",
-                  "uri": "http://example.com/page/222"
-              },
-              {
-                  "type": "uri",
-                  "label": "電話する",
-                  "uri": "http://example.com/page/222"
-              }
-            ]
-          }
-        ]
-      }
+      "thumbnailImageUrl": "#{self.weather_img}",
+      "title": "リマインド「#{self.name}」",
+      "text": self.body,
+      "actions": self.show_actions
     }
   end
 
