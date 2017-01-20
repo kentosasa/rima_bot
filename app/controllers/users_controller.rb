@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :set_group
   def new
     @schedule = Schedule.find(params[:id])
     @candidates = @schedule.candidates

@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :reminds]
+  before_action :set_group
 
   def show
     @reminds = @group.reminds

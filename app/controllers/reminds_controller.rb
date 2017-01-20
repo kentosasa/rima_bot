@@ -1,4 +1,5 @@
 class RemindsController < ApplicationController
+  before_action :set_group
   before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate, :inactivate]
   before_action :set_gmap, only: [:show, :edit, :update]
   before_action :set_before, only: [:show, :edit, :activate]
