@@ -13,6 +13,7 @@ class LineClient
     @client = client
     @event = event
     @group = Group.find_or_create(event)
+    @messaging = Messaging.new(event, client)
   end
 
   def reply
@@ -61,9 +62,9 @@ class LineClient
     remind = Remind.find(id)
     if remind.activate!
       text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}前にリマインドを設定しました。"
-      reply_confirm(text, remind.active_actions)
+      @messaging.reply_confirm(text, remind.active_actions)
     else
-      reply_text('通知設定に失敗')
+      @messaging.reply_text('通知設定に失敗')
     end
   end
 
@@ -72,9 +73,9 @@ class LineClient
     remind = Remind.find(id)
     if remind.inactivate!
       text = "[#{remind.name}]\nリマインド設定を取り消しました。"
-      reply_confirm(text, remind.show_actions)
+      @messaging.reply_confirm(text, remind.show_actions)
     else
-      reply_text('通知取り消しに失敗')
+      @messaging.reply_text('通知取り消しに失敗')
     end
   end
 
@@ -82,9 +83,9 @@ class LineClient
   def snooze(id)
     remind = Remind.find(1)
     if remind.snooze!(10)
-      reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
+      @messaging.reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
     else
-      reply_text('再通知の設定に失敗')
+      @messaging.reply_text('再通知の設定に失敗')
     end
   end
 
@@ -100,9 +101,9 @@ class LineClient
     )
 
     if remind.save
-      reply_buttons(name, body, remind.create_actions)
+      @messaging.reply_buttons(name, body, remind.create_actions)
     else
-      reply_text('保存失敗')
+      @messaging.reply_text('保存失敗')
     end
   end
 
@@ -110,7 +111,7 @@ class LineClient
     reminds = @group.reminds.where(datetime: datetime.beginning_of_day...datetime.end_of_day).limit(3)
     columns = reminds.map { |item| item.show_column }
     columns.push(ad_column)
-    reply_carousel(columns)
+    @messaging.reply_carousel(columns)
   end
 
   def receive_text(event)
@@ -124,19 +125,19 @@ class LineClient
       end
       return
     end
-    reply_text('日付を含みませんでした。')
+    @messaging.reply_text('日付を含みませんでした。')
   end
 
   def echo_image(event)
-    reply_text('イメージだよ')
+    @messaging.reply_text('イメージだよ')
   end
 
   def echo_video(event)
-    reply_text('動画だよ')
+    @messaging.reply_text('動画だよ')
   end
 
   def echo_audio(event)
-    reply_text('音声だよ')
+    @messaging.reply_text('音声だよ')
   end
 
   def echo_location(event)
@@ -154,59 +155,6 @@ class LineClient
       type: 'sticker',
       package_id: event['message']['packageId'],
       sticker_id: event['message']['stickerId']
-    })
-  end
-
-  def push_message(text)
-    @client.push_message(@group.source_id, {
-      type: 'text',
-      text: text
-    })
-  end
-
-  def reply_text(text)
-    @client.reply_message(@event['replyToken'], {
-      type: 'text',
-      text: text
-    })
-  end
-
-  def reply_confirm(text, actions)
-    @client.reply_message(@event['re plyToken'], {
-      type: 'template',
-      altText: text,
-      template: {
-        type: 'confirm',
-        text: text,
-        actions: actions
-      }
-    })
-  end
-
-  def reply_buttons(title, text, actions)
-    @client.reply_message(@event['replyToken'], {
-      'type': 'template',
-      'altText': 'ご使用の端末は対応していません',
-      'template': {
-        'type': 'buttons',
-        #thumbnailImageUrl: image,
-        'title': title,
-        'text': text,
-        'actions': actions
-      }
-    })
-  end
-
-  def reply_carousel(columns)
-    @client.reply_message(@event['replyToken'],
-    {
-      "type": "template",
-      "altText": "ご使用の端末は対応しておりません",
-      "template": {
-        "type": "carousel",
-        "columns":
-          columns
-      }
     })
   end
 
