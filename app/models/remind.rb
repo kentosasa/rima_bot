@@ -160,7 +160,6 @@ class Remind < ApplicationRecord
 
   def weather_img
     weather = Weather.new(self.latitude, self.longitude, self.datetime)
-    p weather.image
     weather.image
   end
 end
