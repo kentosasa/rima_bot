@@ -1,0 +1,6 @@
+p
+  b = remind.activated ? '有効' : '無効'
+  = link_to activate_remind_path(remind), method: :post, class: 'button is-primary is-small is-pulled-right', remote: true do
+    span.icon.is-small(style='margin-right: 10px;')
+      i.fa.fa-bell-o
+    | 有効にする

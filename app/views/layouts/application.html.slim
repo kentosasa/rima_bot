@@ -3,12 +3,14 @@ head
   == render 'templates/head'
 body class="#{controller_name} #{action_name}"
   header
-    == render 'templates/header', { c_name: controller_name }
+    == render 'templates/header', { group: @group }
   main
     = flash_message(flash)
     section.main
       .container
         == yield
   footer
+    == yield :ad
     == render 'templates/footer'
-  == render 'templates/ad'
+  .fixed-footer
+    == yield :footer

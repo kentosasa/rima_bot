@@ -1,0 +1,8 @@
+swal({
+  title: '通知を無効にしました。',
+  type: 'warning',
+  timer: 2000
+});
+
+var html = '<%= j(render partial: "reminds/activate", locals: {remind: @remind}) %>';
+$('.activate-field').html(html);

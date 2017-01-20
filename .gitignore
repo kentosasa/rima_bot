@@ -22,4 +22,4 @@
 /vendor/bundle/*
 .gitignore
 .env
-data/*
+/data*

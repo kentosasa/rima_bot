@@ -15,9 +15,12 @@
 #  type       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  latitude   :float
+#  longitude  :float
+#  address    :string
 #
 
 class Schedule < Remind
-  belongs_to :group  
+  belongs_to :group
   has_many :candidates
 end
