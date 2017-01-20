@@ -15,6 +15,9 @@
 #  type       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  latitude   :float
+#  longitude  :float
+#  address    :string
 #
 
 class Remind < ApplicationRecord
@@ -156,11 +159,8 @@ class Remind < ApplicationRecord
   end
 
   def weather_img
-    # APIで取得できる天気予報が15日後までなため
-    if (self.datetime.to_date-DateTime.now.to_date).to_i < 16
-      weather = Weather.find_or_create_by(place: self.place, date: self.datetime.to_date)
-      return weather.find_or_create_image
-    end
-    return "#{ENV['ROOT_URL']}/crown.png"
+    weather = Weather.new(self.latitude, self.longitude, self.datetime)
+    p weather.image
+    weather.image
   end
 end
