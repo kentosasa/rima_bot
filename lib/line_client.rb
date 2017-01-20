@@ -52,10 +52,7 @@ class LineClient
     case query['action']
     when 'activate' then activation(id)
     when 'inactivate' then inactivation(id)
-    when 'snooze'
-      remind = Remind.find(id)
-      remind.snooze!
-      reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
+    when 'snooze' then snooze(id)
     end
   end
 
@@ -63,40 +60,67 @@ class LineClient
   def activation(id)
     remind = Remind.find(id)
     if remind.activate!
-      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}にリマインドを設定しました。"
+      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}前にリマインドを設定しました。"
       reply_confirm(text, remind.active_actions)
     else
       reply_text('通知設定に失敗')
     end
   end
 
+  # リマインド(id)を無効化
   def inactivation(id)
     remind = Remind.find(id)
     if remind.inactivate!
       text = "[#{remind.name}]\nリマインド設定を取り消しました。"
-      reply_confirm(text, remind.inactiva_actions)
+      reply_confirm(text, remind.show_actions)
     else
       reply_text('通知取り消しに失敗')
     end
+  end
+
+  # リマインドを10分後に再通知
+  def snooze(id)
+    remind = Remind.find(1)
+    if remind.snooze!(10)
+      reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
+    else
+      reply_text('再通知の設定に失敗')
+    end
+  end
+
+  def add_remind(body, datetime)
+    remind_at = datetime.ago(1.hour)
+    name = datetime.strftime("%m/%dのイベント")
+
+    remind = @group.reminds.new(
+      name: name,
+      datetime: datetime,
+      at: remind_at,
+      type: 'Event'
+    )
+
+    if remind.save
+      reply_buttons(name, body, remind.create_actions)
+    else
+      reply_text('保存失敗')
+    end
+  end
+
+  def show_remind(datetime)
+    reminds = @group.reminds.where(datetime: datetime.beginning_of_day...datetime.end_of_day).limit(3)
+    columns = reminds.map { |item| item.show_column }
+    columns.push(ad_column)
+    reply_carousel(columns)
   end
 
   def receive_text(event)
     body = event['message']['text']
     datte = Datte::Parser.new
     datte.parse_date(body) do |datetime|
-      remind_at = datetime.ago(1.hour)
-      name = datetime.strftime("%m/%dのイベント")
-
-      remind = @group.reminds.new(
-        name: name,
-        datetime: datetime,
-        at: remind_at
-      )
-
-      if remind.save
-        reply_buttons(name, body, remind.create_actions)
+      if body.include?('何')
+        show_remind(datetime)
       else
-        reply_text('保存失敗')
+        add_remind(body, datetime)
       end
       return
     end
@@ -148,7 +172,7 @@ class LineClient
   end
 
   def reply_confirm(text, actions)
-    @client.reply_message(@event['replyToken'], {
+    @client.reply_message(@event['re plyToken'], {
       type: 'template',
       altText: text,
       template: {
@@ -173,7 +197,36 @@ class LineClient
     })
   end
 
-  def reply_templete(template)
-    @client.reply_message(@event['replyToken'], template)
+  def reply_carousel(columns)
+    @client.reply_message(@event['replyToken'],
+    {
+      "type": "template",
+      "altText": "ご使用の端末は対応しておりません",
+      "template": {
+        "type": "carousel",
+        "columns":
+          columns
+      }
+    })
+  end
+
+  def ad_column
+    {
+      "thumbnailImageUrl": "https://tabelog.ssl.k-img.com/restaurant/images/Rvw/57427/640x640_rect_57427239.jpg",
+      "title": "小料理店「松川」",
+      "text": "食べログでトップ10に入る六本木で話題のお店です。日本が誇る和食はいかがですか？",
+      "actions": [
+        {
+            "type": "uri",
+            "label": "詳細を見る",
+            "uri": "http://example.com/page/222"
+        },
+        {
+            "type": "uri",
+            "label": "電話する",
+            "uri": "http://example.com/page/222"
+        }
+      ]
+    }
   end
 end

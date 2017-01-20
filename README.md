@@ -15,4 +15,10 @@ docker-compose run web rails db:create  # DB作成
 docker-compose run web rails db:migrate # DB構築
 ```
 
+ruby v.2.3.0
+Rails 5.0.1
+CSS Framework Bulma
+SCSS
+rubygems datte v0.5.0
+postgres
 

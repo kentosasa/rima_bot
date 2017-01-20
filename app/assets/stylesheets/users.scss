@@ -1,0 +1,56 @@
+.answers {
+  position: relative;
+  padding: 0;
+  margin: 0;
+
+  li {
+    width: 33%;
+    display: inline-block;
+
+    input[type=radio] {
+      display: none;
+
+      &:checked + label {
+        background: #C5E1A5;
+        color: #fff;
+        background-position: center center;
+        background-repeat: no-repeat;
+        &.bad {
+          background-image: image-url('answers/bad.png');
+        }
+        &.soso {
+          background-image: image-url('answers/soso.png');
+        }
+        &.good {
+          background-image: image-url('answers/good.png');
+        }
+      }
+    }
+
+    label {
+      color: #000;
+      display: block;
+      height: 50px;
+      line-height: 50px;
+      padding-left: 40px;
+      padding-right: 20px;
+      cursor: pointer;
+      background-color: #ffffff;
+      background-position: center center;
+      background-repeat: no-repeat;
+      &.bad {
+        background-image: image-url('answers/bad.png');
+      }
+      &.soso {
+        background-image: image-url('answers/soso.png');
+      }
+      &.good {
+        background-image: image-url('answers/good.png');
+      }
+
+      &:hover {
+        background-color: #e2edf9;
+      }
+    }
+  }
+}

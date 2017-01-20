@@ -4,10 +4,7 @@
 
 .reminds main {
   background: #eee;
-
-
   .label.required {
-
     ::after {
       border: 1px solid #f44336;
       border-radius: 2px;
@@ -21,45 +18,75 @@
     }
   }
 
-  .container {
-    padding: 10px;
-    padding-bottom: 50px;
+  .map-container {
+    position: relative;
+    height: 150px;
 
-    .map-container {
-      position: relative;
-      height: 150px;
-
-      #map {
-        width: 100%;
-        height: 100%;
-      }
+    #map {
+      width: 100%;
+      height: 100%;
     }
+  }
 
-    .address {
-      padding: 10px 0;
+  .address {
+    padding: 10px 0;
+  }
+
+  .form-header {
+
+  }
+  .form-body {
+    background: #fff;
+    padding: 10px;
+  }
+}
+
+.candidates-field {
+  overflow: auto;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #bcbcbc;
+  }
+
+  .table {
+    width: 100%;
+
+    .attendance {
+      background-color: #fff;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      &.bad {
+        background-image: image-url('answers/bad-checked.png');
+      }
+      &.soso {
+        background-image: image-url('answers/soso-checked.png');
+      }
+      &.good {
+        background-image: image-url('answers/good-checked.png');
+      }
     }
   }
 }
 
-body {
-  padding-bottom: 127px;
-}
-
-.ad {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  a {
-    position: relative;
+.xdsoft_inline {
+  width: 100%;
+  margin-top: 20px;
+  padding: 5px;
+  .xdsoft_datepicker {
     width: 100%;
-    height: 100%;
-
-    img {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
+    padding: 5px;
+    margin: 0 auto;
   }
 }

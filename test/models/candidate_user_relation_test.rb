@@ -8,6 +8,7 @@
 #  attend       :boolean
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  attendance   :integer
 #
 
 require 'test_helper'

@@ -27,4 +27,8 @@ $(document).on('turbolinks:load', function () {
       if (!$(this).attr('data-flash')) $(this).fadeOut('normal');
     });
   }, 5000);
+
+  $('.nav-toggle').on('click', function() {
+    $('.nav-menu').toggleClass('is-active')
+  })
 })
