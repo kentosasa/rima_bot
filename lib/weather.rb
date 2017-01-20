@@ -20,7 +20,7 @@ class Weather
     when '曇り'
       return "#{ENV['ROOT_URL']}/crown.png"
     end
-    return 'default image'
+    return "#{ENV['ROOT_URL']}/cal.png"
   end
 
   def temp

@@ -95,6 +95,7 @@ class LineClient
 
     remind = @group.reminds.new(
       name: name,
+      body: body,
       datetime: datetime,
       at: remind_at,
       type: 'Event'
