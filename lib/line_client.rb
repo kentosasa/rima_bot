@@ -111,7 +111,11 @@ class LineClient
   def show_remind(datetime)
     reminds = @group.reminds.where(datetime: datetime.beginning_of_day...datetime.end_of_day).limit(3)
     columns = reminds.map { |item| item.show_column }
-    columns.push(ad_column)
+    if reminds.present? && reminds[0].latitude.present? && reminds[0].longitude.present?
+      ad = Ad.new(reminds[0].latitude, reminds[0].longitude)
+      ad_column = ad.column
+      columns.push(ad_column) if ad_column.present?
+    end
     @messaging.reply_carousel(columns)
   end
 
@@ -157,25 +161,5 @@ class LineClient
       package_id: event['message']['packageId'],
       sticker_id: event['message']['stickerId']
     })
-  end
-
-  def ad_column
-    {
-      "thumbnailImageUrl": "https://tabelog.ssl.k-img.com/restaurant/images/Rvw/57427/640x640_rect_57427239.jpg",
-      "title": "小料理店「松川」",
-      "text": "食べログでトップ10に入る六本木で話題のお店です。日本が誇る和食はいかがですか？",
-      "actions": [
-        {
-            "type": "uri",
-            "label": "詳細を見る",
-            "uri": "http://example.com/page/222"
-        },
-        {
-            "type": "uri",
-            "label": "電話する",
-            "uri": "http://example.com/page/222"
-        }
-      ]
-    }
   end
 end
