@@ -5,7 +5,6 @@ class Weather
     @date = datetime.to_date
     @endpoint = URI.encode(WEATHER_API_BASE_URL + "lat=#{lat}&lon=#{lng}&cnt=16")
     if (@date - DateTime.now.to_date).to_i < 16 && lat && lng
-      p 'call api'
       call_api
     end
   end
@@ -21,7 +20,7 @@ class Weather
     when '曇り'
       return "#{ENV['ROOT_URL']}/crown.png"
     end
-    return 'default image'
+    return "#{ENV['ROOT_URL']}/cal.png"
   end
 
   def temp
