@@ -72,7 +72,9 @@ table.table
       thead
         tr
           th 参加者
+          - percents = []
           - @candidates.each do |candidate|
+            - percents.push(candidate.attend_percent)
             th = candidate.title
       tbody
         - @users.each do |user|
@@ -81,10 +83,10 @@ table.table
             th
               = link_to answer_edit_schedule_path(@remind.id, user.id) do
                 = user.name || '名無し'
-            - candidates.each do |cd|
-              td.attendance class="#{cd.attendance}"
-br
-p
+            - candidates.each_with_index do |cd, i|
+              td.attendance class="#{cd.attendance} #{percents[i]}"
+
+p(style='padding: 10px 0 20px 0')
   = link_to edit_remind_path(@remind.uid), class: 'button is-success is-pulled-left' do
     span.icon.is-small(style='margin-right:5px')
       i.fa.fa-check

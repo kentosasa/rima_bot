@@ -76,6 +76,9 @@
       &.good {
         background-image: image-url('answers/good-checked.png');
       }
+      &.highlighted {
+        background-color: rgb(216, 253, 97);
+      }
     }
   }
 }

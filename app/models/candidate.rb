@@ -27,6 +27,22 @@ class Candidate < ApplicationRecord
     relation(user).bad?
   end
 
+  def attend_percent
+    point = 0.0
+    count = 0
+    self.candidate_user_relations.all.each do |cur|
+      point += 1.0 if cur.good?
+      point += 0.5 if cur.soso?
+      point += 0.0 if cur.bad?
+      count += 1
+    end
+    return '0' if count.zero?
+    case (point * 100 / count).to_i
+    when (60..100) then 'highlighted'
+    else ''
+    end
+  end
+
   def attend_users
     ids = self.candidate_user_relations.where(attend: true).pluck(:user_id)
     users = User.where(id: ids)
