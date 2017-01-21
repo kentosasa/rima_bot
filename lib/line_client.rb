@@ -11,7 +11,7 @@ class LineClient
   RIMASAN = Regexp.compile('りまさん|rimasan|リマさん|rima_san')
   NEGATIVE = Regexp.compile('無理|ムリ|むり|ダメ|だめ|駄目|できない')
   PLANS = Regexp.compile('予定一覧|リマインド一覧')
-  SCHEDULE = Regexp.compile('いつにする?|いつにする？|日程調整|スケジュール調整|いつがいい?|行ける人おしえてくださいー|何日にする-?')
+  SCHEDULE = Regexp.compile('いつにする?|いつにする？|日程調整|スケジュール調整|いつがいい?|いつにしよう?|行ける人おしえてくださいー|何日にする-?')
 
   HOST = ENV['WEBHOOK_URL'].freeze
 
@@ -143,7 +143,7 @@ class LineClient
     )
 
     if schedule.save
-      @messaging.push_buttons(name, '日程調整をサポートしますか?', schedule.schedule_actions)
+      @messaging.push_buttons('日程調整', '日程調整をサポートしますか?', schedule.schedule_actions)
     end
   end
 
