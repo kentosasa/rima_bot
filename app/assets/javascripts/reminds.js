@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function() {
+$(document).ready(function() {
   $('.date-input').datetimepicker({
     timepicker: false,
     closeOnDateSelect: true,
@@ -94,6 +94,4 @@ $(document).on('turbolinks:load', function() {
       console.log('schedule');
     }
   });
-
-
 })
