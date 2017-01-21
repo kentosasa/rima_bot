@@ -39,6 +39,37 @@
     background: #fff;
     padding: 10px;
   }
+
+  .form-footer {
+    background: #fff;
+    padding: 10px;
+    margin: 20px 0;
+
+    #toggle-button {
+      position: absolute;
+      right: 5px;
+      top: -5px;
+      span {
+        font-family: FontAwesome;
+
+        &:after {
+          content: '\f107';
+        }
+        &.is-open:after {
+          content: '\f106';
+        }
+      }
+    }
+
+    #toggle-body {
+      padding: 10px 0;
+      display: none;
+
+      &.is-open {
+        display: block;
+      }
+    }
+  }
 }
 
 .candidates-field {

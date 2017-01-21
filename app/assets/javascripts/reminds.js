@@ -75,6 +75,13 @@ $(document).ready(function() {
   }
 
 
+  // フォームのトグルボタン
+  $('#toggle-button').on('click', function(e) {
+    e.preventDefault();
+    $('#toggle-body').toggleClass('is-open');
+    $(this).find('span').toggleClass('is-open');
+    google.maps.event.trigger(map, 'resize')
+  })
 
   // タブの切替
   $('.tabs li').on('click', function(e) {
