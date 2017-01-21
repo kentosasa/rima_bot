@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   before_action :set_group
 
   def show
-    @reminds = @group.reminds
+    @reminds = @group.reminds.active
   end
 
   def edit
