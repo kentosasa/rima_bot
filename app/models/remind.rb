@@ -119,7 +119,7 @@ class Remind < ApplicationRecord
 
   def show_column
     {
-      "thumbnailImageUrl": "#{self.weather_img}",
+      "thumbnailImageUrl": "#{self.weather[:image]}",
       "title": "リマインド「#{self.name}」",
       "text": self.body,
       "actions": self.show_actions
@@ -127,10 +127,11 @@ class Remind < ApplicationRecord
   end
 
   def emoji
-    emoji = '\n'
-    emoji += "📆#{self.datetime.strftime("%m/%d")}"
-    emoji += "🔉#{self.before}前"
-    emoji += "🗺#{self.place}" if self.place
+    str = "\n"
+    str += "📆#{self.datetime.strftime("%m/%d")} "
+    str += "🔉#{self.before}前 "
+    str += "🗺#{self.place}" if self.place
+    str
   end
 
   def line_notify(client)
@@ -187,8 +188,8 @@ class Remind < ApplicationRecord
     self.save
   end
 
-  def weather_img
-    weather = Weather.new(self.latitude, self.longitude, self.datetime)
-    weather.image
+  def weather
+    weather = Weather.new(latitude, longitude, datetime)
+    weather.call
   end
 end

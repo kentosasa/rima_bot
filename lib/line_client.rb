@@ -102,7 +102,7 @@ class LineClient
     )
 
     if remind.save
-      @messaging.reply_buttons(name, body + remind.emoji , remind.create_actions)
+      @messaging.reply_buttons(name, body + remind.emoji, remind.create_actions)
     else
       @messaging.reply_text('保存失敗')
     end
@@ -121,7 +121,7 @@ class LineClient
 
   def show_all_reminds
     reminds = @group.reminds.active.between(DateTime.now, nil).limit(5)
-    columns = reminds.map { |item| item.show_column }
+    columns = reminds.map { |remind| remind.show_column }
     @messaging.reply_carousel(columns)
   end
 
