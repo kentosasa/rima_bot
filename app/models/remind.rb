@@ -35,6 +35,15 @@ class Remind < ApplicationRecord
     after = now + Rational(min, 24 * 60)
     where(at: before..after).order(at: :asc)
   }
+  scope :between, ->(from, to) {
+    if from.present? && to.present?
+      where(datetime: from..to)
+    elsif from.present?
+      where('datetime >= ?', from)
+    elsif to.present?
+      where('datetime <= ?', to)
+    end
+  }
 
   attr_accessor :date, :time, :before, :remind_type, :candidate_body
 
