@@ -102,7 +102,7 @@ class LineClient
     )
 
     if remind.save
-      @messaging.reply_buttons(name, body, remind.create_actions)
+      @messaging.reply_buttons(name, body + remind.emoji , remind.create_actions)
     else
       @messaging.reply_text('保存失敗')
     end

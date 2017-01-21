@@ -41,7 +41,7 @@ class Ad
     res = body['response']['venues'][0]
     @item[:id] = res['id']
     @item[:name] = res['name']
-    @item[:phoen] = res['contact']['phone']
+    @item[:phoen] = res['contact']['phone'] || 00000000000
     @item[:lat] = res['location']['lat']
     @item[:lng] = res['location']['lng']
   end
