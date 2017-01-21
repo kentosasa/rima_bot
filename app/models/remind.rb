@@ -127,8 +127,10 @@ class Remind < ApplicationRecord
   end
 
   def emoji
-    emoji = "📆#{self.datetime.strftime("%m/%d")}"
+    emoji = '\n'
+    emoji += "📆#{self.datetime.strftime("%m/%d")}"
     emoji += "🔉#{self.before}前"
+    emoji += "🗺#{self.place}" if self.place
   end
 
   def line_notify(client)
