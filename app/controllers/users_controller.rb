@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
   private
   def set_schedule
-    @schedule = Schedule.find_by(id: params[:id])
+    @schedule = Schedule.find_by(uid: params[:id])
   end
 
   def user_params

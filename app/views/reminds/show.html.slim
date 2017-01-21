@@ -83,7 +83,7 @@ h3.title.is-3.has-text-centered = @remind.name
             - candidates = user.candidate_user_relations.order(:candidate_id)
             tr
               th
-                = link_to answer_edit_schedule_path(@remind.id, user.id) do
+                = link_to answer_edit_schedule_path(@remind.uid, user.id) do
                   = user.name || '名無し'
               - candidates.each_with_index do |cd, i|
                 td.attendance class="#{cd.attendance} #{percents[i]}"

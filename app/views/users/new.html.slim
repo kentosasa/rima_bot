@@ -17,7 +17,7 @@
 
 h3.title.is-3.has-text-centered 回答する
 
-= form_for @user, url: answer_schedule_path(@schedule), method: :post do |f|
+= form_for @user, url: answer_schedule_path(@schedule.uid), method: :post do |f|
 
   label.label = f.label :name, '表示名'
   p.control
