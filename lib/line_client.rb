@@ -36,13 +36,13 @@ class LineClient
   private
 
   def receive_follow
-    push_message("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。是非、グループに参加してみてください！よろしくお願いします:)")
+    @messaging.reply_text("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。是非、グループに参加してみてください！よろしくお願いします:)")
   end
 
   def receive_unfollow; end
 
   def receive_join
-    push_message("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。よろしくお願いします:)")
+    @messaging.reply_text("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。よろしくお願いします:)")
   end
 
   def receive_leave; end
@@ -81,7 +81,7 @@ class LineClient
 
   # リマインドを10分後に再通知
   def snooze(id)
-    remind = Remind.find(1)
+    remind = Remind.find(id)
     if remind.snooze!(10)
       @messaging.reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
     else

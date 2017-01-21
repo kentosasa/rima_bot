@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   private
   def set_group
     id = params[:id]
-    @group ||= Group.find_by_id(id) || Remind.find_by_id(id).group
+    @remind ||= Remind.find_by(uid: id) || Remind.find_by(id: id)
+    @group ||= Group.find_by(id: id) || @remind.group
   end
 end

@@ -83,7 +83,7 @@ table.table
               td.attendance class="#{cd.attendance}"
 br
 p
-  = link_to edit_remind_path(@remind), class: 'button is-success is-pulled-left' do
+  = link_to edit_remind_path(@remind.uid), class: 'button is-success is-pulled-left' do
     span.icon.is-small(style='margin-right:5px')
       i.fa.fa-check
     | 編集する

@@ -18,10 +18,12 @@
 #  latitude   :float
 #  longitude  :float
 #  address    :string
+#  hash       :string           index
 #
 
 class Remind < ApplicationRecord
   HOST = ENV['WEBHOOK_URL'].freeze
+  after_initialize :set_uid
 
   belongs_to :group
   scope :active, -> { where(activated: true) }  # 通知有効化されているリマインド
@@ -33,9 +35,20 @@ class Remind < ApplicationRecord
     after = now + Rational(min, 24 * 60)
     where(at: before..after).order(at: :asc)
   }
-  #scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
 
   attr_accessor :date, :time, :before, :remind_type, :candidate_body
+
+  def set_uid
+    self.uid ||= SecureRandom.hex(32)
+  end
+
+  def show_url
+    "#{HOST}/reminds/#{self.uid}"
+  end
+
+  def edit_url
+    "#{HOST}/reminds/#{self.uid}/edit"
+  end
 
   def parse_datetime
     [self.datetime.to_s(:date), self.datetime.to_s(:time)]
@@ -65,7 +78,7 @@ class Remind < ApplicationRecord
     }, {
       type: 'uri',
       label: '編集して作成',
-      uri: "#{HOST}/reminds/#{id}/edit"
+      uri: self.edit_url
     }]
   end
 
@@ -74,7 +87,7 @@ class Remind < ApplicationRecord
     [{
       type: 'uri',
       label: '詳細',
-      uri: "#{HOST}/reminds/#{id}"
+      uri: self.show_url
     }, {
       type: 'postback',
       label: '取り消す',
@@ -87,11 +100,11 @@ class Remind < ApplicationRecord
     [{
       type: 'uri',
       label: '詳細を見る',
-      uri: "#{HOST}/reminds/#{id}"
+      uri: self.show_url
     }, {
       type: 'uri',
       label: '編集する',
-      uri: "#{HOST}/reminds/#{id}/edit"
+      uri: self.edit_url
     }]
   end
 
@@ -115,7 +128,7 @@ class Remind < ApplicationRecord
         actions: [{
           type: 'uri',
           label: '詳細を見る',
-          uri: "#{HOST}/reminds/#{id}"
+          uri: self.show_url
         }, {
           type: 'postback',
           label: '10分後に再通知',
