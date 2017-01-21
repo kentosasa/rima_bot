@@ -17,3 +17,9 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_PORT: 5432
       DATABASE_HOST: db
+  nginx:
+    build: ./nginx
+    ports:
+      - '8080:80'
+    depends_on:
+      - web
