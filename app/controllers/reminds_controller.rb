@@ -82,7 +82,7 @@ class RemindsController < ApplicationController
   end
 
   def set_remind
-    @remind = remind_class.find(params[:id])
+    @remind = remind_class.find_by(uid: params[:id]) || remind_class.find_by(id: params[:id])
   end
 
   def combine_datetime
