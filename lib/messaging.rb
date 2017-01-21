@@ -1,4 +1,5 @@
 class Messaging
+  include ActionView::Helpers::TextHelper
   def initialize(event, client, group)
     @event = event
     @client = client
@@ -15,7 +16,7 @@ class Messaging
   def push_buttons(title, text, actions)
     @client.push_message(@group.source_id, {
       type: 'template',
-      altText: text,
+      altText: truncate(text, length: 30),
       template: {
         type: 'buttons',
         title: title,
@@ -53,7 +54,7 @@ class Messaging
   def reply_confirm(text, actions)
     @client.reply_message(@event['replyToken'], {
       type: 'template',
-      altText: text,
+      altText: truncate(text, length: 30),
       template: {
         type: 'confirm',
         text: text,
@@ -65,7 +66,7 @@ class Messaging
   def reply_buttons(title, text, actions)
     @client.reply_message(@event['replyToken'], {
       type: 'template',
-      altText: 'ご使用の端末は対応していません',
+      altText: truncate(text, length: 30),
       template: {
         type: 'buttons',
         title: title,
