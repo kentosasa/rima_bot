@@ -8,14 +8,20 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  source_id  :string
+#  uid        :string
 #
 
 class Group < ApplicationRecord
   has_many :reminds
   has_many :events
   has_many :schedules
+  after_initialize :set_uid
 
   enum user_type: { user_id: 0, group_id: 1, room_id: 2 }
+
+  def set_uid
+    self.uid ||= SecureRandom.hex(32)
+  end
 
   def self.find_or_create(event)
     case event['source']['type']
