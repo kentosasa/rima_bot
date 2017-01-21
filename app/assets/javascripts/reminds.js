@@ -72,6 +72,10 @@ $(document).ready(function() {
 
   if(gon.remindType !== undefined) {
     displayForm(gon.remindType);
+    if(gon.remindType == 'Schedule') {
+      $('.tabs .event-remind').removeClass('is-active');
+      $('.tabs .schedule-remind').addClass('is-active');
+    }
   }
 
 

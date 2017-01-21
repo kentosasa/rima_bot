@@ -82,6 +82,15 @@ class Remind < ApplicationRecord
     end
   end
 
+  # スケジュール作成のactions
+  def schedule_actions
+    [{
+      type: 'uri',
+      label: '候補日を選んで作成する',
+      uri: edit_url
+    }]
+  end
+
   # 日付を含んだ時に返すactions
   def create_actions
     [{

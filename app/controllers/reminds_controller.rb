@@ -9,11 +9,12 @@ class RemindsController < ApplicationController
 
   def new
     @remind = @group.reminds.new
+    @remind.type = params[:type] || 'Event'
     gon.autoComplete = true
     gon.lat = 35.6586488
     gon.lng = 139.6966408
     gon.create = true
-    gon.remindType = 'Event'
+    gon.remindType = params[:type] || 'Event'
   end
 
   def create

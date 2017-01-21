@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     member do
       get '/reminds/new', to: 'reminds#new'
       post '/reminds/', to: 'reminds#create'
+      get '/schedule/new', to: 'reminds#new', type: 'Schedule'
     end
   end
 end

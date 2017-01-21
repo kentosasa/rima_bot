@@ -7,7 +7,12 @@ class LineClient
     'location' => :echo_location,
     'sticker' => :echo_sticker
   }.freeze
-  MATCHER_RIMASAN = /りまさん|rimasan|リマさん|rima_san/
+
+  RIMASAN = Regexp.compile('りまさん|rimasan|リマさん|rima_san')
+  NEGATIVE = Regexp.compile('無理|ムリ|むり|ダメ|だめ|駄目|できない')
+  PLANS = Regexp.compile('予定一覧|リマインド一覧')
+  SCHEDULE = Regexp.compile('いつにする?|いつにする？|日程調整|スケジュール調整|いつがいい?|行ける人おしえてくださいー|何日にする-?')
+
   HOST = ENV['WEBHOOK_URL'].freeze
 
   def initialize(client, event)
@@ -43,7 +48,7 @@ class LineClient
   def receive_unfollow; end
 
   def receive_join
-    self_introduction
+    troduction
   end
 
   def receive_leave; end
@@ -59,7 +64,12 @@ class LineClient
   end
 
   def self_introduction
-    @messaging.reply_text("リマさんだよ！\n「明日の8時に新宿集合ね！」\nなどの会話があると予定を作れるよ！")
+    [
+      "リマインドBOTのリマさんだよ😆\n日程調整のサポートやリマインドは僕に任してね!😤",
+      "会話からリマインドや日程調整のお手伝いをするよリマさんです😋\nよろしくね！",
+      "「明日の8時に渋谷集合ね!」\nなどの会話があると、僕がサポートするよ🎶",
+      "「日程調整」や「予定一覧」って言ってみると僕がフルサポートするよ👍"
+    ].sample
   end
 
   # リマインド(id)を有効化
@@ -102,7 +112,7 @@ class LineClient
 
   def add_remind(body, datetime)
     remind_at = datetime.ago(1.hour)
-    name = datetime.strftime("%m/%dのイベント")
+    name = datetime.strftime("%-m/%-dのイベント")
 
     remind = @group.reminds.new(
       name: name,
@@ -116,9 +126,24 @@ class LineClient
     if remind.save
       @messaging.reply_text('リマインド🔔を設定しますか?')
       @messaging.push_buttons(name, body + remind.emoji, remind.create_actions)
-    else
-      # logger.debug '保存を失敗しました'
-      # @messaging.reply_text('保存失敗')
+    end
+  end
+
+  # スケジュールを追加
+  def add_schedule(body, datetime)
+    remind_at = datetime.ago(1.hour)
+
+    schedule = @group.reminds.new(
+      name: '日程調整',
+      body: body,
+      datetime: datetime,
+      at: remind_at,
+      type: 'Schedule',
+      activated: false
+    )
+
+    if schedule.save
+      @messaging.push_buttons(name, '日程調整をサポートしますか?', schedule.schedule_actions)
     end
   end
 
@@ -141,24 +166,35 @@ class LineClient
 
   def receive_text(event)
     body = event['message']['text']
-    MATCHER_RIMASAN.match(body) do
-      self_introduction
+
+    # 名前を呼ばれると自己紹介
+    if RIMASAN === body
+      @messaging.reply_text(self_introduction)
       return
     end
 
-    if body.include?('予定一覧')
+    # ネガティブワードがあれば反応しない
+    return if NEGATIVE === body
+
+    # 予定一覧やスケジュール一覧で予定を返す
+    if PLANS === body
       show_all_reminds
+      return
+    end
+
+    if SCHEDULE === body
+      add_schedule(body, DateTime.now + 7) # 一週間後
+      return
     end
 
     datte = Datte::Parser.new
     datte.parse_date(body) do |datetime| # 日付を含んだ処理
-      if body.include?('何')
+      if /何/ === body
         show_remind(datetime)
       else
         add_remind(body, datetime)
       end
     end
-
     # logger.debug '日付を含みませんでした'
     # @messaging.reply_text('日付を含みませんでした。')
   end
