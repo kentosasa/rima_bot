@@ -139,22 +139,32 @@ class Remind < ApplicationRecord
 
   # 詳細情報返すactions
   def show_actions
-    [{
+    actions = [{
       type: 'uri',
-      label: '詳細を見る',
+      label: '👀 詳細を見る',
       uri: self.show_url
-    }, {
-      type: 'uri',
-      label: '編集する',
-      uri: self.edit_url
     }]
+    if self.schedule?
+      actions.push({
+        type: 'uri',
+        label: '📝 回答する',
+        uri: self.answer_url
+      })
+    else
+      actions.push({
+        type: 'postback',
+        label: '🔕 通知を取り消す',
+        data: "action=inactivate&remind_id=#{id}"
+      })
+    end
+    actions
   end
 
   def show_column
     {
       "thumbnailImageUrl": "#{self.weather[:image]}",
-      "title": "リマインド「#{self.name}」",
-      "text": self.body,
+      "title": self.name,
+      "text": self.body + self.emoji,
       "actions": self.show_actions
     }
   end
@@ -163,7 +173,7 @@ class Remind < ApplicationRecord
     str = "\n"
     str += "📆 #{self.datetime.strftime("%-m月%-d日")} "
     str += "🔉 #{self.before}前"
-    str += "🗺#{self.place}" if self.place
+    #str += "🗺#{self.place}" if self.place
     str
   end
 
@@ -233,7 +243,7 @@ class Remind < ApplicationRecord
 
   def line_notify(client)
     messaging = Messaging.new(nil, client, self.group)
-    messaging.push_message('予定の時間が近づいてきました \n ついでにこんな場所はいかがですか？')
+    messaging.push_message("予定の時間が近づいてきました \n ついでにこんな場所はいかがですか？")
     response = messaging.push_notify(self.notify_columns)
     if response.is_a? Net::HTTPSuccess
       return self.reminded!
