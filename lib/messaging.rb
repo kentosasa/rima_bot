@@ -1,7 +1,8 @@
 class Messaging
-  def initialize(event, client)
+  def initialize(event, client, group)
     @event = event
     @client = client
+    @group = group
   end
 
   def push_message(text)
@@ -19,7 +20,7 @@ class Messaging
   end
 
   def reply_confirm(text, actions)
-    @client.reply_message(@event['re plyToken'], {
+    @client.reply_message(@event['replyToken'], {
       type: 'template',
       altText: text,
       template: {
@@ -45,14 +46,12 @@ class Messaging
   end
 
   def reply_carousel(columns)
-    @client.reply_message(@event['replyToken'],
-    {
+    @client.reply_message(@event['replyToken'], {
       "type": "template",
       "altText": "ご使用の端末は対応しておりません",
       "template": {
         "type": "carousel",
-        "columns":
-          columns
+        "columns": columns
       }
     })
   end

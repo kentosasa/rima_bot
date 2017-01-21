@@ -13,7 +13,7 @@ class LineClient
     @client = client
     @event = event
     @group = Group.find_or_create(event)
-    @messaging = Messaging.new(event, client)
+    @messaging = Messaging.new(event, client, @group)
   end
 
   def reply
