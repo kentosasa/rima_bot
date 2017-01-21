@@ -10,6 +10,7 @@ gem 'haml-rails'
 gem 'erb2haml'
 gem 'rb-readline'
 gem 'annotate'
+gem 'ffi'
 
 gem 'rails', '~> 5.0.1'
 gem 'puma', '~> 3.0'
@@ -35,7 +36,7 @@ gem 'line-bot-api'
 gem 'datte'
 
 # DB
-gem 'sqlite3'
+gem 'pg'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -54,7 +55,6 @@ group :development do
 end
 
 group :production do
-  gem 'pg'
   gem 'rails_12factor'
 end
 

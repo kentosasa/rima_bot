@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20170121042324) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "candidate_user_relations", force: :cascade do |t|
     t.integer  "candidate_id"
     t.integer  "user_id"
