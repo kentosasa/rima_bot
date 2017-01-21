@@ -18,6 +18,22 @@
     }
   }
 
+  .table-container {
+    position: relative;
+    width: 100%;
+    .remind-table {
+      width: 100%;
+      table-layout: fixed;
+      word-wrap: break-word;
+      th {
+        width: 140px;
+      }
+      td {
+        width: auto;
+      }
+    }
+  }
+
   .map-container {
     position: relative;
     height: 150px;
