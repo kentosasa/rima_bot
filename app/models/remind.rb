@@ -99,9 +99,9 @@ class Remind < ApplicationRecord
   def active_text
     if self.schedule?
       #"😎🔔☀️📝🌜😃🌙👀"
-      "#{self.datetime.strftime('%m月%d日 %H:%M')}までに回答お願いします😃"
+      "#{self.datetime.strftime('%-m月%-d日 %H:%M')}までに回答お願いします😃"
     elsif self.event?
-      "#{self.datetime.strftime('%m月%d日 %H:%M')}の#{self.before}前にリマインドを設定しました😃"
+      "#{self.datetime.strftime('%-m月%-d日 %H:%M')}の#{self.before}前にリマインドを設定しました😃"
     end
   end
 
@@ -152,8 +152,8 @@ class Remind < ApplicationRecord
 
   def emoji
     str = "\n"
-    str += "📆#{self.datetime.strftime("%m/%d")} "
-    str += "🔉#{self.before}前 "
+    str += "📆 #{self.datetime.strftime("%-m月%-d日")} "
+    str += "🔉 #{self.before}前"
     str += "🗺#{self.place}" if self.place
     str
   end

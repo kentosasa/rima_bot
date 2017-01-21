@@ -19,7 +19,7 @@ class Messaging
       altText: truncate(text, length: 30),
       template: {
         type: 'buttons',
-        title: title,
+        #title: title,
         text: text,
         actions: actions
       }

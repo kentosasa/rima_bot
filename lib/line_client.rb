@@ -109,7 +109,7 @@ class LineClient
     )
 
     if remind.save
-      @messaging.reply_text('日程調整をサポートしますか?')
+      @messaging.reply_text('リマインド🔔を設定しますか?')
       @messaging.push_buttons(name, body + remind.emoji, remind.create_actions)
     else
       # logger.debug '保存を失敗しました'
