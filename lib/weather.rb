@@ -10,7 +10,7 @@ class Weather
   end
 
   def call
-    return nil unless valid?
+    return {image: "#{HOST}/cal.png"} unless valid?
     html = open(@url).read
     body = JSON.parse(html)
 
