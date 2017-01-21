@@ -1,5 +1,6 @@
 class Weather
   WEATHER_API_BASE_URL = 'http://api.openweathermap.org/data/2.5/forecast?APPID=4ccbd98ec12f496d7be738ed843f68e1&'
+  HOST = ENV['WEBHOOK_URL'].freeze
 
   def initialize(lat, lng, datetime)
     @date = datetime.to_date
@@ -12,15 +13,15 @@ class Weather
   def image
     case @forecast
     when '雨'
-      return "#{ENV['ROOT_URL']}/rain.png"
+      return "#{HOST}/rain.png"
     when '雪'
-      return "#{ENV['ROOT_URL']}/snow.png"
+      return "#{HOST}/snow.png"
     when '晴れ'
-      return "#{ENV['ROOT_URL']}/sunny.png"
+      return "#{HOST}/sunny.png"
     when '曇り'
-      return "#{ENV['ROOT_URL']}/crown.png"
+      return "#{HOST}/crown.png"
     end
-    return "#{ENV['ROOT_URL']}/cal.png"
+    return "#{HOST}/cal.png"
   end
 
   def temp
