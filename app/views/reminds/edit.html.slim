@@ -50,18 +50,6 @@ h3.title.is-3.has-text-centered リマインド編集
     p.control
       = f.text_area :body, rows: 4, class: 'textarea', placeholder: '学生証を忘れないように'
 
-    label.label = f.label :place, '場所'
-    p.control
-      = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
-
-    .map-container
-      #map
-      = f.hidden_field :address
-      = f.hidden_field :latitude
-      = f.hidden_field :longitude
-    p.address
-      span#formatted_address = @remind.address
-
     label.label.required = f.label :date, 'イベント日時'
     .control.is-horizontal
       .control.is-grouped
@@ -76,12 +64,33 @@ h3.title.is-3.has-text-centered リマインド編集
         = f.select :before, {'10分前': 10, '20分前': 20, '30分前': 30, '1時間前': 60, '2時間前': 120}, {}
 
     .field(data-type='Schedule-remind')
-      label.label = f.label :scale, '人数'
-      p.control
-        = f.text_field :scale, class: 'input', placeholder: '11人'
-
-    .field(data-type='Schedule-remind')
       #candidate-datepicker
       label.label.required = f.label :candidate_body, '日付候補'
       p.control
         = f.text_area :candidate_body, rows: 4, class: 'textarea', placeholder: 'カレンダーをクリックすると日時が入力されます。また、内容は直接編集できます。'
+
+
+  .form-footer
+    p(style='position:relative')
+      | 詳細設定
+      a.button#toggle-button
+        span.icon.is-small
+          i
+
+    #toggle-body
+      label.label = f.label :place, '場所'
+      p.control
+        = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
+
+      .map-container
+        #map
+        = f.hidden_field :address
+        = f.hidden_field :latitude
+        = f.hidden_field :longitude
+      p.address
+        span#formatted_address = @remind.address
+
+      .field(data-type='Schedule-remind')
+        label.label = f.label :scale, '人数'
+        p.control
+          = f.text_field :scale, class: 'input', placeholder: '11人'
