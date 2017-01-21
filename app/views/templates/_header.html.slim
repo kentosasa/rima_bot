@@ -9,7 +9,7 @@ nav.nav
       span
 
     .nav-right.nav-menu
-      = link_to group_path(group), class: 'nav-item' do
+      = link_to group_path(group.uid), class: 'nav-item' do
         span.icon
           i.fa.fa-calendar-check-o
         |  リマインド一覧
@@ -17,7 +17,7 @@ nav.nav
         span.icon
           i.fa.fa-plus
         | リマインドを作成
-      = link_to edit_group_path(group), class: 'nav-item' do
+      = link_to edit_group_path(group.uid), class: 'nav-item' do
         span.icon
           i.fa.fa-cog
         |  設定

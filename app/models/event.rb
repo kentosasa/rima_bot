@@ -18,6 +18,7 @@
 #  latitude   :float
 #  longitude  :float
 #  address    :string
+#  uid        :string
 #
 
 class Event < Remind

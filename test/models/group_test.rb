@@ -8,6 +8,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  source_id  :string
+#  uid        :string
 #
 
 require 'test_helper'

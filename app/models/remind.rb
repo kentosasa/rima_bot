@@ -18,7 +18,7 @@
 #  latitude   :float
 #  longitude  :float
 #  address    :string
-#  hash       :string           index
+#  uid        :string
 #
 
 class Remind < ApplicationRecord
