@@ -37,6 +37,7 @@ class RemindsController < ApplicationController
 
   def edit
     @date, @time = @remind.parse_datetime
+    @remind.activate = true
     gon.autoComplete = true
     gon.remindType = @remind.type || 'Event'
 

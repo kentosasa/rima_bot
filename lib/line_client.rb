@@ -64,7 +64,8 @@ class LineClient
       text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}前にリマインドを設定しました。"
       @messaging.reply_confirm(text, remind.active_actions)
     else
-      @messaging.reply_text('通知設定に失敗')
+      # logger.debug '通知の設定に失敗'
+      # @messaging.reply_text('通知設定に失敗')
     end
   end
 
@@ -75,7 +76,8 @@ class LineClient
       text = "[#{remind.name}]\nリマインド設定を取り消しました。"
       @messaging.reply_confirm(text, remind.show_actions)
     else
-      @messaging.reply_text('通知取り消しに失敗')
+      # logger.debug '通知の取り消しに失敗'
+      # @messaging.reply_text('通知取り消しに失敗')
     end
   end
 
@@ -85,7 +87,8 @@ class LineClient
     if remind.snooze!(10)
       @messaging.reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
     else
-      @messaging.reply_text('再通知の設定に失敗')
+      # logger.debug '再通知の設定に失敗'
+      # @messaging.reply_text('再通知の設定に失敗')
     end
   end
 
@@ -104,7 +107,8 @@ class LineClient
     if remind.save
       @messaging.reply_buttons(name, body + remind.emoji, remind.create_actions)
     else
-      @messaging.reply_text('保存失敗')
+      # logger.debug '保存を失敗しました'
+      # @messaging.reply_text('保存失敗')
     end
   end
 
@@ -142,28 +146,34 @@ class LineClient
       return
     end
 
-    @messaging.reply_text('日付を含みませんでした。')
+    # logger.debug '日付を含みませんでした'
+    # @messaging.reply_text('日付を含みませんでした。')
   end
 
   def echo_image(event)
-    @messaging.reply_text('イメージだよ')
+    # logger.debug 'イメージだよ'
+    #@messaging.reply_text('イメージだよ')
   end
 
   def echo_video(event)
-    @messaging.reply_text('動画だよ')
+    # logger.debug 'ビデオだよ'
+    #@messaging.reply_text('動画だよ')
   end
 
   def echo_audio(event)
-    @messaging.reply_text('音声だよ')
+    # logger.debug '音声だよ'
+    # @messaging.reply_text('音声だよ')
   end
 
   def echo_location(event)
-    title, address = event['message']['title'], event['message']['address']
-    lat, lng = event['message']['latitude'], event['message']['longitude']
-    @messaging.reply_location(title, address, lat, lng)
+    # logger.debug 'ロケーション'
+    # title, address = event['message']['title'], event['message']['address']
+    # lat, lng = event['message']['latitude'], event['message']['longitude']
+    # @messaging.reply_location(title, address, lat, lng)
   end
 
   def echo_sticker(event)
-    @messaging.reply_sticker(event['message']['packageId'], event['message']['stickerId'])
+    # logger.debug 'stickerだよ'
+    # @messaging.reply_sticker(event['message']['packageId'], event['message']['stickerId'])
   end
 end
