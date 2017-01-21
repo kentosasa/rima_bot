@@ -36,11 +36,11 @@ class Ad
   end
 
   def venue_search
-    url = URI.encode("#{BASE_URL}search?v=20161016&ll=#{@lat},#{@lng}&client_id=#{CLIENT_ID}&client_secret=#{CLIENT_SECRET}")
+    url = URI.encode("#{BASE_URL}search?v=20161016&categoryId=4d4b7104d754a06370d81259&ll=#{@lat},#{@lng}&client_id=#{CLIENT_ID}&client_secret=#{CLIENT_SECRET}")
     body = JSON.parse(open(url).read)
     res = body['response']['venues'][0]
     @item[:id] = res['id']
-    @item[:name] = res['name']
+    @item[:name] = res['name'][0..20]
     @item[:phoen] = res['contact']['phone'] || 00000000000
     @item[:lat] = res['location']['lat']
     @item[:lng] = res['location']['lng']
