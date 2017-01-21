@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   resources :schedules, controller: :reminds, type: 'Schedule', except: [:new, :edit] do
     member do
       get '/answer', to: 'users#new'
+      get '/answer/:user_id/edit', to: 'users#edit', as: 'answer_edit'
+      post '/answer/:user_id', to: 'users#update'
       post '/answer', to: 'users#create'
     end
   end

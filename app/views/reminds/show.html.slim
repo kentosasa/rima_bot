@@ -78,7 +78,9 @@ table.table
         - @users.each do |user|
           - candidates = user.candidate_user_relations.order(:candidate_id)
           tr
-            th = user.name || '名無し'
+            th
+              = link_to answer_edit_schedule_path(@remind.id, user.id) do
+                = user.name || '名無し'
             - candidates.each do |cd|
               td.attendance class="#{cd.attendance}"
 br
