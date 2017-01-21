@@ -146,20 +146,12 @@ class LineClient
   end
 
   def echo_location(event)
-    @client.reply_message(event['replyToken'], {
-      type: 'location',
-      title: event['message']['title'],
-      address: event['message']['address'],
-      latitude: event['message']['latitude'],
-      longitude: event['message']['longitude']
-    })
+    title, address = event['message']['title'], event['message']['address']
+    lat, lng = event['message']['latitude'], event['message']['longitude']
+    @messaging.reply_location(title, address, lat, lng)
   end
 
   def echo_sticker(event)
-    @client.reply_message(event['replyToken'], {
-      type: 'sticker',
-      package_id: event['message']['packageId'],
-      sticker_id: event['message']['stickerId']
-    })
+    @messaging.reply_sticker(event['message']['packageId'], event['message']['stickerId'])
   end
 end

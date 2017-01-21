@@ -12,6 +12,24 @@ class Messaging
     })
   end
 
+  def reply_sticker(package_id, sticker_id)
+    @client.reply_message(@event['replyToken'], {
+      type: 'sticker',
+      package_id: package_id,
+      sticker_id: sticker_id
+    })
+  end
+
+  def reply_location(title, address, lat, lng)
+    @client.reply_message(@event['replyToken'], {
+      type: 'location',
+      title: title,
+      address: address,
+      latitude: lat,
+      longitude: lng
+    })
+  end
+
   def reply_text(text)
     @client.reply_message(@event['replyToken'], {
       type: 'text',
