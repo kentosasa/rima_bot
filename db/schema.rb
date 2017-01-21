@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20170121014816) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "address"
-    t.string   "hash"
+    t.string   "uid"
   end
 
   create_table "users", force: :cascade do |t|

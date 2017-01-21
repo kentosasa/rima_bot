@@ -18,10 +18,12 @@
 #  latitude   :float
 #  longitude  :float
 #  address    :string
+#  hash       :string           index
 #
 
 class Remind < ApplicationRecord
   HOST = ENV['WEBHOOK_URL'].freeze
+  after_initialize :set_hash
 
   belongs_to :group
   scope :active, -> { where(activated: true) }  # 通知有効化されているリマインド
@@ -33,9 +35,12 @@ class Remind < ApplicationRecord
     after = now + Rational(min, 24 * 60)
     where(at: before..after).order(at: :asc)
   }
-  #scope :pending, -> { where('at <= ? AND activated = ? AND reminded = ?', DateTime.now, true, false) }
 
   attr_accessor :date, :time, :before, :remind_type, :candidate_body
+
+  def set_hash
+    self.uid = SecureRandom.hex(32)
+  end
 
   def parse_datetime
     [self.datetime.to_s(:date), self.datetime.to_s(:time)]
