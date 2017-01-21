@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     member do
       get '/answer', to: 'users#new'
       post '/answer', to: 'users#create'
+      get '/answer/:user_id/edit', to: 'users#edit', as: 'answer_edit'
+      put '/answer/:user_id', to: 'users#update', as: 'answer_update'
     end
   end
 

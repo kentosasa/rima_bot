@@ -104,7 +104,7 @@ class RemindsController < ApplicationController
     body[:candidate_body].lines.each do |line|
       title = line.chomp
       next if title.size.zero?
-      candidate = schedule.candidates.find_or_initialize_by(title: title)
+      candidate = Candidate.find_or_initialize_by(title: title, schedule_id: schedule.id)
       candidate.title = title
       candidate.save
     end
