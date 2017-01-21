@@ -158,14 +158,12 @@ class Remind < ApplicationRecord
     str
   end
 
-  def line_notify(client)
-    response = client.push_message(self.group.source_id, {
-      type: 'template',
-      altText: "#{self.before}後に[#{self.name}]があります。",
-      template: {
-        type: 'buttons',
-        title: "#{self.before}後に[#{self.name}]",
-        text: self.body || '',
+  def notify_columns
+    [
+      {
+        thumbnailImageUrl: "#{self.weather[:image]}",
+        title: "リマインド「#{self.name}」",
+        text: self.body,
         actions: [{
           type: 'uri',
           label: '詳細を見る',
@@ -175,8 +173,59 @@ class Remind < ApplicationRecord
           label: '10分後に再通知',
           data: "action=snooze&remind_id=#{id}"
         }]
-      }
-    })
+        }, {
+          thumbnailImageUrl: "#{HOST}/ad1.jpg",
+          title: "鳥貴族",
+          text: '安くて美味しい鳥貴族は二次会にいかがですか？',
+          actions: [
+            {
+              type: 'uri',
+              label: '詳細を見る',
+              uri: 'https://www.torikizoku.co.jp/shops/detail/337'
+            }, {
+              type: 'uri',
+              label: '電話する',
+              uri: 'tel:0364169177'
+            }
+          ]
+        }, {
+          thumbnailImageUrl: "#{HOST}/ad2.jpg",
+          title: "ダーツ・バー Bee",
+          text: '朝5時まで遊べる渋谷のお店です。おしゃれなダーツバーで夜をすごしませんか？',
+          actions: [
+            {
+              type: 'uri',
+              label: '詳細を見る',
+              uri: 'https://www.hotpepper.jp/strJ000013646/'
+            }, {
+              type: 'uri',
+              label: '電話する',
+              uri: 'tel:0364169177'
+            }
+          ]
+        }, {
+          thumbnailImageUrl: "#{HOST}/ad3.jpg",
+          title: "ダーツ・バー Bee",
+          text: 'ご飯を食べた後は夜通しダンスをして刺激的な夜を過ごしませんか？',
+          actions: [
+            {
+              type: 'uri',
+              label: '詳細を見る',
+              uri: 'http://t2-shibuya.com/club/'
+            }, {
+              type: 'uri',
+              label: '電話する',
+              uri: 'tel:0364169177'
+            }
+          ]
+        }
+    ]
+  end
+
+  def line_notify(client)
+    messaging = Messaging.new(nil, client, self.group)
+    messaging.push_message('予定の時間が近づいてきました \n ついでにこんな場所はいかがですか？')
+    response = messaging.push_notify(self.notify_columns)
     if response.is_a? Net::HTTPSuccess
       return self.reminded!
     end
