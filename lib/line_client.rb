@@ -42,13 +42,13 @@ class LineClient
   private
 
   def receive_follow
-    @messaging.reply_text("友達登録ありがとうございます。\nリマさんはグループ内の会話からリマインドや日程調整のサポートをするBOTです。是非、グループに参加してみてください！よろしくお願いします:)")
+    @messaging.push_message(self_introduction)
   end
 
   def receive_unfollow; end
 
   def receive_join
-    troduction
+    @messaging.push_message(self_introduction)
   end
 
   def receive_leave; end

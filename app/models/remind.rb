@@ -116,29 +116,6 @@ class Remind < ApplicationRecord
 
   # active=trueにした時に返すactions
   def active_actions
-    actions = []
-    actions.push({
-      type: 'uri',
-      label: '👀 詳細を見る',
-      uri: self.show_url
-    })
-    if self.schedule?
-      actions.push({
-        type: 'uri',
-        label: '📝 回答する',
-        uri: self.answer_url
-      })
-    end
-    actions.push({
-      type: 'postback',
-      label: '🔕 通知を取り消す',
-      data: "action=inactivate&remind_id=#{id}"
-    })
-    actions
-  end
-
-  # 詳細情報返すactions
-  def show_actions
     actions = [{
       type: 'uri',
       label: '👀 詳細を見る',
@@ -165,7 +142,7 @@ class Remind < ApplicationRecord
       "thumbnailImageUrl": "#{self.weather[:image]}",
       "title": self.name,
       "text": self.body + self.emoji,
-      "actions": self.show_actions
+      "actions": self.active_actions
     }
   end
 
