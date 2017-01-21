@@ -126,6 +126,13 @@ class Remind < ApplicationRecord
     }
   end
 
+  def emoji
+    emoji = '\n'
+    emoji += "📆#{self.datetime.strftime("%m/%d")}"
+    emoji += "🔉#{self.before}前"
+    emoji += "🗺#{self.place}" if self.place
+  end
+
   def line_notify(client)
     response = client.push_message(self.group.source_id, {
       type: 'template',
