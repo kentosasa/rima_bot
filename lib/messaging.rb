@@ -51,14 +51,13 @@ class Messaging
 
   def reply_buttons(title, text, actions)
     @client.reply_message(@event['replyToken'], {
-      'type': 'template',
-      'altText': 'ご使用の端末は対応していません',
-      'template': {
-        'type': 'buttons',
-        #thumbnailImageUrl: image,
-        'title': title,
-        'text': text,
-        'actions': actions
+      type: 'template',
+      altText: 'ご使用の端末は対応していません',
+      template: {
+        type: 'buttons',
+        title: title,
+        text: text,
+        actions: actions
       }
     })
   end

@@ -60,12 +60,16 @@ class LineClient
   # リマインド(id)を有効化
   def activation(id)
     remind = Remind.find(id)
-    if remind.activate!
-      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}前にリマインドを設定しました。"
-      @messaging.reply_confirm(text, remind.active_actions)
+    unless remind.activated?
+      if remind.activate!
+        title = remind.name
+        @messaging.reply_buttons(title, remind.active_text, remind.active_actions)
+      else
+        # logger.debug '通知の設定に失敗'
+        # @messaging.reply_text('通知設定に失敗')
+      end
     else
-      # logger.debug '通知の設定に失敗'
-      # @messaging.reply_text('通知設定に失敗')
+      # @messaging.reply_text('既に通知が有効化されてますよー。')
     end
   end
 
@@ -73,7 +77,7 @@ class LineClient
   def inactivation(id)
     remind = Remind.find(id)
     if remind.inactivate!
-      @messaging.reply_text("🔕 リマインド設定を取り消しました。")
+      @messaging.reply_text("🔕リマインド設定を取り消しました。")
     else
       # logger.debug '通知の取り消しに失敗'
       # @messaging.reply_text('通知取り消しに失敗')
@@ -100,7 +104,8 @@ class LineClient
       body: body,
       datetime: datetime,
       at: remind_at,
-      type: 'Event'
+      type: 'Event',
+      activated: false
     )
 
     if remind.save
@@ -142,7 +147,6 @@ class LineClient
       else
         add_remind(body, datetime)
       end
-      return
     end
 
     # logger.debug '日付を含みませんでした'

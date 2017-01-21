@@ -1,4 +1,7 @@
+require 'line/bot'
+
 class RemindsController < ApplicationController
+  include ActionView::Helpers::TextHelper
   before_action :set_group
   before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate, :inactivate]
   before_action :set_gmap, only: [:show, :edit, :update]
@@ -32,12 +35,12 @@ class RemindsController < ApplicationController
       @users = @candidates.first.users
     end
   end
+
   def activate; @remind.activate! end
   def inactivate; @remind.inactivate! end
 
   def edit
     @date, @time = @remind.parse_datetime
-    @remind.activate = true
     gon.autoComplete = true
     gon.remindType = @remind.type || 'Event'
 
@@ -52,6 +55,21 @@ class RemindsController < ApplicationController
     @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
+    unless @remind.activated?
+      @remind.activated = true
+      # ここでアクティブ通知を行う
+      text = truncate(@remind.body, length: 25) + "\n" + @remind.active_text
+      client.push_message(@remind.group.source_id, {
+        type: 'template',
+        altText: text,
+        template: {
+          type: 'buttons',
+          title: @remind.name,
+          text: text,
+          actions: @remind.active_actions
+        }
+      })
+    end
 
     parse_candidates(@remind) if @remind.schedule?
 
@@ -114,5 +132,12 @@ class RemindsController < ApplicationController
   def remind_class
     return Remind if type.blank?
     type.constantize
+  end
+
+  def client
+    @client ||= Line::Bot::Client.new do |config|
+      config.channel_secret = ENV['LINE_CHANNEL_SECRET']
+      config.channel_token = ENV['LINE_CHANNEL_TOKEN']
+    end
   end
 end

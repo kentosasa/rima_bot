@@ -55,6 +55,10 @@ class Remind < ApplicationRecord
     "#{HOST}/reminds/#{self.uid}"
   end
 
+  def answer_url
+    "#{HOST}/schedules/#{self.uid}/answer"
+  end
+
   def edit_url
     "#{HOST}/reminds/#{self.uid}/edit"
   end
@@ -91,17 +95,37 @@ class Remind < ApplicationRecord
     }]
   end
 
-  # 通知を有効化した時に返すactions
+  # active=trueにした時のテキスト
+  def active_text
+    if self.schedule?
+      #"😎🔔☀️📝🌜😃🌙👀"
+      "#{self.datetime.strftime('%m月%d日 %H:%m')}までに回答お願いします😃"
+    elsif self.event?
+      "#{self.datetime.strftime('%m月%d日 %H:%m')}の#{self.before}前にリマインドを設定しました😃"
+    end
+  end
+
+  # active=trueにした時に返すactions
   def active_actions
-    [{
+    actions = []
+    actions.push({
       type: 'uri',
-      label: '詳細',
+      label: '👀 詳細を見る',
       uri: self.show_url
-    }, {
+    })
+    if self.schedule?
+      actions.push({
+        type: 'uri',
+        label: '📝 回答する',
+        uri: self.answer_url
+      })
+    end
+    actions.push({
       type: 'postback',
-      label: '取り消す',
+      label: '🔕 通知を取り消す',
       data: "action=inactivate&remind_id=#{id}"
-    }]
+    })
+    actions
   end
 
   # 詳細情報返すactions
