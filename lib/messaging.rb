@@ -26,6 +26,17 @@ class Messaging
     })
   end
 
+  def push_carousel(text, columns)
+    @client.push_message(@group.source_id, {
+      type: 'template',
+      altText: text,
+      template: {
+        type: 'carousel',
+        columns: columns
+      }
+    })
+  end
+
   def reply_sticker(package_id, sticker_id)
     @client.reply_message(@event['replyToken'], {
       type: 'sticker',

@@ -155,13 +155,17 @@ class LineClient
       ad_column = ad.column
       columns.push(ad_column) if ad_column.present?
     end
-    @messaging.reply_carousel(columns)
+    text = datetime.strftime("%-m月%-d日の予定ですよ！")
+    @messaging.reply_text(text)
+    @messaging.push_carousel(text, columns)
   end
 
   def show_all_reminds
     reminds = @group.reminds.active.between(DateTime.now, nil).limit(5)
     columns = reminds.map { |remind| remind.show_column }
-    @messaging.reply_carousel(columns)
+    text = "今日以降の予定ですよ！"
+    @messaging.reply_text(text)
+    @messaging.push_carousel(text, columns)
   end
 
   def receive_text(event)
