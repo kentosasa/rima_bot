@@ -1,10 +1,10 @@
 - content_for :footer do
   .columns.is-mobile.is-gapless
     .column.is-half-mobile
-      = button_tag type: 'submit', class: 'button is-success is-large is-fullwidth', form: 'edit_user' do
+      = button_tag type: 'submit', class: 'button is-success is-large is-fullwidth', form: "edit_user_#{@user.id}" do
         span.icon(style='margin-right: 10px;')
           i.fa.fa-check
-        | 入力する
+        | 更新する
     .column.is-half-mobile
       = link_to :back, class: 'button is-warning is-large is-fullwidth' do
         span.icon(style='margin-right: 10px;')
@@ -17,7 +17,7 @@
 
 h3.title.is-3.has-text-centered 回答する
 
-= form_for @user, url: answer_schedule_path(@schedule), method: :post do |f|
+= form_for @user, url: answer_update_schedule_path(@schedule, @user), method: :put do |f|
 
   label.label = f.label :name, '表示名'
   p.control

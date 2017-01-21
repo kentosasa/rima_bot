@@ -28,6 +28,19 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user = User.find(params[:user_id])
+    @user.update(user_params)
+    params[:candidate].each do |cd|
+      id = cd[:id].to_i
+      answer = params["candidate_#{id}"][:attendance]
+      candidate_user = CandidateUserRelation.find_by(
+        candidate_id: id,
+        user_id: @user.id
+      )
+      candidate_user.update(attendance: answer.to_sym)
+    end
+    flash[:success] = '出欠を更新しました。'
+    redirect_to remind_path(@schedule.uid)
   end
 
   private
