@@ -42,7 +42,7 @@ class LineClient
   def receive_unfollow; end
 
   def receive_join
-    @messaging.reply_text("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。よろしくお願いします:)")
+    @messaging.reply_text("はじめまして！\n「明日の8時に新宿集合ね！」。などの会話があると予定を作れるよ！")
   end
 
   def receive_leave; end
