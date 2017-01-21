@@ -109,7 +109,7 @@ class LineClient
   end
 
   def show_remind(datetime)
-    reminds = @group.reminds.where(datetime: datetime.beginning_of_day...datetime.end_of_day).limit(3)
+    reminds = @group.reminds.active.between(datetime.beginning_of_day, datetime.end_of_day).limit(3)
     columns = reminds.map { |item| item.show_column }
     if reminds.present? && reminds[0].latitude.present? && reminds[0].longitude.present?
       ad = Ad.new(reminds[0].latitude, reminds[0].longitude)
@@ -119,10 +119,21 @@ class LineClient
     @messaging.reply_carousel(columns)
   end
 
+  def show_all_reminds
+    reminds = @group.reminds.active.between(DateTime.now, nil).limit(5)
+    columns = reminds.map { |item| item.show_column }
+    @messaging.reply_carousel(columns)
+  end
+
   def receive_text(event)
     body = event['message']['text']
+
+    if body.include?('予定一覧')
+      show_all_reminds
+    end
+
     datte = Datte::Parser.new
-    datte.parse_date(body) do |datetime|
+    datte.parse_date(body) do |datetime| # 日付を含んだ処理
       if body.include?('何')
         show_remind(datetime)
       else
@@ -130,6 +141,7 @@ class LineClient
       end
       return
     end
+
     @messaging.reply_text('日付を含みませんでした。')
   end
 
