@@ -12,10 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require_tree .
 
-$(document).on('turbolinks:load', function () {
+$(document).ready( function () {
   /* notificationの閉じるをクリックしたら閉じる */
   $('.notification .delete').on('click', function () {
     $(this).parent().fadeOut();
