@@ -12,6 +12,19 @@ class Messaging
     })
   end
 
+  def push_buttons(title, text, actions)
+    @client.push_message(@group.source_id, {
+      type: 'template',
+      altText: text,
+      template: {
+        type: 'buttons',
+        title: title,
+        text: text,
+        actions: actions
+      }
+    })
+  end
+
   def reply_sticker(package_id, sticker_id)
     @client.reply_message(@event['replyToken'], {
       type: 'sticker',

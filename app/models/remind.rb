@@ -90,7 +90,7 @@ class Remind < ApplicationRecord
       data: "action=activate&remind_id=#{id}"
     }, {
       type: 'uri',
-      label: '編集して作成',
+      label: '編集して設定',
       uri: self.edit_url
     }]
   end
@@ -99,9 +99,9 @@ class Remind < ApplicationRecord
   def active_text
     if self.schedule?
       #"😎🔔☀️📝🌜😃🌙👀"
-      "#{self.datetime.strftime('%m月%d日 %H:%m')}までに回答お願いします😃"
+      "#{self.datetime.strftime('%m月%d日 %H:%M')}までに回答お願いします😃"
     elsif self.event?
-      "#{self.datetime.strftime('%m月%d日 %H:%m')}の#{self.before}前にリマインドを設定しました😃"
+      "#{self.datetime.strftime('%m月%d日 %H:%M')}の#{self.before}前にリマインドを設定しました😃"
     end
   end
 

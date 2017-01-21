@@ -55,7 +55,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.4)
-    datte (0.5.1)
+    datte (0.6.1)
     debug_inspector (0.0.2)
     dotenv (2.1.2)
     dotenv-rails (2.1.2)
