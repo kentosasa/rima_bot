@@ -5,8 +5,8 @@ class Ad
   CLIENT_SECRET = 'ILVMKKHJLAI4JUEEZDMB4BX1WTRT0PDY5VIJFKQMZX1L5ZGB'
 
   def initialize(lat, lng)
-    @lat = lat
-    @lng = lng
+    @lat = lat || 35.6586488
+    @lng = lng || 139.6966408
     @item = {}
     venue_search
     venue_detail(@item[:id])

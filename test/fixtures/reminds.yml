@@ -18,6 +18,7 @@
 #  latitude   :float
 #  longitude  :float
 #  address    :string
+#  uid        :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
