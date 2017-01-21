@@ -34,9 +34,6 @@ gem 'meta-tags'
 gem 'line-bot-api'
 gem 'datte'
 
-# DB
-gem 'sqlite3'
-
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'pry-rails'
@@ -44,6 +41,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'dotenv-rails'
+  gem 'sqlite3'
 end
 
 group :development do
