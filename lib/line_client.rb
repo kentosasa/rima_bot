@@ -7,6 +7,7 @@ class LineClient
     'location' => :echo_location,
     'sticker' => :echo_sticker
   }.freeze
+  MATCHER_RIMASAN = /りまさん|rimasan|リマさん|rima_san/
   HOST = ENV['WEBHOOK_URL'].freeze
 
   def initialize(client, event)
@@ -36,13 +37,13 @@ class LineClient
   private
 
   def receive_follow
-    @messaging.reply_text("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。是非、グループに参加してみてください！よろしくお願いします:)")
+    @messaging.reply_text("友達登録ありがとうございます。\nリマさんはグループ内の会話からリマインドや日程調整のサポートをするBOTです。是非、グループに参加してみてください！よろしくお願いします:)")
   end
 
   def receive_unfollow; end
 
   def receive_join
-    @messaging.reply_text("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。よろしくお願いします:)")
+    self_introduction
   end
 
   def receive_leave; end
@@ -55,6 +56,10 @@ class LineClient
     when 'inactivate' then inactivation(id)
     when 'snooze' then snooze(id)
     end
+  end
+
+  def self_introduction
+    @messaging.reply_text("リマさんだよ！\n「明日の8時に新宿集合ね！」\nなどの会話があると予定を作れるよ！")
   end
 
   # リマインド(id)を有効化
@@ -136,6 +141,10 @@ class LineClient
 
   def receive_text(event)
     body = event['message']['text']
+    MATCHER_RIMASAN.match(body) do
+      self_introduction
+      return
+    end
 
     if body.include?('予定一覧')
       show_all_reminds

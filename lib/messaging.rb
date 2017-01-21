@@ -86,4 +86,16 @@ class Messaging
       }
     })
   end
+
+  # プレゼンのためadは固定
+  def push_notify(columns)
+    @client.push_message(@group.source_id, {
+      "type": "template",
+      "altText": "ご使用の端末は対応しておりません",
+      "template": {
+        "type": "carousel",
+        "columns": columns
+      }
+    })
+  end
 end
