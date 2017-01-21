@@ -126,6 +126,11 @@ class Remind < ApplicationRecord
     }
   end
 
+  def emoji
+    emoji = "📆#{self.datetime.strftime("%m/%d")}"
+    emoji += "🔉#{self.before}前"
+  end
+
   def line_notify(client)
     response = client.push_message(self.group.source_id, {
       type: 'template',

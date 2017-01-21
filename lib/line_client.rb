@@ -72,7 +72,7 @@ class LineClient
   def inactivation(id)
     remind = Remind.find(id)
     if remind.inactivate!
-      text = "[#{remind.name}]\nリマインド設定を取り消しました。"
+      text = "[#{remind.name}]\n\nリマインド設定を取り消しました。"
       @messaging.reply_confirm(text, remind.show_actions)
     else
       @messaging.reply_text('通知取り消しに失敗')
@@ -102,7 +102,7 @@ class LineClient
     )
 
     if remind.save
-      @messaging.reply_buttons(name, body, remind.create_actions)
+      @messaging.reply_buttons(name, body + "\n\n" + remind.emoji , remind.create_actions)
     else
       @messaging.reply_text('保存失敗')
     end
