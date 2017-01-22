@@ -7,7 +7,7 @@ namespace :line do
   # 未通知のものを通知
   # 人数が揃っていないスケジュールの通知
   task :notify => :environment do
-    @reminds = Remind.active.pending.before_and_after(20)
+    @reminds = Remind.active.pending.before_and_after(2000)
     @reminds.each do |remind|
       p hoge
       if remind.line_notify(client)
