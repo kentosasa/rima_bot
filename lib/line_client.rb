@@ -117,7 +117,6 @@ class LineClient
     else
       remind_at = datetime.ago(1.hour)
     end
-    binding.pry
     name = datetime.strftime("%-m/%-dのイベント")
 
     remind = @group.reminds.new(
