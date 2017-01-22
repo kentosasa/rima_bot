@@ -111,12 +111,13 @@ class LineClient
   end
 
   def add_remind(body, datetime)
-    between = datetime.to_time.to_i - DateTime.now.to_time.to_i
-    if between < 60 * 60
+    between = datetime.to_time.to_i - Time.zone.now.to_time.to_i
+    if between < 60 * 60 * 10
       remind_at = datetime
     else
       remind_at = datetime.ago(1.hour)
     end
+    binding.pry
     name = datetime.strftime("%-m/%-dのイベント")
 
     remind = @group.reminds.new(
