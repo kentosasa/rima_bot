@@ -55,7 +55,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.4)
-    datte (0.6.1)
+    datte (0.6.2)
     debug_inspector (0.0.2)
     dotenv (2.1.2)
     dotenv-rails (2.1.2)
@@ -191,7 +191,7 @@ GEM
       railties (>= 3.1)
       slim (~> 3.0)
     slop (3.6.0)
-    spring (2.0.0)
+    spring (2.0.1)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
