@@ -14,6 +14,6 @@ module RimaBot
 
     config.autoload_paths += %W(#{config.root}/lib)
     #config.active_record.default_timezone = :local
-    config.time_zone = 'Tokyo'
+    #config.time_zone = 'Tokyo'
   end
 end
