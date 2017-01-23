@@ -19,6 +19,13 @@ namespace :line do
     end
   end
 
+  desc '意図しないで作られた無駄な通知を削除する'
+  task :delete_remind => :environment do
+    # 作成状態で昨日以降に作られたリマインド一覧
+    @reminds = Remind.created.between(nil, Time.zone.now - 1)
+    @reminds.delete_all
+  end
+
   private
   def client
     @client ||= Line::Bot::Client.new do |config|
