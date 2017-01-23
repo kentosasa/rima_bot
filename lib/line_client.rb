@@ -13,8 +13,6 @@ class LineClient
   PLANS = Regexp.compile('予定一覧|リマインド一覧')
   SCHEDULE = Regexp.compile('いつにする?|いつにする？|日程調整|スケジュール調整|いつがいい?|いつにしよう?|行ける人おしえてくださいー|何日にする-?')
 
-  HOST = ENV['WEBHOOK_URL'].freeze
-
   def initialize(client, event)
     @client = client
     @event = event
@@ -38,20 +36,6 @@ class LineClient
       receive_postback
     end
   end
-
-  private
-
-  def receive_follow
-    @messaging.push_message(self_introduction)
-  end
-
-  def receive_unfollow; end
-
-  def receive_join
-    @messaging.push_message(self_introduction)
-  end
-
-  def receive_leave; end
 
   def receive_postback
     query = Rack::Utils.parse_nested_query(@event["postback"]["data"])

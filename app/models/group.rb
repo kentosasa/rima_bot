@@ -26,11 +26,20 @@ class Group < ApplicationRecord
   def self.find_or_create(event)
     case event['source']['type']
     when 'user'
-      return Group.find_or_create_by(source_id: event['source']['userId'], user_type: :user_id)
+      Group.find_or_create_by(source_id: event['source']['userId'], user_type: :user_id)
     when 'group'
-      return Group.find_or_create_by(source_id: event['source']['groupId'], user_type: :group_id)
+      Group.find_or_create_by(source_id: event['source']['groupId'], user_type: :group_id)
     when 'room'
-      return Group.find_or_create_by(source_id: event['source']['roomId'], user_type: :room_id)
+      Group.find_or_create_by(source_id: event['source']['roomId'], user_type: :room_id)
     end
+  end
+
+  def self_intro
+    [
+      "リマインドBOTのリマさんだよ😆\n日程調整のサポートやリマインドは僕に任してね!😤",
+      "会話からリマインドや日程調整のお手伝いをするよリマさんです😋\nよろしくね！",
+      "「明日の8時に渋谷集合ね!」\nなどの会話があると、僕がサポートするよ🎶",
+      "「日程調整」や「予定一覧」って言ってみると僕がフルサポートするよ👍"
+    ].sample
   end
 end
