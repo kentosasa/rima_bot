@@ -13,6 +13,12 @@
 
 h3.title.is-3.has-text-centered 回答する
 
+article.message
+  .message-header
+    p = @schedule.name
+  .message-body
+    = @schedule.body
+
 = form_for @user, url: answer_update_schedule_path(@schedule.uid, @user), method: :put do |f|
 
   label.label = f.label :name, '表示名'
