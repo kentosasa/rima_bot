@@ -42,4 +42,11 @@ class Group < ApplicationRecord
       "「日程調整」や「予定一覧」って言ってみると僕がフルサポートするよ👍"
     ].sample
   end
+
+  def update_profile(json)
+    self.name ||= json['displayName']
+    # self.image ||= json['pictureUrl']
+    # self.message ||= json['statusMessage']
+    save
+  end
 end

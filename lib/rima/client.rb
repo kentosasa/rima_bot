@@ -19,6 +19,8 @@ module Rima
       @event = event
       @group = Group.find_or_create(event)
       @message = Rima::Message.new(@group, @event)
+
+      @group.update_profile(@message.get_profile) if @group.name.nil?
     end
 
     def reply

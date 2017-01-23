@@ -38,6 +38,17 @@ module Rima
       })
     end
 
+    def get_profile
+      response = client.get_profile(@group.source_id)
+      case response
+      when Net::HTTPSuccess then
+        JSON.parse(response.body)
+      else
+        p "#{response.code} #{response.body}"
+        nil
+      end
+    end
+
     def reply_sticker(package_id, sticker_id)
       client.reply_message(@event['replyToken'], {
         type: 'sticker',
