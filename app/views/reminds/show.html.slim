@@ -39,15 +39,11 @@ h3.title.is-3.has-text-centered = @remind.name
       tr(style='height: 2.5em')
         th リマインド有効
         td.activate-field
-          - if @remind.activated
+          - if @remind.activated?
             = render partial: 'reminds/inactivate', locals: {remind: @remind}
           - else
             = render partial: 'reminds/activate', locals: {remind: @remind}
 
-      - if @remind.scale.present?
-        tr
-          th 人数
-          td = @remind.scale
       tr
         th Googleカレンダー
         td
@@ -84,7 +80,7 @@ h3.title.is-3.has-text-centered = @remind.name
             tr
               th
                 = link_to answer_edit_schedule_path(@remind.uid, user.id) do
-                  = user.name || '名無し'
+                  = user.name.size.zero? ? '名無し' : user.name
               - candidates.each_with_index do |cd, i|
                 td.attendance class="#{cd.attendance} #{percents[i]}"
 

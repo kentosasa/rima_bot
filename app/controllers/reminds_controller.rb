@@ -1,6 +1,7 @@
 require 'line/bot'
 
 class RemindsController < ApplicationController
+  include Rima
   include ActionView::Helpers::TextHelper
   before_action :set_group
   before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate, :inactivate]
@@ -56,9 +57,7 @@ class RemindsController < ApplicationController
     @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
-    unless @remind.activated?
-      @remind.activated = true
-      # ここでアクティブ通知を行う
+    if !@remind.activated? && @remind.activated!
       text = truncate(@remind.body, length: 25) + "\n" + @remind.active_text
       client.push_message(@remind.group.source_id, {
         type: 'template',
@@ -115,7 +114,7 @@ class RemindsController < ApplicationController
   end
 
   def remind_params
-    params.require(type.downcase.to_sym).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
+    params.require(type.downcase.to_sym).permit(:name, :body, :place, :address, :longitude, :latitude)
   end
 
   # 中身を改行でパースして保存
@@ -133,12 +132,5 @@ class RemindsController < ApplicationController
   def remind_class
     return Remind if type.blank?
     type.constantize
-  end
-
-  def client
-    @client ||= Line::Bot::Client.new do |config|
-      config.channel_secret = ENV['LINE_CHANNEL_SECRET']
-      config.channel_token = ENV['LINE_CHANNEL_TOKEN']
-    end
   end
 end

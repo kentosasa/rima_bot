@@ -5,13 +5,11 @@
 #  id         :integer          not null, primary key
 #  group_id   :integer
 #  at         :datetime
-#  activated  :boolean          default(FALSE)
-#  reminded   :boolean          default(FALSE)
+#  status     :integer          default(CREATED)
 #  name       :string
 #  body       :text
 #  place      :string
 #  datetime   :datetime
-#  scale      :integer
 #  type       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -26,9 +24,12 @@ class Remind < ApplicationRecord
   HOST = ENV['WEBHOOK_URL'].freeze
   after_initialize :set_uid
 
+  enum status: [:created, :activated, :notified]
+  attr_accessor :date, :time, :before, :remind_type, :candidate_body
+
   belongs_to :group
-  scope :active, -> { where(activated: true) }  # 通知有効化されているリマインド
-  scope :pending, -> { where(reminded: false) } # 未通知のリマインド
+  scope :pending, -> { where(status: :notified) } # 通知有効化されているリマインド
+  scope :active, -> { where(status: :activated) } # 未通知のリマインド
   scope :before_and_after, -> (min) {           # 現在時刻から前後min分のリマインド
     return if min.blank?
     now = Time.zone.now
@@ -45,8 +46,6 @@ class Remind < ApplicationRecord
       where('datetime <= ?', to)
     end
   }
-
-  attr_accessor :date, :time, :before, :remind_type, :candidate_body
 
   def set_uid
     self.uid ||= SecureRandom.hex(32)
@@ -238,8 +237,8 @@ class Remind < ApplicationRecord
   end
 
   def activate!
-    return nil if self.activated
-    if self.update(activated: true)
+    return nil if self.activated?
+    if self.activated!
       return [self.name, self.active_text, self.active_actions]
     else
       return nil
@@ -247,8 +246,8 @@ class Remind < ApplicationRecord
   end
 
   def inactivate!
-    return nil unless self.activated?
-    if self.update(activated: false)
+    return nil if self.created?
+    if self.created!
       "🔕リマインド設定を取り消しました。"
     else
       nil
@@ -256,16 +255,11 @@ class Remind < ApplicationRecord
   end
 
   def snooze!(min = 30)
-    if self.update(at: self.at.since(min.minute), reminded: false)
+    if self.update(at: self.at.since(min.minute), status: :activated)
       "#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します"
     else
       nil
     end
-  end
-
-  def reminded!
-    self.reminded = true
-    self.save
   end
 
   def weather
