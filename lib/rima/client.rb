@@ -139,7 +139,7 @@ module Rima
 
     def show_remind(datetime)
       reminds = @group.reminds.active.between(datetime.beginning_of_day, datetime.end_of_day).limit(3)
-      columns = reminds.map { |item| item.show_column }
+      columns = reminds.map { |remind| remind.show_column }
       if reminds.present? && reminds[0].latitude.present? && reminds[0].longitude.present?
         ad = Ad.new(reminds[0].latitude, reminds[0].longitude)
         ad_column = ad.column
@@ -151,9 +151,9 @@ module Rima
     end
 
     def show_all_reminds
-      reminds = @group.reminds.active.between(DateTime.now, nil).limit(5)
+      reminds = @group.reminds.active.between(Time.zone.now, nil).limit(5)
       columns = reminds.map { |remind| remind.show_column }
-      text = "今日以降の予定ですよ！"
+      text = columns.size.zero? ? '今日以降の登録された予定はなかったよ。' : "今日以降の予定ですよ！"
       @message.reply_text(text)
       @message.push_carousel(text, columns)
     end

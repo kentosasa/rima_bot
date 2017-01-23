@@ -140,7 +140,7 @@ class Remind < ApplicationRecord
 
   def show_column
     {
-      thumbnailImageUrl: self.weather[:image],
+      #thumbnailImageUrl: self.weather[:image],
       title: self.name,
       text: self.body + self.emoji,
       actions: self.active_actions
