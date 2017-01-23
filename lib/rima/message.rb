@@ -30,7 +30,7 @@ module Rima
     def push_carousel(text, columns)
       client.push_message(@group.source_id, {
         type: 'template',
-        altText: text,
+        altText: truncate(text, length: 30),
         template: {
           type: 'carousel',
           columns: columns
@@ -84,17 +84,6 @@ module Rima
           title: title,
           text: text,
           actions: actions
-        }
-      })
-    end
-
-    def reply_carousel(columns)
-      client.reply_message(@event['replyToken'], {
-        type: "template",
-        altText: 'hogehohge',
-        template: {
-          type: "carousel",
-          columns: columns
         }
       })
     end
