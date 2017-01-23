@@ -140,10 +140,10 @@ class Remind < ApplicationRecord
 
   def show_column
     {
-      "thumbnailImageUrl": "#{self.weather[:image]}",
-      "title": self.name,
-      "text": self.body + self.emoji,
-      "actions": self.active_actions
+      thumbnailImageUrl: self.weather[:image],
+      title: self.name,
+      text: self.body + self.emoji,
+      actions: self.active_actions
     }
   end
 
@@ -219,12 +219,22 @@ class Remind < ApplicationRecord
     ]
   end
 
-  def line_notify(client)
+  def line_notify
+    actions = [{
+      type: 'uri',
+      label: '詳細を見る',
+      uri: self.show_url
+    }, {
+      type: 'postback',
+      label: '10分後に再通知',
+      data: "action=snooze&remind_id=#{id}"
+    }]
     message = Rima::Message.new(self.group, nil)
-    message.push_message("予定の時間が近づいてきました。\n ついでにこんな場所はいかがですか？")
-    response = message.push_notify(self.notify_columns)
+    message.push_message('予定の時間が近づいてきました😃')
+    response = message.push_buttons('', self.body + self.emoji, actions)
+    # message.push_message("予定の時間が近づいてきました。\n ついでにこんな場所はいかがですか？")
     if response.is_a? Net::HTTPSuccess
-      return self.reminded!
+      return self.notified!
     end
     false
   end
@@ -257,7 +267,7 @@ class Remind < ApplicationRecord
 
   def snooze!(min = 30)
     if self.update(at: self.at.since(min.minute), status: :activated)
-      "#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します"
+      "#{self.at.strftime("%-m月%-d日%-H時%M分")}に再通知します!"
     else
       nil
     end
