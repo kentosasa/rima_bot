@@ -22,6 +22,7 @@
 #
 
 class Remind < ApplicationRecord
+  include Rima
   HOST = ENV['WEBHOOK_URL'].freeze
   after_initialize :set_uid
 
@@ -219,9 +220,9 @@ class Remind < ApplicationRecord
   end
 
   def line_notify(client)
-    messaging = Messaging.new(nil, client, self.group)
-    messaging.push_message("予定の時間が近づいてきました \n ついでにこんな場所はいかがですか？")
-    response = messaging.push_notify(self.notify_columns)
+    message = Rima::Message.new(self.group, nil)
+    message.push_message("予定の時間が近づいてきました。\n ついでにこんな場所はいかがですか？")
+    response = message.push_notify(self.notify_columns)
     if response.is_a? Net::HTTPSuccess
       return self.reminded!
     end
@@ -237,23 +238,33 @@ class Remind < ApplicationRecord
   end
 
   def activate!
-    self.activated = true
-    self.save
+    return nil if self.activated
+    if self.update(activated: true)
+      return [self.name, self.active_text, self.active_actions]
+    else
+      return nil
+    end
   end
 
   def inactivate!
-    self.activated = false
-    self.save
+    return nil unless self.activated?
+    if self.update(activated: false)
+      "🔕リマインド設定を取り消しました。"
+    else
+      nil
+    end
+  end
+
+  def snooze!(min = 30)
+    if self.update(at: self.at.since(min.minute), reminded: false)
+      "#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します"
+    else
+      nil
+    end
   end
 
   def reminded!
     self.reminded = true
-    self.save
-  end
-
-  def snooze!(min = 30)
-    self.at = self.at.since(min.minute)
-    self.reminded = false
     self.save
   end
 
