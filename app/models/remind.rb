@@ -30,9 +30,9 @@ class Remind < ApplicationRecord
   scope :pending, -> { where(reminded: false) } # 未通知のリマインド
   scope :before_and_after, -> (min) {           # 現在時刻から前後min分のリマインド
     return if min.blank?
-    now = DateTime.now
-    before = now - Rational(min, 24 * 60)
-    after = now + Rational(min, 24 * 60)
+    now = Time.zone.now
+    before = now.ago(min.minute)
+    after = now.since(min.minute)
     where(at: before..after).order(at: :asc)
   }
   scope :between, ->(from, to) {
