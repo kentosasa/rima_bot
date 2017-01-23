@@ -118,7 +118,7 @@ module Rima
         datetime: datetime,
         at: remind_at,
         type: type,
-        activated: false
+        status: :created
       )
     end
 
