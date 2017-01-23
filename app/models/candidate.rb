@@ -12,9 +12,7 @@
 class Candidate < ApplicationRecord
   has_many :candidate_user_relations
   has_many :users, through: :candidate_user_relations, source: :user
-  #has_many :answers, class_name: 'CandidateUserRelation'
 
-  #has_many :users, :through => :candidate_user_relations
   def good?(user)
     relation(user).good?
   end
