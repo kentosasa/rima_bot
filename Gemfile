@@ -27,7 +27,9 @@ gem 'jbuilder', '~> 2.5'
 gem "font-awesome-rails"
 gem 'gon'
 
+# SEO
 gem 'meta-tags'
+gem 'google-analytics-rails'
 
 ## lib
 gem 'line-bot-api'

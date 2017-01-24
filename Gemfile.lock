@@ -75,6 +75,7 @@ GEM
       json
       multi_json
       request_store (>= 1.0)
+    google-analytics-rails (1.1.0)
     haml (4.0.7)
       tilt
     haml-rails (0.9.0)
@@ -234,6 +235,7 @@ DEPENDENCIES
   erb2haml
   font-awesome-rails
   gon
+  google-analytics-rails
   haml-rails
   jbuilder (~> 2.5)
   jquery-rails
