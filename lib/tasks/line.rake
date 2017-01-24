@@ -3,13 +3,13 @@ namespace :line do
   # 未通知のものを通知
   # 人数が揃っていないスケジュールの通知
   task :notify => :environment do
-    @reminds = Remind.active.before_and_after(2000)
+    @reminds = Remind.active.before_and_after(10)
     @reminds.each do |remind|
       if remind.line_notify
         puts "#{remind.id}を通知しました。"
         p remind
       else
-        puts "失敗"
+        puts "#{remind.id}の通知に失敗"
       end
     end
   end
