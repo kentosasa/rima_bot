@@ -20,7 +20,7 @@ module Rima
       @group = Group.find_or_create(event)
       @message = Rima::Message.new(@group, @event)
       hello()
-      #hello() if @group.new_record?
+      hello() if @group.new_record?
       @group.update_profile(@message.get_profile) if @group.name.nil?
     end
 
@@ -128,7 +128,7 @@ module Rima
     def create_event(body, datetime)
       event = create_remind(body, datetime, 'Event')
       if event.save
-        @message.reply_text('リマインド🔔を設定しますか?')
+        @message.reply_text(@group.create_event_text)
         @message.push_buttons(event.name, body + event.emoji, event.create_actions)
       end
     end
@@ -136,7 +136,7 @@ module Rima
     def create_schedule(body, datetime)
       schedule = create_remind(body, datetime, 'Schedule', '日程調整')
       if schedule.save
-        @message.push_buttons('日程調整', '日程調整をサポートしますか?', schedule.schedule_actions)
+        @message.push_buttons('日程調整', @group.create_schedule_text, schedule.schedule_actions)
       end
     end
 
@@ -156,7 +156,8 @@ module Rima
     def show_all_reminds
       reminds = @group.reminds.active.between(Time.zone.now, nil).limit(5)
       columns = reminds.map { |remind| remind.show_column }
-      text = columns.size.zero? ? '今日以降の登録された予定はなかったよ。' : "今日以降の予定ですよ！"
+      text = columns.size.zero? ?
+        @group.zero_plan_text : @group.plan_exist_text
       @message.reply_text(text)
       @message.push_carousel(text, columns)
     end
