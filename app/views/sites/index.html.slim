@@ -1,0 +1,80 @@
+section.hero.is-primary.is-large.header-image
+  .hero-head
+    header.nav.has-shadow
+      .container
+        .nav-left
+          .nav-item(style='padding:5px 10px')
+            = image_tag 'logo.png', style: 'max-height: 2.05rem'
+        .nav-toggle
+          span
+          span
+          span
+        .nav-right.nav-menu
+          .nav-item.is-active HOME
+          .nav-item 特徴
+          .nav-item 
+          .nav-item
+            a.button.is-info.is-outlined.is-inverted
+              span.icon
+                i.fa.fa-github
+  .hero-body
+    .container.has-text-centered
+      h1.title.is-2 Rima-san
+      h2.subtitle.is-5 簡単リマインドBOT on LINE
+      p
+        a.button.is-outlined
+          span.icon
+            i.fa.fa-download
+          span Download
+
+.hero-cta
+  .level
+    .level-item.has-text-centered
+      p.title Call to action here!
+
+section.hero.is-medium.is-primary.is-bold
+  .hero-body
+    .container
+      h1.title Primary bold title
+      h2.subsitle Primary bold subtitle
+
+.section.main
+  .container
+    .columns
+      .column.is-4
+        .panel
+          .panel-block.section
+            p.has-text-centered
+              i.fa.fa-bolt.icon-block
+            br
+            p ワンタップで簡単にリマインドが設定できる。
+            .panel-footer
+              a.button.is-info.is-fullwidth Action
+      .column.is-4
+        .panel
+          .panel-block.section
+            p.has-text-centered
+              i.fa.fa-calendar-check-o.icon-block
+            br
+            p 旅行する日程決め、飲み会の日程決め、どんな時でも使える!
+            .panel-footer
+              a.button.is-primary.is-fullwidth Action
+      .column.is-4
+        .panel
+          .panel-block.section
+            p.has-text-centered
+              i.fa.fa-users.icon-block
+            br
+            p グループでも個人でも使える
+            .panel-footer
+              a.button.is-fullwidth Action
+
+footer.footer
+  hr
+  .container
+    .content.has-text-centered
+      p
+        | Made with
+        span.icon.is-small(style='font-size:10px;color:#F06292;margin: 0 5px')
+          i.fa.fa-heart
+        | for Everyone by Pokohide & Sasaken

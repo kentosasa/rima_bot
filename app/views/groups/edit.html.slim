@@ -11,18 +11,7 @@
           i.fa.fa-angle-left
         | 戻る
 
-h3.title.is-3.has-text-centered リマインド編集
-
-table.table.is-bordered
-  tbody
-    tr
-      th ID
-      td = @group.id
-    tr
-      th タイプ
-      td = @group.user_type
-
-= form_for @group do |f|
+= form_for @group, url: group_path(@group.uid), method: :put do |f|
   - if @group.errors.any?
     article.message.is-danger
       .message-header
@@ -32,6 +21,12 @@ table.table.is-bordered
           - @group.errors.full_messages.each do |msg|
             li = msg
 
-  label.label =  f.label :name, '名前'
+  label.label = f.label :name, '名前'
   p.control
     = f.text_field :name, class: 'input', placeholder: 'ぽこひで'
+  
+  label.label = f.label :character, '口調'
+  - Group.characters.each do |key, val|
+    = f.radio_button :character, key, class: 'radio'
+    label.radio for="group_character_#{key}"
+      = ['Siri', '男性', '女性'][val]
