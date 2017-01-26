@@ -11,17 +11,19 @@ h4.subtitle.is-4 リマインド一覧
     header.card-header
       p.card-header-title = remind.name
       p.card-header-icon
-        span.icon
-          i.fa.fa-angle-down
+        - if remind.schedule?
+          | 日程調整
+          span.icon(style='margin-left:5px')
+            i.fa.fa-calendar-o
+        - else
+          | 通知
+          span.icon(style='margin-left:5px')
+            i.fa.fa-clock-o
     .card-content
       .content
         = remind.body
         br
-        small
-          = remind.datetime.to_s(:datetime)
-          | |
-          = remind.datetime.to_s(:human)
+        p.has-text-right
+          small = remind.datetime.strftime('%-m月%-d日 %H:%M')
     .card-footer
       = link_to '詳細', remind_path(remind.uid), class: 'card-footer-item'
-      = link_to '編集', edit_remind_path(remind.uid), class: 'card-footer-item'
-      = link_to '削除', remind_path(remind), method: :delete, class: 'card-footer-item'
