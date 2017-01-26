@@ -32,6 +32,7 @@ class Remind < ApplicationRecord
   scope :created, -> { where(status: :created) }  # 作成されただけのリマインド
   scope :pending, -> { where(status: :notified) } # 通知有効化されているリマインド
   scope :active, -> { where(status: :activated) } # 未通知のリマインド
+  scope :desc, -> { order(datetime: :desc) }      # 新しい順
   scope :before_and_after, -> (min) {           # 現在時刻から前後min分のリマインド
     return if min.blank?
     now = Time.zone.now
