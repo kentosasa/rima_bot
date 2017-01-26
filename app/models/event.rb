@@ -17,6 +17,7 @@
 #  longitude  :float
 #  address    :string
 #  uid        :string
+#  candidate_body :text
 #
 
 class Event < Remind
