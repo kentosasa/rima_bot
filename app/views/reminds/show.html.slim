@@ -12,45 +12,48 @@
 
 h3.title.is-3.has-text-centered = @remind.name
 
-.table-container
-  table.table.remind-table
-    tbody
-      tr
-        th タイトル
-        td = @remind.name
-      tr
-        th メモ
-        td = @remind.body
-      tr
-        th 場所
-        td = @remind.place || '未指定'
+.remind-items
+  .item
+    .subtitle タイトル
+    .content = @remind.name
+  .item
+    .subtitle メモ
+    .content = @remind.body
+  .item
+    .subtitle 場所
+    .content = @remind.place || '未指定'
 
-      = hidden_field_tag 'address', '', id: 'remind_address'
-      = hidden_field_tag 'latitude', '', id: 'remind_latitude'
-      = hidden_field_tag 'longitude', '', id: 'remind_longitude'
-      = hidden_field_tag 'place', '', id: 'remind_place'
+  = hidden_field_tag 'address', '', id: 'remind_address'
+  = hidden_field_tag 'latitude', '', id: 'remind_latitude'
+  = hidden_field_tag 'longitude', '', id: 'remind_longitude'
+  = hidden_field_tag 'place', '', id: 'remind_place'
 
-      tr
-        th イベント日時
-        td = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")
-      tr
-        th リマインド時間
-        td = "#{@remind.before}前"
-      tr(style='height: 2.5em')
-        th リマインド有効
-        td.activate-field
-          - if @remind.activated?
-            = render partial: 'reminds/inactivate', locals: {remind: @remind}
-          - else
-            = render partial: 'reminds/activate', locals: {remind: @remind}
-
-      tr
-        th Googleカレンダー
-        td
-          = link_to google_cal_link(@remind), target: '_blank' do
-            span.icon.is-small
-              i.fa.fa-link
-            | 登録
+  .item
+    .subtitle イベント日時
+    .content = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")
+  .item
+    .subtitle リマインド時間
+    .content = "#{@remind.before}前"
+  .item(style='height: 2.5em')
+    .subtitle リマインド有効
+    .content
+      .activate-field
+        - if @remind.activated?
+          = render partial: 'reminds/inactivate', locals: {remind: @remind}
+        - else
+          = render partial: 'reminds/activate', locals: {remind: @remind}
+  .item
+    .subtitle イベントURL
+    .content
+      p.url = link_to "#{remind_url(@remind.uid, :only_path => false)}", remind_url(@remind.uid, :only_path => false)
+      = render partial: 'templates/share', locals: {url: remind_url(@remind.uid, :only_path => false)}
+  .item
+    .subtitle Googleカレンダー
+    .content
+      = link_to google_cal_link(@remind), target: '_blank' do
+        span.icon.is-small
+          i.fa.fa-link
+        | 登録
 
 - if @remind.address.present?
   .map-container
