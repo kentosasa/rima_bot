@@ -45,7 +45,7 @@ h3.title.is-3.has-text-centered = @remind.name
   .item
     .subtitle イベントURL
     .content
-      p.url = link_to "#{remind_url(@remind.uid, :only_path => false)}", remind_url(@remind.uid, :only_path => false)
+      /p.url = link_to "#{remind_url(@remind.uid, :only_path => false)}", remind_url(@remind.uid, :only_path => false)
       = render partial: 'templates/share', locals: {url: remind_url(@remind.uid, :only_path => false)}
   .item
     .subtitle Googleカレンダー
