@@ -9,6 +9,6 @@ WORKDIR $APP_ROOT
 
 ADD Gemfile ${APP_ROOT}/Gemfile
 ADD Gemfile.lock ${APP_ROOT}/Gemfile.lock
-RUN bundle install
+RUN bundle install --path vendor/bundle
 
 ADD . $APP_ROOT
