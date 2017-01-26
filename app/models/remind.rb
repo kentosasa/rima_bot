@@ -232,22 +232,16 @@ class Remind < ApplicationRecord
       data: "action=snooze&remind_id=#{id}"
     }]
     message = Rima::Message.new(self.group, nil)
-    message.push_message('予定の時間が近づいてきました😃')
+    message.push_message(self.group.line_notify_text)
     response = message.push_buttons('', self.body + self.emoji, actions)
-    # message.push_message("予定の時間が近づいてきました。\n ついでにこんな場所はいかがですか？")
     if response.is_a? Net::HTTPSuccess
       return self.notified!
     end
     false
   end
 
-  def event?
-    self.type == 'Event'
-  end
-
-  def schedule?
-    self.type == 'Schedule'
-  end
+  def event?; self.type == 'Event' end
+  def schedule?; self.type == 'Schedule' end
 
   def activate!
     return nil if self.activated?
@@ -261,7 +255,7 @@ class Remind < ApplicationRecord
   def inactivate!
     return nil if self.created?
     if self.created!
-      "🔕リマインド設定を取り消しました。"
+      self.group.inactive_text
     else
       nil
     end

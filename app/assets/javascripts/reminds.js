@@ -100,6 +100,7 @@ $(document).ready(function() {
     displayForm(type);
 
     if(type === 'Event') {
+      $('#toggle-body').removeClass('is-open')
       console.log('event');
     } else if(type === 'Schedule') {
       console.log('schedule');

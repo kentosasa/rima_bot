@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   post '/callback', to: 'webhook#callback'
 
+  root to: 'sites#index'
+
   resources :reminds, except: [:index, :new] do
     member do
       post :activate
