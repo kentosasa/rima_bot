@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170126134013) do
+ActiveRecord::Schema.define(version: 20170126161450) do
 
   create_table "groups", force: :cascade do |t|
     t.integer  "user_type"
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.string   "source_id"
     t.string   "uid"
+    t.integer  "character",  default: 0
   end
 
   create_table "reminds", force: :cascade do |t|

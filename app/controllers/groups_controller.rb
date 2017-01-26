@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
   def update
     if @group.update(group_params)
       flash[:success] = '設定を更新しました。'
-      redirect_to group_path(@group)
+      redirect_to group_path(@group.uid)
     else
       render 'edit'
     end
@@ -24,6 +24,6 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name)
+    params.require(:group).permit(:name, :character)
   end
 end

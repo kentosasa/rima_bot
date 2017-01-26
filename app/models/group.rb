@@ -7,6 +7,7 @@
 #  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  character  :integer          default: 0
 #  source_id  :string
 #  uid        :string
 #
@@ -18,6 +19,7 @@ class Group < ApplicationRecord
   after_initialize :set_uid
 
   enum user_type: { user_id: 0, group_id: 1, room_id: 2 }
+  enum character: { siri: 0, male: 1, female: 2 }
 
   def set_uid
     self.uid ||= SecureRandom.hex(8)
