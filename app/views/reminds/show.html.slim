@@ -70,22 +70,21 @@ h3.title.is-3.has-text-centered = @remind.name
           th 参加者
           - percents = []
           - @candidates.each do |candidate|
-            - percents.push(candidate.attend_percent)
-            th = candidate.title
+            th = candidate
       tbody
-        - if @users.count.zero?
+        - if @remind.users.count.zero?
           tr
             th 回答0件
             td まだ回答はありません。
         - else
-          - @users.each do |user|
-            - candidates = user.candidate_user_relations.order(:candidate_id)
+          - @remind.users.each do |user|
+            - answers = user.answer.split(',')
             tr
               th
                 = link_to answer_edit_schedule_path(@remind.uid, user.id) do
-                  = user.name.size.zero? ? '名無し' : user.name
-              - candidates.each_with_index do |cd, i|
-                td.attendance class="#{cd.attendance} #{percents[i]}"
+                  = user.name.present? ? user.name : '名無し'
+              - answers.each do |answer|
+                td.attendance class="#{answer}"
 
 p(style='padding: 10px 0 20px 0')
   = link_to edit_remind_path(@remind.uid), class: 'button is-success is-pulled-left' do

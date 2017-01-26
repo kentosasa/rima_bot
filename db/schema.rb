@@ -10,23 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170123134528) do
-
-  create_table "candidate_user_relations", force: :cascade do |t|
-    t.integer  "candidate_id"
-    t.integer  "user_id"
-    t.boolean  "attend"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.integer  "attendance"
-  end
-
-  create_table "candidates", force: :cascade do |t|
-    t.integer  "schedule_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "title"
-  end
+ActiveRecord::Schema.define(version: 20170126134013) do
 
   create_table "groups", force: :cascade do |t|
     t.integer  "user_type"
@@ -40,25 +24,30 @@ ActiveRecord::Schema.define(version: 20170123134528) do
   create_table "reminds", force: :cascade do |t|
     t.integer  "group_id"
     t.datetime "at"
-    t.boolean  "reminded",   default: false
+    t.boolean  "reminded",       default: false
     t.string   "name"
     t.text     "body"
     t.string   "place"
     t.datetime "datetime"
     t.string   "type"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.float    "latitude"
     t.float    "longitude"
     t.string   "address"
     t.string   "uid"
     t.integer  "status"
+    t.text     "candidate_body"
   end
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "comment"
+    t.text     "answer"
+    t.integer  "schedule_id"
+    t.index ["schedule_id"], name: "index_users_on_schedule_id"
   end
 
 end

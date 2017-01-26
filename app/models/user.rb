@@ -9,6 +9,7 @@
 #
 
 class User < ApplicationRecord
-  has_many :candidate_user_relations
-  has_many :candidates, through: :candidate_user_relations, source: :candidate
+  belongs_to :schedule
+  #has_many :candidate_user_relations
+  #has_many :candidates, through: :candidate_user_relations, source: :candidate
 end

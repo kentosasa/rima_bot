@@ -25,7 +25,7 @@ class Remind < ApplicationRecord
   after_initialize :set_uid
 
   enum status: [:created, :activated, :notified]
-  attr_accessor :date, :time, :before, :remind_type, :candidate_body
+  attr_accessor :date, :time, :before, :remind_type
 
   belongs_to :group
   scope :created, -> { where(status: :created) }  # 作成されただけのリマインド

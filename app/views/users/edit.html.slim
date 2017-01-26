@@ -27,18 +27,22 @@ article.message
 
   table.table
     tbody
-      - @candidates.each do |candidate|
+      - @candidates.each_with_index do |candidate, index|
         tr
-          th(style='line-height:50px;vertical-align:middle') = candidate.title
-          = hidden_field_tag nil, candidate.id, name: "candidate[][id]"
+          th(style='line-height:50px;vertical-align:middle') = candidate
+          = hidden_field_tag nil, index, name: "candidate[][id]"
           td.control
             ul.answers
               li
-                = radio_button "candidate_#{candidate.id}", 'attendance', 'good', {checked: candidate.good?(@user)}
-                = label_tag("candidate_#{candidate.id}_attendance_good", '', class: 'good')
+                = radio_button "candidate_#{index}", 'attendance', 'good', {checked: @answers[index] == 'good'}
+                = label_tag("candidate_#{index}_attendance_good", '', class: 'good')
               li
-                = radio_button "candidate_#{candidate.id}", 'attendance', 'soso', {checked: candidate.soso?(@user)}
-                = label_tag("candidate_#{candidate.id}_attendance_soso", '', class: 'soso')
+                = radio_button "candidate_#{index}", 'attendance', 'soso', {checked: @answers[index] == 'soso'}
+                = label_tag("candidate_#{index}_attendance_soso", '', class: 'soso')
               li
-                = radio_button "candidate_#{candidate.id}", 'attendance', 'bad', {checked: candidate.bad?(@user)}
-                = label_tag("candidate_#{candidate.id}_attendance_bad", '', class: 'bad')
+                = radio_button "candidate_#{index}", 'attendance', 'bad', {checked: @answers[index] == 'bad'}
+                = label_tag("candidate_#{index}_attendance_bad", '', class: 'bad')
+
+  label.label = f.label :comment, 'コメント'
+  p.control
+    = f.text_area :comment, rows: 2, class: 'textarea', placeholder: '最大200文字'
