@@ -13,6 +13,7 @@
 #
 
 class Group < ApplicationRecord
+  HOST = ENV['WEBHOOK_URL'].freeze
   has_many :reminds
   has_many :events
   has_many :schedules
@@ -43,6 +44,14 @@ class Group < ApplicationRecord
       "「明日の8時に渋谷集合ね!」\nなどの会話があると、僕がサポートするよ🎶",
       "「日程調整」や「予定一覧」って言ってみると僕がフルサポートするよ👍"
     ].sample
+  end
+
+  def first_actions
+    [{
+      type: 'uri',
+      label: '私の設定をする',
+      uri: "#{HOST}/groups/#{self.uid}/edit"
+    }]
   end
 
   def update_profile(json)
