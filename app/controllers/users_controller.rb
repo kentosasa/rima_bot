@@ -2,20 +2,12 @@ class UsersController < ApplicationController
   before_action :set_schedule, only: [:new, :edit, :update, :create]
   before_action :set_group
   def new
-    @candidates = @schedule.candidate_body.each_line.map(&:chomp)
     @user = @schedule.users.new
   end
 
   def create
-    @candidates = @schedule.candidate_body.each_line.map(&:chomp)
     @user = @schedule.users.new(user_params)
-    answers = []
-    params[:candidate].each do |cd|
-      id = cd[:id].to_i
-      answer = params["candidate_#{id}"][:attendance]
-      answers.push(answer)
-    end
-    @user.answer = answers.join(',')
+    @user.answer = answer
     if @user.save
       flash[:success] = '出欠を回答しました。'
       redirect_to remind_path(@schedule.uid)
@@ -26,21 +18,13 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @candidates = @schedule.candidate_body.each_line.map(&:chomp)
     @user = @schedule.users.find_by(id: params[:user_id])
     @answers = @user.answer.split(',')
   end
 
   def update
-    @candidates = @schedule.candidate_body.each_line.map(&:chomp)
     @user = @schedule.users.find_by(id: params[:user_id])
-    answers = []
-    params[:candidate].each do |cd|
-      id = cd[:id].to_i
-      answer = params["candidate_#{id}"][:attendance]
-      answers.push(answer)
-    end
-    @user.answer = answers.join(',')
+    @user.answer = answer
 
     if @user.update(user_params)
       flash[:success] = '出欠を更新しました。'
@@ -52,8 +36,19 @@ class UsersController < ApplicationController
   end
 
   private
+  def answer
+    answers = []
+    params[:candidate].each do |cd|
+      id = cd[:id].to_i
+      answer = params["candidate_#{id}"][:attendance]
+      answers.push(answer)
+    end
+    answers.join(',')
+  end
+
   def set_schedule
     @schedule = Schedule.find_by(uid: params[:id])
+    @candidates = @schedule.candidate_body.each_line.map(&:chomp)
   end
 
   def user_params
