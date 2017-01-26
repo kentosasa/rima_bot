@@ -14,27 +14,17 @@ h3.title.is-3.has-text-centered = @remind.name
 
 .remind-items
   .item
-    .subtitle タイトル
-    .content = @remind.name
-  .item
     .subtitle メモ
     .content = @remind.body
+  
   .item
-    .subtitle 場所
-    .content = @remind.place || '未指定'
-
-  = hidden_field_tag 'address', '', id: 'remind_address'
-  = hidden_field_tag 'latitude', '', id: 'remind_latitude'
-  = hidden_field_tag 'longitude', '', id: 'remind_longitude'
-  = hidden_field_tag 'place', '', id: 'remind_place'
-
+    .subtitle 日時
+    .content = @remind.datetime.strftime("%-m月%-d日 %H時%M分")
   .item
-    .subtitle イベント日時
-    .content = @remind.datetime.strftime("%Y年%m月%d日 %H時%M分")
-  .item
-    .subtitle リマインド時間
+    .subtitle 通知
     .content = "#{@remind.before}前"
-  .item(style='height: 2.5em')
+
+  .item
     .subtitle リマインド有効
     .content
       .activate-field
@@ -56,6 +46,7 @@ h3.title.is-3.has-text-centered = @remind.name
         | 登録
 
 - if @remind.address.present?
+  p = @remind.place
   .map-container
     #map
   p.address(style='background:#fff;padding:10px;margin-bottom:20px;')
@@ -86,12 +77,9 @@ h3.title.is-3.has-text-centered = @remind.name
               - answers.each do |answer|
                 td.attendance class="#{answer}"
 
-p(style='padding: 10px 0 20px 0')
-  = link_to edit_remind_path(@remind.uid), class: 'button is-success is-pulled-left' do
-    span.icon.is-small(style='margin-right:5px')
-      i.fa.fa-check
-    | 編集する
-  = link_to remind_path(@remind), method: :delete, class: 'button is-danger is-pulled-right', data: {confirm: '本当に削除しますか?'} do
-    | 削除する
-    span.icon.is-small
-      i.fa.fa-times
+- if @remind.schedule?
+  p(style='padding: 10px 0 20px 0')
+    = link_to edit_remind_path(@remind.uid), class: 'button is-success is-fullwidth' do
+      span.icon.is-small(style='margin-right:5px')
+        i.fa.fa-check
+      | 編集する
