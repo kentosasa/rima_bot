@@ -49,7 +49,7 @@ class Remind < ApplicationRecord
   }
 
   def set_uid
-    self.uid ||= SecureRandom.hex(32)
+    self.uid ||= SecureRandom.hex(8)
   end
 
   def show_url

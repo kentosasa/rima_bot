@@ -20,7 +20,7 @@ class Group < ApplicationRecord
   enum user_type: { user_id: 0, group_id: 1, room_id: 2 }
 
   def set_uid
-    self.uid ||= SecureRandom.hex(32)
+    self.uid ||= SecureRandom.hex(8)
   end
 
   def self.find_or_create(event)
