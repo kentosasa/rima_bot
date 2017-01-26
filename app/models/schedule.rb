@@ -17,9 +17,10 @@
 #  longitude  :float
 #  address    :string
 #  uid        :string
+#  candidate_body :text
 #
 
 class Schedule < Remind
   belongs_to :group
-  has_many :candidates
+  has_many :users
 end

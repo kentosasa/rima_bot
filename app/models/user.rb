@@ -4,11 +4,12 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string
+#  comment    :string
+#  schedule_id :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
 class User < ApplicationRecord
-  has_many :candidate_user_relations
-  has_many :candidates, through: :candidate_user_relations, source: :candidate
+  belongs_to :schedule
 end

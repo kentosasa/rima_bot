@@ -33,8 +33,7 @@ class RemindsController < ApplicationController
 
   def show
     if @remind.schedule?
-      @candidates = @remind.candidates.order(:id)
-      @users = @candidates.first.users
+      @candidates = @remind.candidate_body.each_line.map(&:chomp)
     end
   end
 
@@ -47,9 +46,7 @@ class RemindsController < ApplicationController
     gon.remindType = @remind.type || 'Event'
 
     if @remind.schedule?
-      @remind.candidate_body = @remind.candidates.inject('') do |body, c|
-        body + c.title + "\n"
-      end
+      @candidates = @remind.candidate_body.each_line.map(&:chomp)
     end
   end
 
@@ -70,8 +67,6 @@ class RemindsController < ApplicationController
         }
       })
     end
-
-    parse_candidates(@remind) if @remind.schedule?
 
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
@@ -114,19 +109,7 @@ class RemindsController < ApplicationController
   end
 
   def remind_params
-    params.require(type.downcase.to_sym).permit(:name, :body, :place, :address, :longitude, :latitude)
-  end
-
-  # 中身を改行でパースして保存
-  def parse_candidates(schedule)
-    body = params.require(type.downcase.to_sym).permit(:candidate_body)
-    body[:candidate_body].lines.each do |line|
-      title = line.chomp
-      next if title.size.zero?
-      candidate = Candidate.find_or_initialize_by(title: title, schedule_id: schedule.id)
-      candidate.title = title
-      candidate.save
-    end
+    params.require(type.downcase.to_sym).permit(:name, :body, :place, :address, :longitude, :latitude, :candidate_body)
   end
 
   def remind_class
