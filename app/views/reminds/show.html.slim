@@ -76,15 +76,15 @@ h3.title.is-3.has-text-centered
 
   .control.is-grouped.remind-share
     p.control
-      = link_to "http://line.me/R/msg/text/?[Share][#{remind_url(@remind.uid, :only_path => false)}]", class: 'button is-success is-small' do
-        span.icon.is-small(style='margin-right:5px;')
-          i.fa.fa-share-alt
-        span(style='color:#333') LINEでシェア
-    p.control
       = link_to google_cal_link(@remind), target: '_blank', class: 'button is-small' do
         span.icon.is-small(style='margin-right:3px;')
           i.fa.fa-google
         | カレンダーに登録
+    p.control
+      = link_to "http://line.me/R/msg/text/?[Share][#{remind_url(@remind.uid, :only_path => false)}]", class: 'button is-success is-small' do
+        span.icon.is-small(style='margin-right:5px;')
+          i.fa.fa-share-alt
+        span(style='color:#333') LINEでシェア
 
 - if @remind.schedule?
   p(style='padding: 10px 0 20px 0')
