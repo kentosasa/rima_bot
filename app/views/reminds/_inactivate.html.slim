@@ -1,6 +1,4 @@
-p
-  b = remind.activated? ? '有効' : '無効'
-  = link_to inactivate_remind_path(remind), method: :post, class: 'button is-danger is-small is-pulled-right', remote: true do
-    span.icon.is-small(style='margin-right: 10px;')
-      i.fa.fa-bell-slash-o
-    | 無効にする
+= link_to inactivate_remind_path(remind), method: :post, class: 'button is-large is-warning is-fullwidth', remote: true do
+  span.icon(style='margin-right: 10px;')
+    i.fa.fa-bell-slash-o
+  | 無効にする

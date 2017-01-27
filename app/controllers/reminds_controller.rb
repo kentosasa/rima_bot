@@ -23,9 +23,10 @@ class RemindsController < ApplicationController
     @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
+    @remind.status = :activated
     if @remind.save
       flash[:success] = 'リマインドを作成しました。'
-      redirect_to group_path(@group)
+      redirect_to group_path(@group.uid)
     else
       render 'new'
     end
@@ -36,6 +37,13 @@ class RemindsController < ApplicationController
     gon.lng = @remind.longitude
     if @remind.schedule?
       @candidates = @remind.candidate_body.each_line.map(&:chomp)
+      @users = @remind.users
+      answers = @users.map { |user| user.answer.split(',') }.transpose
+      @highlights = answers.map do |answer_a|
+        highlight = answer_a.inject(0.0) { |sum, answer| sum + point(answer) }
+        highlight = highlight * 100.0 / @users.size
+        (highlight > 70) ? 'highlighted' : ''
+      end
     end
   end
 
@@ -56,6 +64,7 @@ class RemindsController < ApplicationController
     @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
+    @remind.body = params.require(type.downcase.to_sym).permit(:body)[:body]
     if !@remind.activated? && @remind.activated!
       text = truncate(@remind.body, length: 25) + "\n" + @remind.active_text
       client.push_message(@remind.group.source_id, {
@@ -81,6 +90,14 @@ class RemindsController < ApplicationController
   def destroy; end
 
   private
+
+  def point(answer)
+    {
+      'good' => 1.0,
+      'soso' => 0.5,
+      'bad' => 0
+    }[answer]
+  end
 
   def set_gmap
     gon.lat = @remind.latitude || 35.6586488

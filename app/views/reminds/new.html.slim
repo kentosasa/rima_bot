@@ -6,7 +6,7 @@
 
 h3.title.is-3.has-text-centered リマインド作成
 
-= form_for @remind, url: reminds_group_path(@group), method: :post do |f|
+= form_for @remind, url: reminds_group_path(@group.uid), method: :post do |f|
 
   - if @remind.errors.any?
     article.message.is-danger

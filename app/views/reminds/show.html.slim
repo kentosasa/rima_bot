@@ -5,81 +5,86 @@
         i.fa.fa-user-o
       | 出欠を入力する
   - else
-    = link_to edit_remind_path(@remind.uid), class: 'button is-large is-success is-fullwidth' do
-      span.icon(style='margin-right: 10px')
-        i.fa.fa-check
-      | 編集する
-
-h3.title.is-3.has-text-centered = @remind.name
-
-.remind-items
-  .item
-    .subtitle メモ
-    .content = @remind.body
-  
-  .item
-    .subtitle 日時
-    .content = @remind.datetime.strftime("%-m月%-d日 %H時%M分")
-  .item
-    .subtitle 通知
-    .content = "#{@remind.before}前"
-
-  .item
-    .subtitle リマインド有効
-    .content
-      .activate-field
+    .columns.is-mobile.is-gapless
+      .column.is-half-mobile
+        = link_to edit_remind_path(@remind.uid), class: 'button is-large is-success is-fullwidth' do
+          span.icon(style='margin-right: 10px')
+            i.fa.fa-check
+          | 編集する
+      .column.is-half-mobile#remind-activate-button
         - if @remind.activated?
-          = render partial: 'reminds/inactivate', locals: {remind: @remind}
+          = render partial: "reminds/inactivate", locals: {remind: @remind}
         - else
-          = render partial: 'reminds/activate', locals: {remind: @remind}
-  .item
-    .subtitle イベントURL
-    .content
-      /p.url = link_to "#{remind_url(@remind.uid, :only_path => false)}", remind_url(@remind.uid, :only_path => false)
-      = render partial: 'templates/share', locals: {url: remind_url(@remind.uid, :only_path => false)}
-  .item
-    .subtitle Googleカレンダー
-    .content
-      = link_to google_cal_link(@remind), target: '_blank' do
-        span.icon.is-small
-          i.fa.fa-link
-        | 登録
+          = render partial: "reminds/activate", locals: {remind: @remind}
 
-- if @remind.address.present?
-  p = @remind.place
-  .map-container
-    #map
-  p.address(style='background:#fff;padding:10px;margin-bottom:20px;')
-    span#formatted_address = @remind.address
+h3.title.is-3.has-text-centered
+  = @remind.name
 
-- if @remind.schedule?
-  h4.subtitle.is-4 候補
-  .candidates-field
-    table.table.is-striped
-      thead
-        tr
-          th 参加者
-          - percents = []
-          - @candidates.each do |candidate|
-            th = candidate
-      tbody
-        - if @remind.users.count.zero?
+.remind-field
+  .remind-body
+    - if @remind.body.present?
+      p = @remind.body
+      br
+    p = @remind.memo
+    p = @remind.url
+    = link_to @remind.show_url, @remind.show_url, class: 'remind-url'
+    .remind-date
+      p.date = @remind.datetime.strftime("%-m / %-d")
+      p.time = @remind.datetime.strftime("%-H:%M")
+      p.at
+        b = @remind.before
+        | 前に通知
+
+  - if @remind.address.present?
+    .remind-place
+      p.place
+        | @
+        = @remind.place
+      .map-container
+        #map
+      p.address
+        small#formatted_address = @remind.address
+
+  - if @remind.schedule?
+    h4.subtitle.is-4 候補
+    .candidates-field
+      table.table.is-striped
+        thead
           tr
-            th 回答0件
-            td まだ回答はありません。
-        - else
-          - @remind.users.each do |user|
-            - answers = user.answer.split(',')
+            th 参加者
+            - 
+            - @candidates.each do |candidate|
+              th = candidate
+        tbody
+          - if @users.blank?
             tr
-              th
-                = link_to answer_edit_schedule_path(@remind.uid, user.id) do
-                  = user.name.present? ? user.name : '名無し'
-              - answers.each do |answer|
-                td.attendance class="#{answer}"
+              th 回答0件
+              td まだ回答はありません。
+          - else
+            - @users.each do |user|
+              - answers = user.answer.split(',')
+              tr
+                th
+                  = link_to answer_edit_schedule_path(@remind.uid, user.id) do
+                    = user.name.present? ? user.name : '名無し'
+                - answers.each_with_index do |answer, i|
+                  td.attendance class="#{answer} #{@highlights[i]}"
+
+  .control.is-grouped.remind-share
+    p.control
+      = link_to "http://line.me/R/msg/text/?[Share][#{remind_url(@remind.uid, :only_path => false)}]", class: 'button is-success is-small' do
+        span.icon.is-small(style='margin-right:10px;')
+          i.fa.fa-share-alt
+        | LINEでシェア
+    p.control
+      = link_to google_cal_link(@remind), target: '_blank', class: 'button is-small' do
+        span.icon.is-small(style='margin-right: 10px;')
+          i.fa.fa-link
+        | Googleカレンダーに登録
 
 - if @remind.schedule?
   p(style='padding: 10px 0 20px 0')
-    = link_to edit_remind_path(@remind.uid), class: 'button is-success is-fullwidth' do
+    = link_to edit_remind_path(@remind.uid), class: 'button is-primary is-fullwidth' do
       span.icon.is-small(style='margin-right:5px')
         i.fa.fa-check
       | 編集する

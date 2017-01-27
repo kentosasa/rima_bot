@@ -121,6 +121,22 @@ class Remind < ApplicationRecord
     end
   end
 
+  def memo
+    if self.schedule?
+      "#{datetime.strftime('%-m月%-d日')}までに回答してください。"
+    elsif self.event?
+      "通知予定を#{datetime.strftime('%-m月%-d日 %H:%M')}の#{before}前にセットしました。"
+    end
+  end
+
+  def url
+    if self.schedule?
+      "[詳細URL]"
+    elsif self.event?
+      "[日程調整URL]"
+    end
+  end
+
   # active=trueにした時に返すactions
   def active_actions
     actions = [{

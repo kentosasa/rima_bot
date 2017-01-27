@@ -72,6 +72,96 @@
   }
 }
 
+.remind-field {
+  padding: 10px;
+
+  .remind-activate {
+    position: absolute;;
+    right: 0;
+    line-height: 43px;
+    font-size: 0.4em;
+    vertical-align: middle;
+  }
+
+  .remind-body {
+    background: #fff;
+    padding: 10px;
+    padding-right: 85px;
+    position: relative;
+    min-height: 100px;
+
+    .remind-date {
+      padding: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 85px;
+      background: rgba(240, 240, 240, .5);
+
+      .date {
+        padding: 3px;
+        font-size: 1.6em;
+        text-align: center;
+        font-weight: bold;
+      }
+      .time {
+        padding: 0 10px;
+        font-size: 1.3em;
+        text-align: center;
+      }
+      .at {
+        padding: 5px 0;
+        font-size: 0.9em;
+        text-align: center;
+      }
+    }
+
+    .remind-url {
+      padding: 5px;
+      word-break: break-all;
+    }
+  }
+
+  .remind-share {
+    padding: 5px;
+    margin-top: 10px;
+  }
+
+  .remind-place {
+    background: #fff;
+    .place {
+      padding: 10px;
+      font-size: 0.9em;
+    }
+    .address {
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.remind-field {
+  padding: 10px;
+
+
+  .remind-date {
+    padding: 10px;
+
+    .level-item {
+      width: 50%;
+
+      .heading {
+        font-size: 20px;
+      }
+      .title {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+
 .candidates-field {
   overflow: auto;
   white-space: nowrap;
@@ -111,35 +201,6 @@
         background-color: rgb(216, 253, 97);
       }
     }
-  }
-}
-
-.remind-field {
-  padding: 10px;
-
-  .remind-body {
-    background: #fff;
-    padding: 10px;
-  }
-
-  .remind-date {
-    padding: 10px;
-
-    .level-item {
-      width: 50%;
-
-      .heading {
-        font-size: 20px;
-      }
-      .title {
-        font-size: 15px;
-      }
-    }
-  }
-
-  .remind-activate {
-    background: #fff;
-    padding: 10px;
   }
 }
 

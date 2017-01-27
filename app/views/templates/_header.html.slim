@@ -1,4 +1,4 @@
-nav.nav
+nav.nav.is-fixed-top.has-shadow
   .nav-left
     .nav-item(style='padding:5px 10px')
       = image_tag 'logo.png', style: 'max-height: 2.05rem'
@@ -13,7 +13,7 @@ nav.nav
         span.icon
           i.fa.fa-calendar-check-o
         |  リマインド一覧
-      = link_to reminds_new_group_path(group), class: 'nav-item' do
+      = link_to reminds_new_group_path(group.uid), class: 'nav-item' do
         span.icon
           i.fa.fa-plus
         | リマインドを作成
