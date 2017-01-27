@@ -35,10 +35,14 @@ class Remind < ApplicationRecord
   scope :desc, -> { order(datetime: :desc) }      # 新しい順
   scope :before_and_after, -> (min) {           # 現在時刻から前後min分のリマインド
     return if min.blank?
-    now = Time.zone.now
+    now = Time.zone.now.in_time_zone('Tokyo')
     before = now.ago(min.minute)
     after = now.since(min.minute)
-    where(at: before..after).order(at: :asc)
+
+    p after
+    where("at <= ?", after)
+    #p now, before, after
+    #where(at: before..after).order(at: :asc)
   }
   scope :between, ->(from, to) {
     if from.present? && to.present?
@@ -231,9 +235,17 @@ class Remind < ApplicationRecord
       label: '10分後に再通知',
       data: "action=snooze&remind_id=#{id}"
     }]
+
+    text = self.group.line_notify_text
+    if self.latitude.present? && self.longitude.present?
+      weather = Weather.new(latitude, longitude, datetime).call
+      text += "\n当日は" + weather[:emoji] + " #{weather[:temp]}°のようですね。" if weather.present?
+    end
+    body = self.body + self.emoji
+
     message = Rima::Message.new(self.group, nil)
-    message.push_message(self.group.line_notify_text)
-    response = message.push_buttons('', self.body + self.emoji, actions)
+    message.push_message(text)
+    response = message.push_buttons('', body, actions)
     if response.is_a? Net::HTTPSuccess
       return self.notified!
     end

@@ -95,6 +95,8 @@ module Rima
 
       datte = Datte::Parser.new
       datte.parse_date(body) do |datetime| # 日付を含んだ処理
+        datetime -= Rational(9, 24)
+
         if /何/ === body
           show_remind(datetime)
         else

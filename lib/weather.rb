@@ -22,7 +22,7 @@ class Weather
       emoji = emoji_by(item['weather'][0]['id'])
       return {temp: temp, image: image, emoji: emoji}
     end
-    return {image: "#{HOST}/cal.png"}
+    return nil
   end
 
   def emoji_by(id)
