@@ -19,8 +19,12 @@ module Rima
       @event = event
       @group = Group.find_or_create(event)
       @message = Rima::Message.new(@group, @event)
-      hello() if @group.new_record?
-      @group.update_profile(@message.get_profile) if @group.name.nil?
+
+      if @group.new_record?
+        @group.update_profile(@message.get_profile)
+        hello
+        @group.save
+      end
     end
 
     def reply
@@ -165,7 +169,8 @@ module Rima
 
     # はじめましての時の一言
     def hello
-      @message.push_buttons('はじめまして', '初めまして。僕の設定はここで設定できるよ！', @group.first_actions)
+      text = '初めまして。僕はここで設定できるよ！'
+      @message.push_buttons('初めまして', text, @group.hello_actions)
     end
 
     ############### その他 ####################

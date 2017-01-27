@@ -29,11 +29,14 @@ class Group < ApplicationRecord
   def self.find_or_create(event)
     case event['source']['type']
     when 'user'
-      Group.find_or_create_by(source_id: event['source']['userId'], user_type: :user_id)
+      Group.find_or_initialize_by(source_id: event['source']['userId'], user_type: :user_id)
+      #Group.find_or_create_by(source_id: event['source']['userId'], user_type: :user_id)
     when 'group'
-      Group.find_or_create_by(source_id: event['source']['groupId'], user_type: :group_id)
+      Group.find_or_initialize_by(source_id: event['source']['userId'], user_type: :group_id)
+      #Group.find_or_create_by(source_id: event['source']['groupId'], user_type: :group_id)
     when 'room'
-      Group.find_or_create_by(source_id: event['source']['roomId'], user_type: :room_id)
+      Group.find_or_initialize_by(source_id: event['source']['userId'], user_type: :room_id)
+      #Group.find_or_create_by(source_id: event['source']['roomId'], user_type: :room_id)
     end
   end
 
@@ -134,10 +137,10 @@ class Group < ApplicationRecord
     ][self.character_before_type_cast]
   end
 
-  def first_actions
+  def hello_actions
     [{
       type: 'uri',
-      label: '私の設定をする',
+      label: '僕の設定をする',
       uri: "#{HOST}/groups/#{self.uid}/edit"
     }]
   end
