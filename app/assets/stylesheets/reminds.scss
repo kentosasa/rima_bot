@@ -89,6 +89,7 @@
     padding-right: 85px;
     position: relative;
     min-height: 100px;
+    padding-bottom: 70px;
 
     .remind-date {
       padding: 0;
@@ -97,6 +98,7 @@
       top: 0;
       bottom: 0;
       width: 85px;
+      height: 100px;
       background: rgba(240, 240, 240, .5);
 
       .date {
@@ -117,9 +119,17 @@
       }
     }
 
-    .remind-url {
-      padding: 5px;
-      word-break: break-all;
+    .remind-url-field {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 60px;
+      padding: 10px;
+      .remind-url {
+        padding-right: 20px;
+        word-break: break-all;
+      }
     }
   }
 

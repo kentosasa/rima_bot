@@ -55,11 +55,15 @@ class Remind < ApplicationRecord
   }
 
   def set_uid
-    self.uid ||= SecureRandom.hex(8)
+    self.uid ||= SecureRandom.hex(5)
   end
 
   def show_url
     "#{HOST}/reminds/#{self.uid}"
+  end
+
+  def short_url
+    "#{HOST}/r/#{self.uid}"
   end
 
   def answer_url
@@ -125,7 +129,7 @@ class Remind < ApplicationRecord
     if self.schedule?
       "#{datetime.strftime('%-m月%-d日')}までに回答してください。"
     elsif self.event?
-      "通知予定を#{datetime.strftime('%-m月%-d日 %H:%M')}の#{before}前にセットしました。"
+      "通知予定を#{datetime.strftime('%-m月%-d日 %-H:%M')}の#{before}前にセットしました。"
     end
   end
 

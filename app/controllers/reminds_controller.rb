@@ -26,7 +26,7 @@ class RemindsController < ApplicationController
     @remind.status = :activated
     if @remind.save
       flash[:success] = 'リマインドを作成しました。'
-      redirect_to group_path(@group.uid)
+      redirect_to remind_path(@remind.uid)
     else
       render 'new'
     end
@@ -81,7 +81,7 @@ class RemindsController < ApplicationController
 
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
-      redirect_to remind_path(@remind)
+      redirect_to remind_path(@remind.uid)
     else
       render 'edit'
     end

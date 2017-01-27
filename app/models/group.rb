@@ -23,7 +23,7 @@ class Group < ApplicationRecord
   enum character: { siri: 0, male: 1, female: 2 }
 
   def set_uid
-    self.uid ||= SecureRandom.hex(8)
+    self.uid ||= SecureRandom.hex(3)
   end
 
   def self.find_or_create(event)

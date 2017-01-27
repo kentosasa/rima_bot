@@ -26,8 +26,9 @@ h3.title.is-3.has-text-centered
       p = @remind.body
       br
     p = @remind.memo
-    p = @remind.url
-    = link_to @remind.show_url, @remind.show_url, class: 'remind-url'
+    .remind-url-field
+      p = @remind.url
+      = link_to @remind.short_url, @remind.short_url, class: 'remind-url'
     .remind-date
       p.date = @remind.datetime.strftime("%-m / %-d")
       p.time = @remind.datetime.strftime("%-H:%M")
@@ -73,14 +74,14 @@ h3.title.is-3.has-text-centered
   .control.is-grouped.remind-share
     p.control
       = link_to "http://line.me/R/msg/text/?[Share][#{remind_url(@remind.uid, :only_path => false)}]", class: 'button is-success is-small' do
-        span.icon.is-small(style='margin-right:10px;')
+        span.icon.is-small(style='margin-right:5px;')
           i.fa.fa-share-alt
-        | LINEでシェア
+        span(style='color:#333') LINEでシェア
     p.control
       = link_to google_cal_link(@remind), target: '_blank', class: 'button is-small' do
-        span.icon.is-small(style='margin-right: 10px;')
-          i.fa.fa-link
-        | Googleカレンダーに登録
+        span.icon.is-small(style='margin-right:3px;')
+          i.fa.fa-google
+        | カレンダーに登録
 
 - if @remind.schedule?
   p(style='padding: 10px 0 20px 0')
