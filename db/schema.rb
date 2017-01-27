@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170126161450) do
+ActiveRecord::Schema.define(version: 20170127141155) do
 
   create_table "groups", force: :cascade do |t|
     t.integer  "user_type"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20170126161450) do
     t.string   "source_id"
     t.string   "uid"
     t.integer  "character",  default: 0
+    t.string   "image"
   end
 
   create_table "reminds", force: :cascade do |t|

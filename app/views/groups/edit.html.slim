@@ -21,12 +21,19 @@
           - @group.errors.full_messages.each do |msg|
             li = msg
 
-  label.label = f.label :name, '名前'
-  p.control
-    = f.text_field :name, class: 'input', placeholder: 'ぽこひで'
-  
-  label.label = f.label :character, '口調'
-  - Group.characters.each do |key, val|
-    = f.radio_button :character, key, class: 'radio'
-    label.radio for="group_character_#{key}"
-      = ['Siri', '男性', '女性'][val]
+  .form-body
+    article.media
+      .media-left
+        figure.image.is-64x64
+          = image_tag @group.image
+      .media-content
+        .content
+          label.label = f.label :name, '名前'
+          p.control
+            = f.text_field :name, class: 'input', placeholder: 'ぽこひで'
+
+    label.label = f.label :character, '口調'
+    - Group.characters.each do |key, val|
+      = f.radio_button :character, key, class: 'radio'
+      label.radio for="group_character_#{key}"
+        = ['Siri', '男性', '女性'][val]
