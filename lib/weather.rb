@@ -19,9 +19,33 @@ class Weather
       next unless @date.beginning_of_day.to_i < unix && unix < @date.end_of_day.to_i
       temp = item['main']['temp']
       image = image(item['weather'][0]['id'])
-      return {temp: temp, image: image}
+      emoji = emoji_by(item['weather'][0]['id'])
+      return {temp: temp, image: image, emoji: emoji}
     end
     return {image: "#{HOST}/cal.png"}
+  end
+
+  def emoji_by(id)
+    return '' if id.blank?
+    case id
+    when 200...210 then '⛈'
+    when 210...220 then '⚡️'
+    when 220...300 then '🌩'
+    when 300...400 then '☔️'
+    when 500...600 then '☔️'
+    when 600...602 then '🌨'
+    when 602 then '⛄️'
+    when 610...630 then '❄️'
+    when 800 then '☀️'
+    when 801 then '🌤'
+    when 802 then '⛅️'
+    when 803 then '🌥'
+    when 804 then '☁️'
+    when 70..760 then '🌫'
+    when 771 then '☔️'
+    when 781 then '🌪'
+    else '☁️'
+    end
   end
 
   def image(id)

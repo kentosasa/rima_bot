@@ -37,6 +37,7 @@ $(document).ready(function() {
     gmap.init();
     gmap.setMarker({ lat: gon.lat, lng: gon.lng });
   }
+
   if(gon.autoComplete === true && gmap !== undefined && gon.remindType !== undefined) {
     var type = gon.remindType.toLowerCase();
     if(gon.create === true) {

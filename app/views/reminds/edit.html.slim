@@ -61,10 +61,12 @@ h3.title.is-3.has-text-centered リマインド編集
         = f.select :before, {'10分前': 10, '20分前': 20, '30分前': 30, '1時間前': 60, '2時間前': 120}, {}
 
     .field(data-type='Schedule-remind')
-      #candidate-datepicker
+      - if @remind.candidate_body.blank?
+        #candidate-datepicker
       label.label.required = f.label :candidate_body, '日付候補'
       p.control
-        = f.text_area :candidate_body, rows: 4, class: 'textarea', placeholder: 'カレンダーをクリックすると日時が入力されます。また、内容は直接編集できます。'
+        = f.text_area :candidate_body, rows: 4, class: 'textarea', disabled: @remind.candidate_body.present?, \
+          placeholder: 'カレンダーをクリックすると日時が入力されます。また、内容は直接編集できます。'
 
 
   .form-footer
@@ -73,9 +75,8 @@ h3.title.is-3.has-text-centered リマインド編集
       a.button#toggle-button
         span.icon.is-small
           i
-
     #toggle-body
-      label.label = f.label :place, '場所'
+      label.label = f.label :place, '集合場所'
       p.control
         = f.text_field :place, class: 'input is-expanded', placeholder: 'スポットまたは場所を追加'
 

@@ -19,7 +19,6 @@ module Rima
       @event = event
       @group = Group.find_or_create(event)
       @message = Rima::Message.new(@group, @event)
-      hello()
       hello() if @group.new_record?
       @group.update_profile(@message.get_profile) if @group.name.nil?
     end

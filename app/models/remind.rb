@@ -111,9 +111,9 @@ class Remind < ApplicationRecord
   def active_text
     if self.schedule?
       #"😎🔔☀️📝🌜😃🌙👀"
-      "#{self.datetime.strftime('%-m月%-d日 %H:%M')}までに回答お願いします😃"
+      self.group.schedule_active_text(self.datetime)
     elsif self.event?
-      "#{self.datetime.strftime('%-m月%-d日 %H:%M')}の#{self.before}前にリマインドを設定しました😃"
+      self.group.event_active_text(self.datetime, self.before)
     end
   end
 
@@ -263,7 +263,7 @@ class Remind < ApplicationRecord
 
   def snooze!(min = 30)
     if self.update(at: self.at.since(min.minute), status: :activated)
-      "#{self.at.strftime("%-m月%-d日%-H時%M分")}に再通知します!"
+      self.group.snooze_text(at)
     else
       nil
     end

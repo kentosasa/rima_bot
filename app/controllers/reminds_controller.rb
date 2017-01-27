@@ -5,7 +5,7 @@ class RemindsController < ApplicationController
   include ActionView::Helpers::TextHelper
   before_action :set_group
   before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate, :inactivate]
-  before_action :set_gmap, only: [:show, :edit, :update]
+  before_action :set_gmap, only: [:edit, :update]
   before_action :set_before, only: [:show, :edit, :activate]
 
   def new
@@ -32,6 +32,8 @@ class RemindsController < ApplicationController
   end
 
   def show
+    gon.lat = @remind.latitude
+    gon.lng = @remind.longitude
     if @remind.schedule?
       @candidates = @remind.candidate_body.each_line.map(&:chomp)
     end
