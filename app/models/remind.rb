@@ -55,7 +55,7 @@ class Remind < ApplicationRecord
   }
 
   def set_uid
-    self.uid ||= SecureRandom.hex(5)
+    self.uid ||= SecureRandom.hex(4)
   end
 
   def show_url
@@ -63,7 +63,7 @@ class Remind < ApplicationRecord
   end
 
   def short_url
-    "#{HOST}/r/#{self.uid}"
+    "#{HOST}/#{self.uid}"
   end
 
   def answer_url

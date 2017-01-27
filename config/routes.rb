@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   post '/callback', to: 'webhook#callback'
 
   root to: 'sites#index'
-  get '/r/:id', to: 'reminds#show'
 
   resources :reminds, except: [:index, :new] do
     member do
@@ -28,4 +27,6 @@ Rails.application.routes.draw do
       get '/schedule/new', to: 'reminds#new', type: 'Schedule'
     end
   end
+
+  get '/:id', to: 'reminds#show'
 end
