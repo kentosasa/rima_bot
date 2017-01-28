@@ -7,7 +7,11 @@ class LineClient
     'location' => :echo_location,
     'sticker' => :echo_sticker
   }.freeze
-  HOST = ENV['WEBHOOK_URL'].freeze
+
+  RIMASAN = Regexp.compile('りまさん|rimasan|リマさん|rima_san')
+  NEGATIVE = Regexp.compile('無理|ムリ|むり|ダメ|だめ|駄目|できない')
+  PLANS = Regexp.compile('予定一覧|リマインド一覧')
+  SCHEDULE = Regexp.compile('いつにする?|いつにする？|日程調整|スケジュール調整|いつがいい?|いつにしよう?|行ける人おしえてくださいー|何日にする-?')
 
   def initialize(client, event)
     @client = client
@@ -33,20 +37,6 @@ class LineClient
     end
   end
 
-  private
-
-  def receive_follow
-    @messaging.reply_text("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。是非、グループに参加してみてください！よろしくお願いします:)")
-  end
-
-  def receive_unfollow; end
-
-  def receive_join
-    @messaging.reply_text("友達登録ありがとうございます。\n私はグループ内の会話からリマインドや日程調整のサポートをするBOTです。よろしくお願いします:)")
-  end
-
-  def receive_leave; end
-
   def receive_postback
     query = Rack::Utils.parse_nested_query(@event["postback"]["data"])
     id = query['remind_id']
@@ -57,14 +47,28 @@ class LineClient
     end
   end
 
+  def self_introduction
+    [
+      "リマインドBOTのリマさんだよ😆\n日程調整のサポートやリマインドは僕に任してね!😤",
+      "会話からリマインドや日程調整のお手伝いをするよリマさんです😋\nよろしくね！",
+      "「明日の8時に渋谷集合ね!」\nなどの会話があると、僕がサポートするよ🎶",
+      "「日程調整」や「予定一覧」って言ってみると僕がフルサポートするよ👍"
+    ].sample
+  end
+
   # リマインド(id)を有効化
   def activation(id)
     remind = Remind.find(id)
-    if remind.activate!
-      text = "[#{remind.name}]\n#{remind.datetime.strftime('%m/%d %H:%m')}の#{remind.before}前にリマインドを設定しました。"
-      @messaging.reply_confirm(text, remind.active_actions)
+    unless remind.activated?
+      if remind.activate!
+        title = remind.name
+        @messaging.reply_buttons(title, remind.active_text, remind.active_actions)
+      else
+        # logger.debug '通知の設定に失敗'
+        # @messaging.reply_text('通知設定に失敗')
+      end
     else
-      @messaging.reply_text('通知設定に失敗')
+      # @messaging.reply_text('既に通知が有効化されてますよー。')
     end
   end
 
@@ -72,10 +76,10 @@ class LineClient
   def inactivation(id)
     remind = Remind.find(id)
     if remind.inactivate!
-      text = "[#{remind.name}]\nリマインド設定を取り消しました。"
-      @messaging.reply_confirm(text, remind.show_actions)
+      @messaging.reply_text("🔕リマインド設定を取り消しました。")
     else
-      @messaging.reply_text('通知取り消しに失敗')
+      # logger.debug '通知の取り消しに失敗'
+      # @messaging.reply_text('通知取り消しに失敗')
     end
   end
 
@@ -85,26 +89,50 @@ class LineClient
     if remind.snooze!(10)
       @messaging.reply_text("#{remind.at.strftime("%m月%d日%H時%M分")}に再通知します")
     else
-      @messaging.reply_text('再通知の設定に失敗')
+      # logger.debug '再通知の設定に失敗'
+      # @messaging.reply_text('再通知の設定に失敗')
     end
   end
 
   def add_remind(body, datetime)
-    remind_at = datetime.ago(1.hour)
-    name = datetime.strftime("%m/%dのイベント")
+    between = datetime.to_time.to_i - Time.zone.now.to_time.to_i
+    if between < 60 * 60 * 10
+      remind_at = datetime
+    else
+      remind_at = datetime.ago(1.hour)
+    end
+    name = datetime.strftime("%-m/%-dのイベント")
 
     remind = @group.reminds.new(
       name: name,
       body: body,
       datetime: datetime,
       at: remind_at,
-      type: 'Event'
+      type: 'Event',
+      activated: false
     )
 
     if remind.save
-      @messaging.reply_buttons(name, body + remind.emoji , remind.create_actions)
-    else
-      @messaging.reply_text('保存失敗')
+      @messaging.reply_text('リマインド🔔を設定しますか?')
+      @messaging.push_buttons(name, body + remind.emoji, remind.create_actions)
+    end
+  end
+
+  # スケジュールを追加
+  def add_schedule(body, datetime)
+    remind_at = datetime.ago(1.hour)
+
+    schedule = @group.reminds.new(
+      name: '日程調整',
+      body: body,
+      datetime: datetime,
+      at: remind_at,
+      type: 'Schedule',
+      activated: false
+    )
+
+    if schedule.save
+      @messaging.push_buttons('日程調整', '日程調整をサポートしますか?', schedule.schedule_actions)
     end
   end
 
@@ -116,54 +144,78 @@ class LineClient
       ad_column = ad.column
       columns.push(ad_column) if ad_column.present?
     end
-    @messaging.reply_carousel(columns)
+    text = datetime.strftime("%-m月%-d日の予定ですよ！")
+    @messaging.reply_text(text)
+    @messaging.push_carousel(text, columns)
   end
 
   def show_all_reminds
     reminds = @group.reminds.active.between(DateTime.now, nil).limit(5)
-    columns = reminds.map { |item| item.show_column }
-    @messaging.reply_carousel(columns)
+    columns = reminds.map { |remind| remind.show_column }
+    text = "今日以降の予定ですよ！"
+    @messaging.reply_text(text)
+    @messaging.push_carousel(text, columns)
   end
 
   def receive_text(event)
     body = event['message']['text']
 
-    if body.include?('予定一覧')
+    # 名前を呼ばれると自己紹介
+    if RIMASAN === body
+      @messaging.reply_text(self_introduction)
+      return
+    end
+
+    # ネガティブワードがあれば反応しない
+    return if NEGATIVE === body
+
+    # 予定一覧やスケジュール一覧で予定を返す
+    if PLANS === body
       show_all_reminds
+      return
+    end
+
+    if SCHEDULE === body
+      add_schedule(body, DateTime.now + 7) # 一週間後
+      return
     end
 
     datte = Datte::Parser.new
     datte.parse_date(body) do |datetime| # 日付を含んだ処理
-      if body.include?('何')
+      if /何/ === body
         show_remind(datetime)
       else
         add_remind(body, datetime)
       end
-      return
     end
-
-    @messaging.reply_text('日付を含みませんでした。')
+    # logger.debug '日付を含みませんでした'
+    # @messaging.reply_text('日付を含みませんでした。')
   end
 
   def echo_image(event)
-    @messaging.reply_text('イメージだよ')
+    # logger.debug 'イメージだよ'
+    #@messaging.reply_text('イメージだよ')
   end
 
   def echo_video(event)
-    @messaging.reply_text('動画だよ')
+    # logger.debug 'ビデオだよ'
+    #@messaging.reply_text('動画だよ')
   end
 
   def echo_audio(event)
-    @messaging.reply_text('音声だよ')
+    # logger.debug '音声だよ'
+    # @messaging.reply_text('音声だよ')
   end
 
   def echo_location(event)
-    title, address = event['message']['title'], event['message']['address']
-    lat, lng = event['message']['latitude'], event['message']['longitude']
-    @messaging.reply_location(title, address, lat, lng)
+    # logger.debug 'ロケーション'
+    # title, address = event['message']['title'], event['message']['address']
+    # lat, lng = event['message']['latitude'], event['message']['longitude']
+    # @messaging.reply_location(title, address, lat, lng)
   end
 
   def echo_sticker(event)
-    @messaging.reply_sticker(event['message']['packageId'], event['message']['stickerId'])
+    # logger.debug 'stickerだよ'
+    # @messaging.reply_sticker(event['message']['packageId'], event['message']['stickerId'])
   end
 end

@@ -114,6 +114,61 @@
   }
 }
 
+.remind-field {
+  padding: 10px;
+
+  .remind-body {
+    background: #fff;
+    padding: 10px;
+  }
+
+  .remind-date {
+    padding: 10px;
+
+    .level-item {
+      width: 50%;
+
+      .heading {
+        font-size: 20px;
+      }
+      .title {
+        font-size: 15px;
+      }
+    }
+  }
+
+  .remind-activate {
+    background: #fff;
+    padding: 10px;
+  }
+}
+
+.remind-items {
+  margin: 4px 0px;
+  .item {
+    display: -webkit-flex;
+    display: flex;
+    padding: 12px;
+    //margin: 4px 0px;
+    background: #fff;
+    overflow: hidden;
+    .subtitle {
+      color: #363636;
+      font-weight: bold;
+      font-size: 14px;
+      width: 140px;
+      margin: 0px;
+    }
+    .content {
+      width: 0px;
+      flex-grow: 1;
+    }
+    .url {
+      font-size: 8px;
+    }
+  }
+}
+
 .xdsoft_inline {
   width: 100%;
   margin-top: 20px;

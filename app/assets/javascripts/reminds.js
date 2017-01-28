@@ -37,6 +37,7 @@ $(document).ready(function() {
     gmap.init();
     gmap.setMarker({ lat: gon.lat, lng: gon.lng });
   }
+
   if(gon.autoComplete === true && gmap !== undefined && gon.remindType !== undefined) {
     var type = gon.remindType.toLowerCase();
     if(gon.create === true) {
@@ -72,6 +73,10 @@ $(document).ready(function() {
 
   if(gon.remindType !== undefined) {
     displayForm(gon.remindType);
+    if(gon.remindType == 'Schedule') {
+      $('.tabs .event-remind').removeClass('is-active');
+      $('.tabs .schedule-remind').addClass('is-active');
+    }
   }
 
 
@@ -96,6 +101,7 @@ $(document).ready(function() {
     displayForm(type);
 
     if(type === 'Event') {
+      $('#toggle-body').removeClass('is-open')
       console.log('event');
     } else if(type === 'Schedule') {
       console.log('schedule');

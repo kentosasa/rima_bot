@@ -11,13 +11,15 @@
           i.fa.fa-angle-left
         | 戻る
 
-- content_for :ad do
-  = render 'templates/ad'
-
-
 h3.title.is-3.has-text-centered 回答する
 
-= form_for @user, url: answer_schedule_path(@schedule), method: :post do |f|
+article.message
+  .message-header
+    p = @schedule.name
+  .message-body
+    = @schedule.body
+
+= form_for @user, url: answer_schedule_path(@schedule.uid), method: :post do |f|
 
   label.label = f.label :name, '表示名'
   p.control
@@ -25,18 +27,22 @@ h3.title.is-3.has-text-centered 回答する
 
   table.table
     tbody
-      - @candidates.each do |candidate|
+      - @candidates.each_with_index do |candidate, index|
         tr
-          th(style='line-height:50px;vertical-align:middle') = candidate.title
-          = hidden_field_tag nil, candidate.id, name: "candidate[][id]"
+          th(style='line-height:50px;vertical-align:middle') = candidate
+          = hidden_field_tag nil, index, name: "candidate[][id]"
           td.control
             ul.answers
               li
-                = radio_button "candidate_#{candidate.id}", 'attendance', 'good', {}
-                = label_tag("candidate_#{candidate.id}_attendance_good", '', class: 'good')
+                = radio_button "candidate_#{index}", 'attendance', 'good', {}
+                = label_tag("candidate_#{index}_attendance_good", '', class: 'good')
               li
-                = radio_button "candidate_#{candidate.id}", 'attendance', 'soso', {}
-                = label_tag("candidate_#{candidate.id}_attendance_soso", '', class: 'soso')
+                = radio_button "candidate_#{index}", 'attendance', 'soso', {}
+                = label_tag("candidate_#{index}_attendance_soso", '', class: 'soso')
               li
-                = radio_button "candidate_#{candidate.id}", 'attendance', 'bad', {checked: true}
-                = label_tag("candidate_#{candidate.id}_attendance_bad", '', class: 'bad')
+                = radio_button "candidate_#{index}", 'attendance', 'bad', {checked: true}
+                = label_tag("candidate_#{index}_attendance_bad", '', class: 'bad')
+
+  label.label = f.label :comment, 'コメント'
+  p.control
+    = f.text_area :comment, rows: 2, class: 'textarea', placeholder: '最大200文字'

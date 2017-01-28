@@ -25,11 +25,12 @@ gem 'jquery-ui-rails'
 # gem 'jquery-turbolinks'
 # gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
-gem 'bulma-rails', "~> 0.3.0"
 gem "font-awesome-rails"
 gem 'gon'
 
+# SEO
 gem 'meta-tags'
+gem 'google-analytics-rails'
 
 ## lib
 gem 'line-bot-api'
@@ -45,6 +46,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'dotenv-rails'
+  gem 'sqlite3'
 end
 
 group :development do

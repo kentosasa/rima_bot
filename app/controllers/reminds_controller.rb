@@ -1,16 +1,21 @@
+require 'line/bot'
+
 class RemindsController < ApplicationController
+  include Rima
+  include ActionView::Helpers::TextHelper
   before_action :set_group
   before_action :set_remind, only: [:show, :edit, :update, :destroy, :activate, :inactivate]
-  before_action :set_gmap, only: [:show, :edit, :update]
+  before_action :set_gmap, only: [:edit, :update]
   before_action :set_before, only: [:show, :edit, :activate]
 
   def new
     @remind = @group.reminds.new
+    @remind.type = params[:type] || 'Event'
     gon.autoComplete = true
     gon.lat = 35.6586488
     gon.lng = 139.6966408
     gon.create = true
-    gon.remindType = 'Event'
+    gon.remindType = params[:type] || 'Event'
   end
 
   def create
@@ -27,11 +32,13 @@ class RemindsController < ApplicationController
   end
 
   def show
+    gon.lat = @remind.latitude
+    gon.lng = @remind.longitude
     if @remind.schedule?
-      @candidates = @remind.candidates.order(:id)
-      @users = @candidates.first.users
+      @candidates = @remind.candidate_body.each_line.map(&:chomp)
     end
   end
+
   def activate; @remind.activate! end
   def inactivate; @remind.inactivate! end
 
@@ -41,9 +48,7 @@ class RemindsController < ApplicationController
     gon.remindType = @remind.type || 'Event'
 
     if @remind.schedule?
-      @remind.candidate_body = @remind.candidates.inject('') do |body, c|
-        body + c.title + "\n"
-      end
+      @candidates = @remind.candidate_body.each_line.map(&:chomp)
     end
   end
 
@@ -51,8 +56,19 @@ class RemindsController < ApplicationController
     @remind.type = params.require(type.downcase.to_sym).permit(:remind_type)[:remind_type]
     @remind.datetime = combine_datetime
     @remind.at = remind_at(@remind.datetime)
-
-    parse_candidates(@remind) if @remind.schedule?
+    if !@remind.activated? && @remind.activated!
+      text = truncate(@remind.body, length: 25) + "\n" + @remind.active_text
+      client.push_message(@remind.group.source_id, {
+        type: 'template',
+        altText: text,
+        template: {
+          type: 'buttons',
+          title: @remind.name,
+          text: text,
+          actions: @remind.active_actions
+        }
+      })
+    end
 
     if @remind.update(remind_params)
       flash[:success] = 'リマインドを更新しました。'
@@ -95,19 +111,7 @@ class RemindsController < ApplicationController
   end
 
   def remind_params
-    params.require(type.downcase.to_sym).permit(:name, :body, :scale, :place, :address, :longitude, :latitude)
-  end
-
-  # 中身を改行でパースして保存
-  def parse_candidates(schedule)
-    body = params.require(type.downcase.to_sym).permit(:candidate_body)
-    body[:candidate_body].lines.each do |line|
-      title = line.chomp
-      next if title.size.zero?
-      candidate = Candidate.find_or_initialize_by(title: title, schedule_id: schedule.id)
-      candidate.title = title
-      candidate.save
-    end
+    params.require(type.downcase.to_sym).permit(:name, :body, :place, :address, :longitude, :latitude, :candidate_body)
   end
 
   def remind_class

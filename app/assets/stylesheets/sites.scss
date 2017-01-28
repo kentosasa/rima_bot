@@ -1,0 +1,55 @@
+.sites {
+  .container {
+    padding: 10px;
+  }
+  header {
+    background: rgba(255, 255, 255, 0.49) !important;
+  }
+
+  .header-image {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.49),rgba(0, 0, 0, 0.89)),url('https://images.unsplash.com/1/iphone-4-closeup.jpg?dpr=1&auto=format&crop=middle&fit=crop&w=2000&h=700&q=80');
+  }
+  .is-outlined {
+    background-color:transparent;
+    color:#fff;
+  }
+  .hero-cta {
+    padding: 30px 0;
+  }
+
+  .panel {
+    height: 200px;
+    position: relative;
+    .section {
+      background-color: #fff;
+      padding: 40px 20px;
+    }
+    .panel-block {
+      height: 100%;
+      color: #222324;
+      display: block;
+      line-height: 16px;
+      padding: 10px;
+    }
+    .panel-footer {
+      background: #ddd;
+      position: absolute;
+      bottom: 0px;
+      height: 30px;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .panel-block.section p {
+    font-size: 17px;
+    line-height: 1.4;
+    color:#95A5A6;
+  }
+  .section.main {
+    background-color:#F0F0F0;
+  }
+  .icon-block {
+    font-size: 4em;
+  }
+}

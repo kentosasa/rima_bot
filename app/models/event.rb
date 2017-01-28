@@ -5,13 +5,11 @@
 #  id         :integer          not null, primary key
 #  group_id   :integer
 #  at         :datetime
-#  activated  :boolean          default(FALSE)
-#  reminded   :boolean          default(FALSE)
+#  status     :integer          default(CREATED)
 #  name       :string
 #  body       :text
 #  place      :string
 #  datetime   :datetime
-#  scale      :integer
 #  type       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -19,8 +17,9 @@
 #  longitude  :float
 #  address    :string
 #  uid        :string
+#  candidate_body :text
 #
 
 class Event < Remind
-  belongs_to :group  
+  belongs_to :group
 end

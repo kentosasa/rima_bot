@@ -11,11 +11,11 @@
  * It is generally better to create a new file per style scope.
  *
  *= require font-awesome
+ *= require bulma
  *= require_tree .
  *= require_self
  */
 
-@import "bulma";
 body {
   padding-bottom: 50px;
 }
@@ -24,6 +24,9 @@ body {
 }
 .footer {
   padding: 1em;
+}
+.input, .textarea {
+	font-size: 16px !important;
 }
 
 .container {
@@ -56,4 +59,20 @@ body {
 
 .icon {
   margin-right: 5px;
+}
+
+.table-container {
+  position: relative;
+  width: 100%;
+  .remind-table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+    th {
+      width: 140px;
+    }
+    td {
+      width: auto;
+    }
+  }
 }

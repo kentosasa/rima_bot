@@ -10,6 +10,13 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
+  config.eager_load_paths += %W( #{config.root}/lib )
+
+  GA.tracker = 'UA-90733675-1'
+
+  config.time_zone = 'Tokyo'
+  config.active_record.default_timezone = :local
+
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   post '/callback', to: 'webhook#callback'
 
+  root to: 'sites#index'
+
   resources :reminds, except: [:index, :new] do
     member do
       post :activate
@@ -22,6 +24,7 @@ Rails.application.routes.draw do
     member do
       get '/reminds/new', to: 'reminds#new'
       post '/reminds/', to: 'reminds#create'
+      get '/schedule/new', to: 'reminds#new', type: 'Schedule'
     end
   end
 end

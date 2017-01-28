@@ -1,4 +1,5 @@
 class Messaging
+  include ActionView::Helpers::TextHelper
   def initialize(event, client, group)
     @event = event
     @client = client
@@ -9,6 +10,30 @@ class Messaging
     @client.push_message(@group.source_id, {
       type: 'text',
       text: text
+    })
+  end
+
+  def push_buttons(title, text, actions)
+    @client.push_message(@group.source_id, {
+      type: 'template',
+      altText: truncate(text, length: 30),
+      template: {
+        type: 'buttons',
+        #title: title,
+        text: text,
+        actions: actions
+      }
+    })
+  end
+
+  def push_carousel(text, columns)
+    @client.push_message(@group.source_id, {
+      type: 'template',
+      altText: text,
+      template: {
+        type: 'carousel',
+        columns: columns
+      }
     })
   end
 
@@ -40,7 +65,7 @@ class Messaging
   def reply_confirm(text, actions)
     @client.reply_message(@event['replyToken'], {
       type: 'template',
-      altText: text,
+      altText: truncate(text, length: 30),
       template: {
         type: 'confirm',
         text: text,
@@ -51,20 +76,31 @@ class Messaging
 
   def reply_buttons(title, text, actions)
     @client.reply_message(@event['replyToken'], {
-      'type': 'template',
-      'altText': 'ご使用の端末は対応していません',
-      'template': {
-        'type': 'buttons',
-        #thumbnailImageUrl: image,
-        'title': title,
-        'text': text,
-        'actions': actions
+      type: 'template',
+      altText: truncate(text, length: 30),
+      template: {
+        type: 'buttons',
+        title: title,
+        text: text,
+        actions: actions
       }
     })
   end
 
   def reply_carousel(columns)
     @client.reply_message(@event['replyToken'], {
+      "type": "template",
+      "altText": "ご使用の端末は対応しておりません",
+      "template": {
+        "type": "carousel",
+        "columns": columns
+      }
+    })
+  end
+
+  # プレゼンのためadは固定
+  def push_notify(columns)
+    @client.push_message(@group.source_id, {
       "type": "template",
       "altText": "ご使用の端末は対応しておりません",
       "template": {
