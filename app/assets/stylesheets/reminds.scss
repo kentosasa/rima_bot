@@ -134,6 +134,12 @@
     }
   }
 
+  .autolink {
+    word-break: break-all;
+    font-size: 0.9em;
+    color: #66BB6A;
+  }
+
   .remind-share {
     padding: 5px 0;
     margin: 5px 0;

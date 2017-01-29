@@ -23,7 +23,7 @@ h3.title.is-3.has-text-centered
 .remind-field
   .remind-body
     - if @remind.body.present?
-      p = @remind.body
+      p = autolink(@remind.body).html_safe
       br
     p = @remind.memo
     .remind-url-field

@@ -1,5 +1,5 @@
 module RemindsHelper
-
+  require 'uri'
   def google_cal_link(remind)
     url = 'http://www.google.com/calendar/event?'
     url += 'action=TEMPLATE'
@@ -11,5 +11,13 @@ module RemindsHelper
     url += '&sprop=リマさん'
     #url += '&sprop=' + # ここのリマインドの詳細リンク
     url
+  end
+
+  def autolink(text)
+    URI.extract(text, ['http', 'https']).uniq.each do |url|
+      replaced = link_to url, url, target: '_blank', class: 'autolink'
+      text.gsub!(url, replaced)
+    end
+    return text
   end
 end
