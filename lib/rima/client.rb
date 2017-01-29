@@ -21,7 +21,7 @@ module Rima
       @message = Rima::Message.new(@group, @event)
 
       if @group.new_record?
-        #@group.update_profile(@message.get_profile)
+        @group.update_profile(@message.get_profile)
         hello
         @group.save
       end

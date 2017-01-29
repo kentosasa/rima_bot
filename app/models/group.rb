@@ -146,10 +146,8 @@ class Group < ApplicationRecord
   end
 
   def update_profile(json)
-    p json
-    #self.name ||= json['displayName']
-    #self.image ||= '' || json['pictureUrl']
-    # self.message ||= json['statusMessage']
+    self.name ||= json['displayName']
+    self.image ||= json['pictureUrl']
     save
   end
 end
