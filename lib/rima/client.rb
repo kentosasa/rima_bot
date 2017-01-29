@@ -112,7 +112,6 @@ module Rima
 
     ########################################
 
-
     def create_remind(body, datetime, type, name = nil)
       between = datetime.to_time.to_i - Time.zone.now.to_time.to_i
       if between < 60 * 60 * 10

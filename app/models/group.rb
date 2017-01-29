@@ -32,10 +32,10 @@ class Group < ApplicationRecord
       Group.find_or_initialize_by(source_id: event['source']['userId'], user_type: :user_id)
       #Group.find_or_create_by(source_id: event['source']['userId'], user_type: :user_id)
     when 'group'
-      Group.find_or_initialize_by(source_id: event['source']['userId'], user_type: :group_id)
+      Group.find_or_initialize_by(source_id: event['source']['groupId'], user_type: :group_id)
       #Group.find_or_create_by(source_id: event['source']['groupId'], user_type: :group_id)
     when 'room'
-      Group.find_or_initialize_by(source_id: event['source']['userId'], user_type: :room_id)
+      Group.find_or_initialize_by(source_id: event['source']['roomId'], user_type: :room_id)
       #Group.find_or_create_by(source_id: event['source']['roomId'], user_type: :room_id)
     end
   end
