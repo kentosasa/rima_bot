@@ -55,7 +55,7 @@ class RemindsController < ApplicationController
     gon.autoComplete = true
     gon.remindType = @remind.type || 'Event'
 
-    if @remind.schedule?
+    if @remind.schedule? && @remind.candidate_body.present?
       @candidates = @remind.candidate_body.each_line.map(&:chomp)
     end
   end
