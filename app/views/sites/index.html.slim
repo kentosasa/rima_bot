@@ -32,6 +32,29 @@ section.hero.is-primary.is-large.header-image
     .level-item.has-text-centered
       p.title Call to action here!
 
+section.major-hero.hero.is-medium.is-bold
+  .hero-body
+    .major
+      h2 特徴
+    ul.features
+      li
+        span.icon.is-large.major(style='color:#efa8b0')
+          i.fa.fa-code
+        h3.subtitle.is-3 hoge
+        p hogehogehogehoge
+      li
+        span.icon.is-large.major
+          i.fa.fa-code
+        h3.subtitle.is-3 hoge
+        p hogehogehogehoge
+      li
+        span.icon.is-large.major
+          i.fa.fa-code
+        h3.subtitle.is-3 hoge
+        p hogehogehogehoge
+
+
+
 section.hero.is-medium.is-primary.is-bold
   .hero-body
     .container
@@ -68,7 +91,30 @@ section.hero.is-medium.is-primary.is-bold
             p グループでも個人でも使える
             .panel-footer
               a.button.is-fullwidth Action
+              
+section.contact
+  .container
+    h3 お問い合わせ
+    p リマさんに関するお問い合わせ等ありましたら、お気軽にご連絡ください。
+    form(method='POST' action='http://formspree.io/rimasan.bot@gmail.com')
+      .control.is-grouped
+        p.control.is-expanded.has-icon
+          input.input#contact-name(type='text' placeholder='お名前' required='true')
+          span.icon
+            i.fa.fa-user-o
+        p.control.is-expanded.has-icon
+          input.input#contact-email(type='email' placeholder='メールアドレス' required='true')
+          span.icon
+            i.fa.fa-envelope
+      
+      p.control
+        textarea.textarea#contact-body(placeholder='本文' required='true')
 
+      .control.is-grouped
+        p.control
+          button.button.is-primary#send-mail(type='submit') 送信する
+        p.control
+          button.button.is-warning(type='reset') リセット
 footer.footer
   hr
   .container

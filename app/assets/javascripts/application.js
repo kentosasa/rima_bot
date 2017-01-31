@@ -30,4 +30,38 @@ $(document).ready( function () {
   $('.nav-toggle').on('click', function() {
     $('.nav-menu').toggleClass('is-active')
   })
+
+  $('.contact #send-mail').on('click', function(e) {
+    e.preventDefault()
+    var name = $('#contact-name').val()
+    var email = $('#contact-email').val()
+    var body = $('#contact-body').val()
+    console.log(name, email, body)
+    if(name === '' || email === '' || body === '') {
+      swal({
+        text: 'お名前、メールアドレス、本文を入力してください。',
+        type: 'warning',
+        timer: 2000
+      })
+      return
+    }
+
+    $(this).addClass('is-loading is-disabled')
+    $.ajax({
+      url: 'https://formspree.io/rimasan.bot@gmail.com',
+      method: 'POST',
+      data: {name: name, email: email, body: body},
+      dataType: 'json'
+    })
+
+    swal({
+      title: 'メールを送信しました。',
+      type: 'success',
+      timer: 2000
+    })
+    $(this).removeClass('is-loading is-disabled')
+    $('#contact-name').val('')
+    $('#contact-email').val('')
+    $('#contact-body').val('')
+  })
 })

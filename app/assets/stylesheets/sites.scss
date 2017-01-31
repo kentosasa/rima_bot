@@ -53,3 +53,26 @@
     font-size: 4em;
   }
 }
+
+
+.sites {
+
+  .contact {
+    border-top: solid 6px #f4f4f4;
+    padding: 1em;
+
+    .container {
+      padding: 4em 0 2em 0;
+      width: 80%;
+      margin: 0 auto;
+
+      h3 {
+        font-size: 1.75em;
+        line-height: 1.5em;
+      }
+      p {
+        margin: 0 0 2.25em 0;
+      }
+    }
+  }
+}
