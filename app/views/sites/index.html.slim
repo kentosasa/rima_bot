@@ -27,33 +27,26 @@ section.hero.is-primary.is-large.header-image
             i.fa.fa-download
           span Download
 
-.hero-cta
-  .level
-    .level-item.has-text-centered
-      p.title Call to action here!
-
-section.major-hero.hero.is-medium.is-bold
+section.hero.feature-hero
   .hero-body
-    .major
-      h2 特徴
-    ul.features
-      li
-        span.icon.is-large.major(style='color:#efa8b0')
-          i.fa.fa-code
-        h3.subtitle.is-3 hoge
-        p hogehogehogehoge
-      li
-        span.icon.is-large.major
-          i.fa.fa-code
-        h3.subtitle.is-3 hoge
-        p hogehogehogehoge
-      li
-        span.icon.is-large.major
-          i.fa.fa-code
-        h3.subtitle.is-3 hoge
-        p hogehogehogehoge
-
-
+    .container
+      .columns
+        .column.is-half.with-image
+          figure.image.is-square
+            = image_tag 'feature1.jpg'
+            /= image_tag 'https://html5up.net/uploads/demos/stellar/images/pic01.jpg'
+        .column.is-half.with-description
+          h2.subtitle.is-2 日常をサポート
+          p BOTがあなたの日常をサポートしてくれます。
+          p サークルのグループLINE、家族のグループLINE、同窓会のグループLINEどこでも
+      .columns.is-mobile
+        .column.is-half.with-description
+          h2.subtitle.is-2 日常をサポート
+          p BOTがあなたの日常をサポートしてくれます。
+          p サークルのグループLINE、家族のグループLINE、同窓会のグループLINEどこでも
+        .column.is-half.with-image
+          figure.image.is-square
+            = image_tag 'feature2.jpg'
 
 section.hero.is-medium.is-primary.is-bold
   .hero-body

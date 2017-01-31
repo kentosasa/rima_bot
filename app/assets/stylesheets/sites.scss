@@ -57,6 +57,30 @@
 
 .sites {
 
+  .feature-hero {
+    padding: 1em;
+
+    .with-image {
+      padding: 2em;
+
+      figure {
+        border-color: #dddddd;
+        border-radius: 100%;
+        border: solid 1px;
+        img {
+          border-radius: 100%;
+          padding: 0.5em;
+        }
+      }
+    }
+
+    .with-description {
+      text-align: center;
+      padding: 3em;
+      padding-top: 8em;
+    }
+  }
+
   .contact {
     border-top: solid 6px #f4f4f4;
     padding: 1em;
