@@ -57,8 +57,18 @@
 
 .sites {
 
+  .invite-link {
+    img {
+      height: 36px;
+    }
+  }
+
   .feature-hero {
     padding: 1em;
+
+    .columns {
+      border-bottom: solid 3px #f4f4f4;
+    }
 
     .with-image {
       padding: 2em;
@@ -72,27 +82,81 @@
           padding: 0.5em;
         }
       }
+      @media screen and (max-width: 640px) {
+        padding: 1em;
+      }
     }
 
     .with-description {
       text-align: center;
       padding: 3em;
       padding-top: 8em;
+      @media screen and (max-width: 640px) {
+        h2 {
+          font-size: 2em;
+        }
+        padding: 1em;
+        padding-top: 3em;
+      }
+    }
+  }
+
+  .cando-hero {
+    padding: 2em;
+    @media screen and (max-width: 640px) {
+      padding: 0;
+    }
+    .cando {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+
+      li {
+        text-decoration: none;
+        display: inline-block;
+        margin: 0 0 3em 0;
+        padding: 0.8em 0 0 4em;
+        position: relative;
+
+        .icon {
+          background: #4acaa8;
+          border-radius: 100%;
+          color: #ffffff;
+          height: 2em;
+          left: 0;
+          line-height: 2em;
+          position: absolute;
+          text-align: center;
+          top: 0;
+          width: 2em;
+          display: inline-block;
+        }
+        .content {
+          height: 100%;
+        }
+      }
     }
   }
 
   .contact {
     border-top: solid 6px #f4f4f4;
     padding: 1em;
+    @media screen and (max-width: 640px) {
+      padding: 0;
+    }
 
     .container {
       padding: 4em 0 2em 0;
       width: 80%;
       margin: 0 auto;
+      @media screen and (max-width: 640px) {
+        width: 100%;
+        padding: 2em;
+      }
 
       h3 {
         font-size: 1.75em;
-        line-height: 1.5em;
+        line-height: 1.75em;
       }
       p {
         margin: 0 0 2.25em 0;

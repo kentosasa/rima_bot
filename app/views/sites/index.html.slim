@@ -21,25 +21,22 @@ section.hero.is-primary.is-large.header-image
     .container.has-text-centered
       h1.title.is-2 Rima-san
       h2.subtitle.is-5 簡単リマインドBOT on LINE
-      p
-        a.button.is-outlined
-          span.icon
-            i.fa.fa-download
-          span Download
+      = link_to 'https://line.me/R/ti/p/%40etg6773z', class: 'invite-link' do
+        = image_tag 'https://scdn.line-apps.com/n/line_add_friends/btn/ja.png', height: 20, border: 0, alt: '友だち追加'
 
 section.hero.feature-hero
   .hero-body
     .container
-      .columns
+      .columns.is-desktop.is-multiline
         .column.is-half.with-image
           figure.image.is-square
             = image_tag 'feature1.jpg'
-            /= image_tag 'https://html5up.net/uploads/demos/stellar/images/pic01.jpg'
         .column.is-half.with-description
           h2.subtitle.is-2 日常をサポート
           p BOTがあなたの日常をサポートしてくれます。
           p サークルのグループLINE、家族のグループLINE、同窓会のグループLINEどこでも
-      .columns.is-mobile
+
+      .columns.is-desktop.is-multiline
         .column.is-half.with-description
           h2.subtitle.is-2 日常をサポート
           p BOTがあなたの日常をサポートしてくれます。
@@ -48,42 +45,30 @@ section.hero.feature-hero
           figure.image.is-square
             = image_tag 'feature2.jpg'
 
-section.hero.is-medium.is-primary.is-bold
+section.hero.is-medium.is-light
   .hero-body
     .container
-      h1.title Primary bold title
-      h2.subsitle Primary bold subtitle
 
-.section.main
-  .container
-    .columns
-      .column.is-4
-        .panel
-          .panel-block.section
-            p.has-text-centered
-              i.fa.fa-bolt.icon-block
-            br
-            p ワンタップで簡単にリマインドが設定できる。
-            .panel-footer
-              a.button.is-info.is-fullwidth Action
-      .column.is-4
-        .panel
-          .panel-block.section
-            p.has-text-centered
-              i.fa.fa-calendar-check-o.icon-block
-            br
-            p 旅行する日程決め、飲み会の日程決め、どんな時でも使える!
-            .panel-footer
-              a.button.is-primary.is-fullwidth Action
-      .column.is-4
-        .panel
-          .panel-block.section
-            p.has-text-centered
-              i.fa.fa-users.icon-block
-            br
-            p グループでも個人でも使える
-            .panel-footer
-              a.button.is-fullwidth Action
+section.hero.cando-hero
+  .hero-body
+    .container
+      ul.cando.columns.is-desktop.is-multiline
+        li.column.is-half
+          span.icon
+            i.fa.fa-bell-o
+          p.content 通知してくれる
+        li.column.is-half
+          span.icon
+            i.fa.fa-calendar-o
+          p.content 日程調整ができる
+        li.column.is-half
+          span.icon
+            i.fa.fa-users
+          p.content グループLINEで使える
+        li.column.is-half
+          span.icon
+            i.fa.fa-bolt
+          p.content 簡単操作
               
 section.contact
   .container
@@ -92,11 +77,11 @@ section.contact
     form(method='POST' action='http://formspree.io/rimasan.bot@gmail.com')
       .control.is-grouped
         p.control.is-expanded.has-icon
-          input.input#contact-name(type='text' placeholder='お名前' required='true')
+          input.input#contact-name(type='text' placeholder='Name' required='true')
           span.icon
             i.fa.fa-user-o
         p.control.is-expanded.has-icon
-          input.input#contact-email(type='email' placeholder='メールアドレス' required='true')
+          input.input#contact-email(type='email' placeholder='Email' required='true')
           span.icon
             i.fa.fa-envelope
       
