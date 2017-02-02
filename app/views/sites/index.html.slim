@@ -29,13 +29,13 @@ section.hero.feature-hero
     .container
       .columns.is-desktop.is-multiline
         .socials.container
-          a.sns_btn.btn_facebook href="#"
+          = link_to "https://www.facebook.com/sharer/sharer.php?u=#{original_url}&text=#{}", class: 'sns_btn btn_facebook' do
             i.fa.fa-facebook
-          a.sns_btn.btn_twitter href="#"
+          = link_to "https://twitter.com/intent/tweet?url=#{original_url}&text=#{}", class: 'sns_btn btn_twitter' do
             i.fa.fa-twitter
-          a.sns_btn.btn_googleplus href="#"
+          = link_to "https://plus.google.com/share?url=#{original_url}&text=#{}", class: 'sns_btn btn_googleplus' do
             i.fa.fa-google-plus
-          a.sns_btn.btn_email href="#"
+          = link_to "http://b.hatena.ne.jp/entry/#{original_url}&text=#{}", class: 'sns_btn btn_email' do
             | B!
 
       .columns.is-desktop.is-multiline
