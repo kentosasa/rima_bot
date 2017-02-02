@@ -12,7 +12,7 @@ section.hero.is-primary.is-large.header-image
         .nav-right.nav-menu
           .nav-item.is-active HOME
           .nav-item 特徴
-          .nav-item 
+          .nav-item
           .nav-item
             a.button.is-info.is-outlined.is-inverted
               span.icon
@@ -28,22 +28,52 @@ section.hero.feature-hero
   .hero-body
     .container
       .columns.is-desktop.is-multiline
-        .column.is-half.with-image
-          figure.image.is-square
-            = image_tag 'feature1.jpg'
-        .column.is-half.with-description
-          h2.subtitle.is-2 日常をサポート
-          p BOTがあなたの日常をサポートしてくれます。
-          p サークルのグループLINE、家族のグループLINE、同窓会のグループLINEどこでも
+        = render partial: 'templates/socials', locals: {text: '簡単リマインドBot リマさん'}
 
       .columns.is-desktop.is-multiline
+        .column.is-half.with-image.sp-none
+          = image_tag 'feature1.jpg'
         .column.is-half.with-description
-          h2.subtitle.is-2 日常をサポート
-          p BOTがあなたの日常をサポートしてくれます。
-          p サークルのグループLINE、家族のグループLINE、同窓会のグループLINEどこでも
-        .column.is-half.with-image
-          figure.image.is-square
-            = image_tag 'feature2.jpg'
+          h2.subtitle.is-2
+            | 1タップで
+            br
+            | リマインド
+          p もうLINEで予定を決めた後にGoogleカレンダーなどの別のアプリに遷移する必要はありません。
+          p LINEのなかでボタンを1タップするだけで簡単にリマインドを設定することができます。
+          p 個人でもグループでも入れておくだけで日常生活をサポートしてくれる便利なBOTです。
+      .columns.is-desktop.is-multiline
+        .column.is-half.with-description
+          h2.subtitle.is-2
+            | 意識しない
+            br
+            | 日常会話で
+            br.sp-none
+            | 使えるBot
+          p リマインドを設定するために特別な入力コマンドは必要ありません。
+          p 「来週火曜日に新宿駅集合ね！」
+          p というような友達や家族との自然な会話の中でリマインドを設定することができます。
+          p また作成した予定の呼び出しも簡単で
+          p 「今日の予定なんだっけ」「予定一覧みせて！」
+          p などの質問を投げかけることでリマさんが返事をしてくれます。
+        .column.is-half.with-image.sp-none
+          = image_tag 'feature2.jpg'
+
+      .columns.is-desktop.is-multiline
+        .column.is-half.with-image.sp-none
+          = image_tag 'feature3.jpg'
+        .column.is-half.with-description
+          h2.subtitle.is-2
+            | 日程調整
+            br
+            | Google連携
+            br
+            | 天気予報
+          p リマさんはリマインドを設定するだけではありません。
+          p 「いつにする？」
+          p というような疑問が投げかけられると日程調整を作成できます。
+          p それ以外にも詳細画面から自分のGoogleカレンダーにイベントを追加することができたり、
+          p リマインドする際に同時にその日の天気や気温を教えてくれます。
+
 
 section.hero.is-medium.is-light
   .hero-body
@@ -69,7 +99,7 @@ section.hero.cando-hero
           span.icon
             i.fa.fa-bolt
           p.content 簡単操作
-              
+
 section.contact
   .container
     h3 お問い合わせ
@@ -84,7 +114,7 @@ section.contact
           input.input#contact-email(type='email' placeholder='Email' required='true')
           span.icon
             i.fa.fa-envelope
-      
+
       p.control
         textarea.textarea#contact-body(placeholder='本文' required='true')
 
