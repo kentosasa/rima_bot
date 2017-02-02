@@ -1,0 +1,86 @@
+// @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+$googleplus_color: #dd4b39;
+$facebook_color: #3b5998;
+$twitter_color: #55acee;
+$hatena_color: #00A4DE;
+@media screen and (max-width: 640px) {
+  .sns_btn {
+    width: 2.5em;
+    margin: 0.1em;
+  }
+}
+@media screen and (min-width: 640px) {
+  .sns_btn {
+    width: 8em;
+    margin: 0.5em;
+  }
+}
+
+.sns_btn {
+  display: inline-block;
+  color: #fff;
+  height: 3em;
+  position: relative;
+  text-align: center;
+  line-height: 3em;
+  font-weight: bold;
+  // clear:both;
+  // white-space:nowrap;
+  font-size: 1.5em;
+  border-radius: 0.3125em;
+  box-shadow: 0 0.1875em 0.3125em 0 rgba(0, 0, 0, 0.35);
+  -webkit-transition: all .2s;
+  -moz-transition: all .2s;
+  transition: all .2s;
+  overflow: hidden;
+  i {
+    position: absolute;
+    // top: 50%;
+    // transform: translateY(-50%);
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: auto;
+  }
+  &:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0.3125em 0.9375em 0 rgba(0, 0, 0, 0.4);
+  }
+
+  &:active {
+    transform: scale(0.9);
+    box-shadow: 0 0.125em 0.1875em 0 rgba(0, 0, 0, 0.4);
+  }
+}
+
+.btn_facebook {
+  background: $facebook_color;
+  &:hover {
+    color: $facebook_color;
+    background: #fff;
+  }
+}
+
+.btn_twitter {
+  background: $twitter_color;
+  &:hover {
+    color: $twitter_color;
+    background: #fff;
+  }
+}
+
+.btn_googleplus {
+  background: $googleplus_color;
+  &:hover {
+    color: $googleplus_color;
+    background: #fff;
+  }
+}
+
+.btn_email {
+  background: $hatena_color;
+  &:hover {
+    color: $hatena_color;
+    background: #fff;
+  }
+}
