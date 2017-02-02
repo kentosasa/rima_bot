@@ -84,3 +84,9 @@ body {
     }
   }
 }
+
+@media screen and (max-width: 640px) {
+  .sp-none {
+    display: none;
+  }
+}
