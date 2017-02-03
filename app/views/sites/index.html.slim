@@ -9,15 +9,13 @@ section.hero.is-primary.is-large.header-image
           span
           span
           span
-        .nav-right.nav-menu
-          .nav-item.is-active HOME
-          .nav-item 特徴
-          .nav-item
-          .nav-item
-            a.button.is-info.is-outlined.is-inverted
-              span.icon
-                i.fa.fa-github
-  .hero-body
+        .nav-right.nav-menu#header-items
+          .nav-item.is-active(data-dest='#top') HOME
+          .nav-item(data-dest='#feature') 特徴
+          .nav-item(data-dest='#pv') PV
+          .nav-item(data-dest='#contact') お問い合わせ
+
+  .hero-body#top
     .container.has-text-centered
       .title-container
         h2.title.is-2 Rima-san
@@ -25,7 +23,7 @@ section.hero.is-primary.is-large.header-image
       = link_to 'https://line.me/R/ti/p/%40etg6773z', class: 'invite-link' do
         = image_tag 'https://scdn.line-apps.com/n/line_add_friends/btn/ja.png', height: 20, border: 0, alt: '友だち追加'
 
-section.hero.feature-hero
+section.hero.feature-hero#feature
   .hero-body
     .container
       .columns.is-desktop.is-multiline
@@ -76,7 +74,7 @@ section.hero.feature-hero
           p リマインドする際に同時にその日の天気や気温を教えてくれます。
 
 
-section.hero.is-medium.is-light
+section.hero.is-medium.is-light#pv
   .hero-body
     .container
       .video-wrapper
@@ -104,7 +102,7 @@ section.hero.is-medium.is-light
 /             i.fa.fa-bolt
 /           p.content 簡単操作
 
-section.contact
+section.contact#contact
   .container
     h3 お問い合わせ
     p リマさんに関するお問い合わせ等ありましたら、お気軽にご連絡ください。

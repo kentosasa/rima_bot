@@ -64,4 +64,14 @@ $(document).ready( function () {
     $('#contact-email').val('')
     $('#contact-body').val('')
   })
+
+  $('#header-items .nav-item').on('click', function(e) {
+    e.preventDefault()
+    console.log('ok')
+    var dest = $(this).attr('data-dest')
+    console.log(dest)
+    $('html, body').animate({
+      scrollTop: $(dest).offset().top
+    })
+  })
 })

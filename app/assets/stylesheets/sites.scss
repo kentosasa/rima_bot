@@ -60,6 +60,15 @@
     padding: 1.5em;
   }
 
+  .nav-menu {
+    .nav-item {
+      &:hover {
+        opacity: 0.8;
+        cursor: pointer;
+      }
+    }
+  }
+
   .title-container {
 
     figure {
