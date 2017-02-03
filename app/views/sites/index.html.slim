@@ -19,7 +19,8 @@ section.hero.is-primary.is-large.header-image
                 i.fa.fa-github
   .hero-body
     .container.has-text-centered
-      h1.title.is-2 Rima-san
+      .title-container
+        h2.title.is-2 Rima-san
       h2.subtitle.is-5 簡単リマインドBOT on LINE
       = link_to 'https://line.me/R/ti/p/%40etg6773z', class: 'invite-link' do
         = image_tag 'https://scdn.line-apps.com/n/line_add_friends/btn/ja.png', height: 20, border: 0, alt: '友だち追加'
@@ -78,27 +79,30 @@ section.hero.feature-hero
 section.hero.is-medium.is-light
   .hero-body
     .container
+      .video-wrapper
+        .iframe-container
+          iframe(width='560' showinfo='0' height='315' src='https://www.youtube.com/embed/FRZqDVY_j-c?rel=0&loop=1&showinfo=0' frameborder='0' allowfullscreen)
 
-section.hero.cando-hero
-  .hero-body
-    .container
-      ul.cando.columns.is-desktop.is-multiline
-        li.column.is-half
-          span.icon
-            i.fa.fa-bell-o
-          p.content 通知してくれる
-        li.column.is-half
-          span.icon
-            i.fa.fa-calendar-o
-          p.content 日程調整ができる
-        li.column.is-half
-          span.icon
-            i.fa.fa-users
-          p.content グループLINEで使える
-        li.column.is-half
-          span.icon
-            i.fa.fa-bolt
-          p.content 簡単操作
+/ section.hero.cando-hero
+/   .hero-body
+/     .container
+/       ul.cando.columns.is-desktop.is-multiline
+/         li.column.is-half
+/           span.icon
+/             i.fa.fa-bell-o
+/           p.content 通知してくれる
+/         li.column.is-half
+/           span.icon
+/             i.fa.fa-calendar-o
+/           p.content 日程調整ができる
+/         li.column.is-half
+/           span.icon
+/             i.fa.fa-users
+/           p.content グループLINEで使える
+/         li.column.is-half
+/           span.icon
+/             i.fa.fa-bolt
+/           p.content 簡単操作
 
 section.contact
   .container
