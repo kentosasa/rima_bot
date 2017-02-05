@@ -21,9 +21,9 @@ module Rima
       @message = Rima::Message.new(@group, @event)
 
       if @group.new_record?
-        #@group.update_profile(@message.get_profile)
         hello
         @group.save
+        # @group.update_profile(@message.get_profile)
       end
     end
 
@@ -174,10 +174,10 @@ module Rima
 
     ############### その他 ####################
 
-    def receive_image(event); logger.debug 'image' end
-    def receive_video(event); logger.debug 'video' end
-    def receive_audio(event); logger.debug 'audio' end
-    def receive_location(event); logger.debug 'location' end
-    def receive_sticker(event); logger.debug 'sticker' end
+    def receive_image(event); puts 'image' end
+    def receive_video(event); puts 'video' end
+    def receive_audio(event); puts 'audio' end
+    def receive_location(event); puts 'location' end
+    def receive_sticker(event); puts 'sticker' end
   end
 end
