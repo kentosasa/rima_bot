@@ -189,8 +189,11 @@
 
     .container {
       padding: 4em 0 2em 0;
-      width: 80%;
+      width: 60%;
       margin: 0 auto;
+      @media screen and (max-width: 960px) {
+        width: 80%;
+      }
       @media screen and (max-width: 640px) {
         width: 100%;
         padding: 2em;
