@@ -51,6 +51,6 @@ module ApplicationHelper
   end
 
   def original_url
-    ENV['WEBHOOK_URL'] + request.fullpath
+    ENV['WEBHOOK_URL'] #+ request.fullpath
   end
 end
