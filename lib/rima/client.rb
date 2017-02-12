@@ -109,7 +109,6 @@ module Rima
       end
     end
 
-
     ########################################
 
     def create_remind(body, datetime, type, name = nil)
