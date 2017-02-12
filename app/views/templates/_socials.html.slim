@@ -1,9 +1,15 @@
 .socials.container
-  = link_to "https://www.facebook.com/sharer/sharer.php?u=#{original_url}&text=#{text}", class: 'sns_btn btn_facebook' do
-    i.fa.fa-facebook
-  = link_to "https://twitter.com/intent/tweet?url=#{original_url}&text=#{text}", class: 'sns_btn btn_twitter' do
-    i.fa.fa-twitter
-  = link_to "https://plus.google.com/share?url=#{original_url}&text=#{text}", class: 'sns_btn btn_googleplus' do
-    i.fa.fa-google-plus
-  = link_to "http://b.hatena.ne.jp/entry/#{original_url}", class: 'sns_btn btn_email' do
-    | B!
+  .columns
+    .column.is-3
+      = link_to "https://www.facebook.com/sharer/sharer.php?u=#{original_url}&text=#{text}", class: 'sns_btn btn_facebook' do
+        i.fa.fa-facebook
+    .column.is-3
+      = link_to "https://twitter.com/intent/tweet?url=#{original_url}&text=#{text}", class: 'sns_btn btn_twitter' do
+        i.fa.fa-twitter
+    .column.is-3
+      = link_to "https://plus.google.com/share?url=#{original_url}&text=#{text}", class: 'sns_btn btn_googleplus' do
+        i.fa.fa-google-plus
+    .column.is-3
+      = link_to "http://b.hatena.ne.jp/entry/#{original_url}", class: 'sns_btn btn_email' do
+        | B!
+    
