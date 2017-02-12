@@ -12,7 +12,7 @@ module Rima
 
     RIMASAN = Regexp.compile('りまさん|rimasan|リマさん|rima_san')
     NEGATIVE = Regexp.compile('無理|ムリ|むり|ダメ|だめ|駄目|できない|厳しい|きびしい')
-    PLANS = Regexp.compile('予定一覧|リマインド一覧')
+    PLANS = Regexp.compile('予定一覧|リマインド一覧|予定は？')
     SCHEDULE = Regexp.compile('いつにする?|いつにする？|日程調整|スケジュール調整|いつがいい?|いつにしよう?|行ける人おしえてくださいー|何日にする-?')
 
     def initialize(client, event)
