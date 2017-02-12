@@ -23,11 +23,7 @@ $(document).ready(function() {
       var day = date.getDate()
       var dates = ["日","月","火","水","木","金","土"];
       var week = dates[date.getDay()]
-      if(gon.remindType === 'Event') {
-        var _type = 'remind'
-      } else {
-        var _type = gon.remindType.toLowerCase()
-      }
+      var _type = gon.remindType.toLowerCase()
       console.log(_type)
       var elem = '#' + _type + '_candidate_body';
       var text  = $(elem).val();

@@ -9,7 +9,7 @@ class RemindsController < ApplicationController
   before_action :set_before, only: [:show, :edit, :activate]
 
   def new
-    @remind = @group.reminds.new
+    @remind = @group.events.new
     @remind.type = params[:type] || 'Event'
     gon.autoComplete = true
     gon.lat = 35.6586488
